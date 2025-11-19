@@ -17,10 +17,11 @@ namespace Infrastructure.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task AddAsync(UserSubscription userSubscriptions)
+        public async Task<UserSubscription> AddAsync(UserSubscription userSubscriptions)
         {
             await _dataContext.Set<UserSubscription>().AddAsync(userSubscriptions);
             await _dataContext.SaveChangesAsync();
+            return userSubscriptions;
         }
     }
 }
