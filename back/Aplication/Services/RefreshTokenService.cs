@@ -1,5 +1,4 @@
-﻿using Azure.Core.GeoJson;
-using Core.Constants;
+﻿using Core.Constants;
 using Core.Dto.RefreshToken;
 using Core.Entities;
 using Core.Interfaces.Repositories;

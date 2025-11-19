@@ -1,6 +1,5 @@
 ﻿using Aplication.Helpers;
 using Aplication.Services;
-using Azure.Core;
 using Core.Constants;
 using Core.Dto.Auth;
 using Core.Dto.RefreshToken;
@@ -8,8 +7,6 @@ using Core.Dto.User;
 using Core.Entities;
 using Core.Interfaces;
 using Aplication.Interfaces.Services;
-using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
