@@ -1,6 +1,6 @@
 ﻿using Core.Dto.User;
 using Core.Entities;
-using Core.Interfaces.Services;
+using Aplication.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

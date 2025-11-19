@@ -8,7 +8,7 @@ using Core.Dto.RefreshToken;
 using Core.Dto.User;
 using Core.Entities;
 using Core.Interfaces;
-using Core.Interfaces.Services;
+using Aplication.Interfaces.Services;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;

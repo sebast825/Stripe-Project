@@ -1,4 +1,4 @@
-﻿using Core.Interfaces.Services;
+﻿using Aplication.Interfaces.Services;
 using System.Collections.Concurrent;
 namespace Aplication.Services
 {

@@ -7,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Interfaces.Services
+namespace Aplication.Interfaces.Services
+
 {
     public interface IRefreshTokenService
     {

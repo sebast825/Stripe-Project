@@ -3,7 +3,7 @@ using Core.Constants;
 using Core.Dto.Auth;
 using Core.Entities;
 using Core.Interfaces.Repositories;
-using Core.Interfaces.Services;
+using Aplication.Interfaces.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Security.Authentication;

@@ -1,7 +1,7 @@
 ﻿using Aplication.Services;
 using Core.Dto.SecurityLoginAttempt;
 using Core.Entities;
-using Core.Interfaces.Services;
+using Aplication.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers

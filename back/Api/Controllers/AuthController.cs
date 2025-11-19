@@ -1,6 +1,6 @@
 ﻿using Aplication.UseCases;
 using Core.Dto.Auth;
-using Core.Interfaces.Services;
+using Aplication.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers

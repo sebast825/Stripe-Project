@@ -1,6 +1,6 @@
 ﻿using Core.Dto.UserLoginHistory;
 using Core.Entities;
-using Core.Interfaces.Services;
+using Aplication.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers

@@ -4,7 +4,7 @@ using Aplication.UseCases;
 using AspNetCoreRateLimit;
 using Core.Interfaces;
 using Core.Interfaces.Repositories;
-using Core.Interfaces.Services;
+using Aplication.Interfaces.Services;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;

@@ -1,5 +1,5 @@
 ﻿using Aplication.Services;
-using Core.Interfaces.Services;
+using Aplication.Interfaces.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

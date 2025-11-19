@@ -3,7 +3,7 @@ using Core.Dto.Auth;
 using Core.Dto.User;
 using Core.Entities;
 using Core.Interfaces.Repositories;
-using Core.Interfaces.Services;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -3,7 +3,7 @@ using Core.Constants;
 using Core.Dto.RefreshToken;
 using Core.Entities;
 using Core.Interfaces.Repositories;
-using Core.Interfaces.Services;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
