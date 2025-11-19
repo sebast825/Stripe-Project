@@ -1,6 +1,5 @@
 ﻿using Aplication.Helpers;
 using Aplication.Services;
-using Aplication.UseCases;
 using Castle.Core.Logging;
 using Core.Constants;
 using Core.Dto.Auth;
@@ -22,6 +21,7 @@ using System.Net;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
+using Aplication.UseCases.Auth;
 
 namespace Tests.UseCases
 {

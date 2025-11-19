@@ -1,6 +1,5 @@
 using Api.Extensions;
 using Aplication.Services;
-using Aplication.UseCases;
 using AspNetCoreRateLimit;
 using Core.Interfaces;
 using Core.Interfaces.Repositories;
@@ -9,6 +8,7 @@ using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using Aplication.UseCases.Auth;
 var builder = WebApplication.CreateBuilder(args);
 
 //dbcontext

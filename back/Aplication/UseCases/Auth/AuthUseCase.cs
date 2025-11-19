@@ -16,7 +16,7 @@ using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aplication.UseCases
+namespace Aplication.UseCases.Auth
 {
     public class AuthUseCase
     {
