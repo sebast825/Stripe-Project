@@ -10,8 +10,8 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserServices _userServicesI;
-        public UserController(IUserServices userServicesI) {
+        private readonly IUserService _userServicesI;
+        public UserController(IUserService userServicesI) {
             _userServicesI = userServicesI;
 
         }

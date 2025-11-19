@@ -22,7 +22,7 @@ builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IUserLoginHistoryRepository, UserLoginHistoryRepository>();
 builder.Services.AddScoped<ISecurityLoginAttemptRepository,SecurityLoginAttemptRepository>();
 
-builder.Services.AddScoped<IUserServices, UserService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtService,JwtService> ();
 builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 builder.Services.AddSingleton<IEmailAttemptsService,EmailAttemptsService> ();

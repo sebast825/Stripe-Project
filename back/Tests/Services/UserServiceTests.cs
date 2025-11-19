@@ -15,7 +15,7 @@ namespace Tests.Services
     {
 
         private Mock<IUserRepository> _mockUserRepo;
-        private IUserServices _userService;
+        private IUserService _userService;
         [TestInitialize]
         public void Setup()
         {

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services
 {
-    public class UserService : IUserServices
+    public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
         public UserService(IUserRepository userRepository)

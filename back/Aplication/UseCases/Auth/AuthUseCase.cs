@@ -20,14 +20,14 @@ namespace Aplication.UseCases.Auth
 {
     public class AuthUseCase
     {
-        private readonly IUserServices _userServices;
+        private readonly IUserService _userServices;
         private readonly IJwtService _jwtService;
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly IEmailAttemptsService _emailAttemptsService;
         private readonly IUserLoginHistoryService _loginAttemptsService;
         private readonly ISecurityLoginAttemptService _securityLoginAttemptService;
         private readonly ILogger<AuthUseCase> _logger;
-        public AuthUseCase(IUserServices userServices, IJwtService jwtService, IRefreshTokenService refreshTokenService,
+        public AuthUseCase(IUserService userServices, IJwtService jwtService, IRefreshTokenService refreshTokenService,
             IEmailAttemptsService EmailAttemptsService, IUserLoginHistoryService loginAttemptsService,
             ISecurityLoginAttemptService securityLoginAttemptService,
             ILogger<AuthUseCase> logger)

@@ -31,7 +31,7 @@ namespace Tests.UseCases
     [TestClass]
     public class AuthLoginTests
     {
-        private Mock<IUserServices> _mockUserServices;
+        private Mock<IUserService> _mockUserServices;
         private Mock<IJwtService> _mockJwtService;
         private Mock<IRefreshTokenService> _mockRefreshTokenService;
         private Mock<IEmailAttemptsService> _mockEmailAttemptsService;
@@ -44,7 +44,7 @@ namespace Tests.UseCases
         [TestInitialize]
         public void SetUp()
         {
-            _mockUserServices = new Mock<IUserServices>();
+            _mockUserServices = new Mock<IUserService>();
             _mockJwtService = new Mock<IJwtService>();
             _mockRefreshTokenService = new Mock<IRefreshTokenService>();
             _mockEmailAttemptsService = new Mock<IEmailAttemptsService>();
