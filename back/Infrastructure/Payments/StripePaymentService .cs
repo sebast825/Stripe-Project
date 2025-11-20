@@ -1,5 +1,7 @@
 ﻿using Aplication.Interfaces.Payments;
 using Core.Enums;
+using Microsoft.Extensions.Configuration;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +12,30 @@ namespace Infrastructure.Payments
 {
     public class StripePaymentService : IStripePaymentService
     {
+        public StripePaymentService(IConfiguration configuration) {
+            StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
+        }
         public Task CancelSubscriptionAsync(string stripeSubscriptionId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> CreateCustomerAsync (int userId)
+        public async Task<string> CreateCustomerAsync (int userId)
         {
-            throw new NotImplementedException();
+            var customerService = new CustomerService();
+
+            var options = new CustomerCreateOptions
+            {
+             
+                Metadata = new Dictionary<string, string>
+            {
+                { "UserId", userId.ToString() }
+            }
+            };
+
+            var customer = await customerService.CreateAsync(options);
+
+            return customer.Id; // returns StripeCustomerId
         }
 
         public Task<string> CreateSubscriptionAsync(string StripeCustomerId, string StripePriceId)
