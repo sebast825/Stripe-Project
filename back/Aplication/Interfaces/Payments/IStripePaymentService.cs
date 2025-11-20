@@ -12,7 +12,7 @@ namespace Aplication.Interfaces.Payments
         Task<string> CreateSubscriptionAsync(int userId, SubscriptionPlanType plan);
         Task CancelSubscriptionAsync(string stripeSubscriptionId);
         Task HandleWebhookAsync(string json, string signature);
-        Task<string> CreateCustomerIfNotExistsAsync(int userId);
+        Task<string> CreateCustomerAsync(int userId);
 
     }
 

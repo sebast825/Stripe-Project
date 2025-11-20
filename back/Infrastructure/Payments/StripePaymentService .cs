@@ -15,7 +15,7 @@ namespace Infrastructure.Payments
             throw new NotImplementedException();
         }
 
-        public Task<string> CreateCustomerIfNotExistsAsync(int userId)
+        public Task<string> CreateCustomerAsync (int userId)
         {
             throw new NotImplementedException();
         }
