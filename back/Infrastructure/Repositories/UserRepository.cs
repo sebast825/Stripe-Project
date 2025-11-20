@@ -11,18 +11,13 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : Repository<User>,IUserRepository 
     {
         private readonly DataContext _dataContext;
-        public UserRepository(DataContext dataContext) {
+        public UserRepository(DataContext dataContext) :base(dataContext){
             _dataContext = dataContext;
         }
-        public async Task AddAsync(User user)
-        {
-            
-            await _dataContext.Set<User>().AddAsync(user);
-            await _dataContext.SaveChangesAsync();
-        }
+
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await _dataContext.Set<User>()
