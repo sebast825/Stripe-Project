@@ -52,6 +52,26 @@ namespace Aplication.Services
             };
         }
 
+        public async Task<UserResponseDto> UpdateStripeCustomerId(int userId, string stripeCustomerId)
+        {
+
+            User user = await _userRepository.GetByIdAsync(userId);
+            if (user == null)
+            {
+                throw new InvalidOperationException(ErrorMessages.EntityNotFound("User", userId));
+
+            }
+            user.StripeCustomerId = stripeCustomerId;
+            await _userRepository.UpdateAsync(user);
+            return new UserResponseDto()
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                StripeCustomerId = user.StripeCustomerId
+
+            };
+        }
+
         public async Task<UserResponseDto> ValidateCredentialsAsync(LoginRequestDto loginDto)
         {
             User? user = await _userRepository.GetByEmailAsync(loginDto.Email);

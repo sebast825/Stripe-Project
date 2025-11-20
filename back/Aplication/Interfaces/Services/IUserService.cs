@@ -11,6 +11,7 @@ namespace Aplication.Interfaces.Services
     public interface IUserService
     {
         Task AddAsync(UserCreateRequestDto userCreateDto);
+        Task UpdateAsync () 
         Task<UserResponseDto> ValidateCredentialsAsync(LoginRequestDto loginDto);
         Task<UserResponseDto> GetByIdAsync(int id);
     }
