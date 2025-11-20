@@ -20,7 +20,7 @@ namespace Infrastructure.Payments
             throw new NotImplementedException();
         }
 
-        public Task<string> CreateSubscriptionAsync(int userId, SubscriptionPlanType plan)
+        public Task<string> CreateSubscriptionAsync(string StripeCustomerId, string StripePriceId)
         {
             throw new NotImplementedException();
         }
