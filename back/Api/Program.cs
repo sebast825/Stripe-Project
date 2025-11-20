@@ -1,14 +1,17 @@
 using Api.Extensions;
+using Aplication.Interfaces.Payments;
+using Aplication.Interfaces.Services;
 using Aplication.Services;
+using Aplication.UseCases.Auth;
+using Aplication.UseCases.Subscriptions;
 using AspNetCoreRateLimit;
 using Core.Interfaces;
 using Core.Interfaces.Repositories;
-using Aplication.Interfaces.Services;
 using Infrastructure.Data;
+using Infrastructure.Payments;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using Aplication.UseCases.Auth;
 var builder = WebApplication.CreateBuilder(args);
 
 //dbcontext
@@ -30,6 +33,12 @@ builder.Services.AddScoped<IUserLoginHistoryService, UserLoginHistoryService>();
 builder.Services.AddScoped<ISecurityLoginAttemptService, SecurityLoginAttemptService>();
 
 builder.Services.AddScoped<AuthUseCase>();
+
+builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
+builder.Services.AddScoped<IUserSubscriptionService, UserSubscriptionService>();
+builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
+
+builder.Services.AddScoped<SubscribeUserUseCase>();
 
 builder.Services.AddHttpContextAccessor();
 
