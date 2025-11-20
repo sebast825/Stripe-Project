@@ -38,9 +38,24 @@ namespace Infrastructure.Payments
             return customer.Id; // returns StripeCustomerId
         }
 
-        public Task<string> CreateSubscriptionAsync(string StripeCustomerId, string StripePriceId)
+        public async Task<string> CreateSubscriptionAsync(string stripeCustomerId, string stripePriceId)
         {
-            throw new NotImplementedException();
+            var options = new SubscriptionCreateOptions
+            {
+                Customer = stripeCustomerId,
+                Items = new List<SubscriptionItemOptions>
+        {
+            new SubscriptionItemOptions
+            {
+                Price = stripePriceId
+            }
+        }
+            };
+
+            var service = new SubscriptionService();
+            Subscription subscription = await service.CreateAsync(options);
+
+            return subscription.Id;
         }
 
         public Task HandleWebhookAsync(string json, string signature)

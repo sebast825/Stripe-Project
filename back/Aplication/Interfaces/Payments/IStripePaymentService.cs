@@ -9,7 +9,7 @@ namespace Aplication.Interfaces.Payments
 {
     public interface IStripePaymentService
     {
-        Task<string> CreateSubscriptionAsync(string StripeCustomerId, string StripePriceId);
+        Task<string> CreateSubscriptionAsync(string stripeCustomerId, string stripePriceId);
         Task CancelSubscriptionAsync(string stripeSubscriptionId);
         Task HandleWebhookAsync(string json, string signature);
         Task<string> CreateCustomerAsync(int userId);

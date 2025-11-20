@@ -18,7 +18,7 @@ namespace Aplication.Helpers
                     Id = 1,
                     Name = "Yearly",
                     Price = 1000m,
-                    StripePriceId = "prod_TSBAmhIIpCSdSc",
+                    StripePriceId = "price_1SVGnvGjXgbUajlyJPFKyCJt",
                     Interval = "year"
                 },
                 new SubscriptionPlan
@@ -26,7 +26,7 @@ namespace Aplication.Helpers
                     Id = 2,
                     Name = "Monthly",
                     Price = 100m,
-                    StripePriceId = "prod_TSB9AvnGxQPYop",
+                    StripePriceId = "price_1SVGn7GjXgbUajlyIXwrBRKj",
                     Interval = "month"
                 },
                 new SubscriptionPlan
@@ -34,7 +34,7 @@ namespace Aplication.Helpers
                     Id = 3,
                     Name = "Daily",
                     Price = 15m,
-                    StripePriceId = "prod_TSB9RvF7kepbRA",
+                    StripePriceId = "price_1SVGndGjXgbUajly9H8F6VPm",
                     Interval = "day"
                 }
 
