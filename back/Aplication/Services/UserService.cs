@@ -37,6 +37,21 @@ namespace Aplication.Services
             await _userRepository.AddAsync(user);
         }
 
+        public async Task<UserResponseDto> GetByIdAsync(int id)
+        {
+            User user = await _userRepository.GetByIdAsync(id);
+            if (user == null)
+            {
+                throw new InvalidOperationException(ErrorMessages.EntityNotFound("User",id));
+
+            }
+            return new UserResponseDto()
+            {
+                Id = user.Id,
+                FullName = user.FullName
+            };
+        }
+
         public async Task<UserResponseDto> ValidateCredentialsAsync(LoginRequestDto loginDto)
         {
             User? user = await _userRepository.GetByEmailAsync(loginDto.Email);

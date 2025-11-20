@@ -12,5 +12,6 @@ namespace Aplication.Interfaces.Services
     {
         Task AddAsync(UserCreateRequestDto userCreateDto);
         Task<UserResponseDto> ValidateCredentialsAsync(LoginRequestDto loginDto);
+        Task<UserResponseDto> GetByIdAsync(int id);
     }
 }
