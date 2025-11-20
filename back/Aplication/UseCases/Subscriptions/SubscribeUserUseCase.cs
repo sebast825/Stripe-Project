@@ -1,4 +1,5 @@
-﻿using Aplication.Helpers;
+﻿using Aplication.Dto;
+using Aplication.Helpers;
 using Aplication.Interfaces.Payments;
 using Aplication.Interfaces.Services;
 using Aplication.Services;
@@ -28,7 +29,7 @@ namespace Aplication.UseCases.Subscriptions
             _userSubscriptionService = userSubscriptionService;
         }
 
-       public async Task<string> ExecuteAsync(int userId, SubscriptionPlanType plan)
+       public async Task<SubscriptionFlowResultDto> ExecuteAsync(int userId, SubscriptionPlanType plan)
         {
             UserResponseDto user = await _userService.GetByIdAsync(userId);
 
@@ -39,8 +40,8 @@ namespace Aplication.UseCases.Subscriptions
             }
 
             SubscriptionPlan  planType = DemoPlans.GetPlanByName(plan.ToString());
-            var stripeSubId = await ExecuteSubscriptionFlowAsync(user.StripeCustomerId, planType.StripePriceId);
-            return stripeSubId.ToString();
+            SubscriptionFlowResultDto rsta = await CreateSubscriptionOrCheckoutSessionAsync(user.StripeCustomerId, planType.StripePriceId);
+            return rsta;
 
             //var subscription = new UserSubscription
             //{
@@ -56,20 +57,30 @@ namespace Aplication.UseCases.Subscriptions
         }
 
         // UseCase decision
-        public async Task<string> ExecuteSubscriptionFlowAsync(string customerId, string priceId)
+        public async Task<SubscriptionFlowResultDto> CreateSubscriptionOrCheckoutSessionAsync(string customerId, string priceId)
         {
             var hasPm = await _stripePaymentService.CustomerHasPaymentMethodAsync(customerId);
 
             if (hasPm)
             {
-                // crea subscripción directamente y devuelve subscriptionId
                 string subscriptionId = await _stripePaymentService.CreateSubscriptionAsync(customerId, priceId);
-                return subscriptionId; // string
+
+                return new SubscriptionFlowResultDto
+                {
+                    FlowType = SubscriptionFlowType.subscribed,
+                    SubscriptionId = subscriptionId,
+
+                }; 
             }
             else
             {
                 string checkoutUrl = await _stripePaymentService.CreateSubscriptionCheckoutSessionAsync(customerId, priceId);
-                return checkoutUrl; 
+                return new SubscriptionFlowResultDto
+                {
+                    FlowType = SubscriptionFlowType.checkout,
+                    CheckoutUrl = checkoutUrl,
+
+                };
             }
         }
 
