@@ -38,11 +38,10 @@ namespace Aplication.UseCases.Subscriptions
                 await _userService.UpdateStripeCustomerId(user.Id, stripeCustomerId); 
             }
 
-            // 2️⃣ Crear la suscripción en Stripe
             SubscriptionPlan  planType = DemoPlans.GetPlanByName(plan.ToString());
             var stripeSubId = await _stripePaymentService.CreateSubscriptionAsync(user.StripeCustomerId, planType.StripePriceId);
 
-            // 3️⃣ Persistir la relación en DB
+
             var subscription = new UserSubscription
             {
                 UserId = user.Id,

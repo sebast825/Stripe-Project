@@ -9,7 +9,7 @@ namespace Core.Entities
     public class SubscriptionPlan : ClassBase
     {
         public string Name { get; set; } 
-        public string StripePriceId { get; set; } //
+        public string StripePriceId { get; set; } 
         public decimal Price { get; set; }
         public string Interval { get; set; } // daily, monthly, yearly
     }

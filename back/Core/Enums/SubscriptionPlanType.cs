@@ -12,7 +12,6 @@ namespace Core.Enums
         Daily,
         Monthly,
         Yearly
-
     }
 }
 
