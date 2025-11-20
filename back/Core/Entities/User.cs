@@ -16,6 +16,9 @@ namespace Core.Entities
         public required string Password { get; set; }
 
         public string? FullName { get; set; }
+        public string? StripeCustomerId { get; set; }
+
+        
 
         public ICollection<UserLoginHistory> LoginAttempts { get; set; } = new List<UserLoginHistory>();
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
