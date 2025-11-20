@@ -1,9 +1,10 @@
-﻿using Core.Constants;
+﻿using Aplication.Helpers;
+using Aplication.Interfaces.Services;
+using Core.Constants;
 using Core.Dto.Auth;
 using Core.Dto.User;
 using Core.Entities;
 using Core.Interfaces.Repositories;
-using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,14 +43,11 @@ namespace Aplication.Services
             User user = await _userRepository.GetByIdAsync(id);
             if (user == null)
             {
-                throw new InvalidOperationException(ErrorMessages.EntityNotFound("User",id));
+                throw new InvalidOperationException(ErrorMessages.EntityNotFound("User", id));
 
             }
-            return new UserResponseDto()
-            {
-                Id = user.Id,
-                FullName = user.FullName
-            };
+            return UserEventMapper.UserResponseDtoMapper(user);
+
         }
 
         public async Task<UserResponseDto> UpdateStripeCustomerId(int userId, string stripeCustomerId)
@@ -63,13 +61,7 @@ namespace Aplication.Services
             }
             user.StripeCustomerId = stripeCustomerId;
             await _userRepository.UpdateAsync(user);
-            return new UserResponseDto()
-            {
-                Id = user.Id,
-                FullName = user.FullName,
-                StripeCustomerId = user.StripeCustomerId
-
-            };
+            return UserEventMapper.UserResponseDtoMapper(user);
         }
 
         public async Task<UserResponseDto> ValidateCredentialsAsync(LoginRequestDto loginDto)
@@ -86,11 +78,8 @@ namespace Aplication.Services
                 throw new InvalidCredentialException(ErrorMessages.InvalidCredentials);
 
             }
-            return new UserResponseDto()
-            {
-                Id = user.Id,
-                FullName = user.FullName
-            };
+            return UserEventMapper.UserResponseDtoMapper(user);
+
         }
         private async Task<bool> EmailAlreadyUsed(string email)
         {

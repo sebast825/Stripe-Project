@@ -11,7 +11,7 @@ namespace Aplication.Interfaces.Services
     public interface IUserService
     {
         Task AddAsync(UserCreateRequestDto userCreateDto);
-        Task UpdateAsync () 
+        Task<UserResponseDto> UpdateStripeCustomerId(int userId, string stripeCustomerId);
         Task<UserResponseDto> ValidateCredentialsAsync(LoginRequestDto loginDto);
         Task<UserResponseDto> GetByIdAsync(int id);
     }
