@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace Core.Entities
 {
     public class SubscriptionPlan : ClassBase
     {
-        public string Name { get; set; } 
+        public SubscriptionPlanType PlanType { get; set; } 
         public string StripePriceId { get; set; } 
         public decimal Price { get; set; }
         public string Interval { get; set; } // daily, monthly, yearly

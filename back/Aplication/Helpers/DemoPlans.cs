@@ -1,5 +1,7 @@
 ﻿using Core.Constants;
 using Core.Entities;
+using Core.Enums;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,7 @@ namespace Aplication.Helpers
                 new SubscriptionPlan
                 {
                     Id = 1,
-                    Name = "Yearly",
+                    PlanType = SubscriptionPlanType.Yearly,
                     Price = 1000m,
                     StripePriceId = "price_1SVGnvGjXgbUajlyJPFKyCJt",
                     Interval = "year"
@@ -24,7 +26,7 @@ namespace Aplication.Helpers
                 new SubscriptionPlan
                 {
                     Id = 2,
-                    Name = "Monthly",
+                    PlanType = SubscriptionPlanType.Monthly,
                     Price = 100m,
                     StripePriceId = "price_1SVGn7GjXgbUajlyIXwrBRKj",
                     Interval = "month"
@@ -32,7 +34,7 @@ namespace Aplication.Helpers
                 new SubscriptionPlan
                 {
                     Id = 3,
-                    Name = "Daily",
+                    PlanType = SubscriptionPlanType.Daily,
                     Price = 15m,
                     StripePriceId = "price_1SVGndGjXgbUajly9H8F6VPm",
                     Interval = "day"
@@ -41,10 +43,10 @@ namespace Aplication.Helpers
             };
         }
 
-        public static SubscriptionPlan GetPlanByName(string name)
+        public static SubscriptionPlan GetByType(SubscriptionPlanType plan)
         {
-            return GetPlans().FirstOrDefault(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-                   ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound("SubscriptionPlan",name));
+            return GetPlans().FirstOrDefault(p => p.PlanType.Equals(plan))
+                ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound("SubscriptionPlan", plan.ToString()));
         }
     }
 

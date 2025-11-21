@@ -39,20 +39,12 @@ namespace Aplication.UseCases.Subscriptions
                 await _userService.UpdateStripeCustomerId(user.Id, stripeCustomerId); 
             }
 
-            SubscriptionPlan  planType = DemoPlans.GetPlanByName(plan.ToString());
+            SubscriptionPlan  planType = DemoPlans.GetByType(plan);
             SubscriptionFlowResultDto rsta = await CreateSubscriptionOrCheckoutSessionAsync(user.StripeCustomerId, planType.StripePriceId);
 
             if(rsta.FlowType == SubscriptionFlowType.subscribed)
             {
-                var subscription = new UserSubscription
-                {
-                    UserId = user.Id,
-                    StripeCustomerId = user.StripeCustomerId,
-                    StripeSubscriptionId = rsta.SubscriptionDto.SubscriptionId,
-                    StartDate = rsta.SubscriptionDto.StartDate,
-                    Plan = plan,
-                    Status = rsta.SubscriptionDto.Status
-                };
+                var subscription = UserSubscriptionMapper.ToEntity(userId, plan, rsta.SubscriptionDto);
                  await _userSubscriptionService.AddAsync(subscription);
             }
             return rsta;

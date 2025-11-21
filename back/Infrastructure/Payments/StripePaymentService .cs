@@ -102,7 +102,7 @@ namespace Infrastructure.Payments
 
             var service = new SubscriptionService();
             Subscription subscription = await service.CreateAsync(options);
-            StripeSubscriptionCreatedDto subscriptionDto = UserSubscriptionMapper.StripeSubscriptionCreatedDtoMapper(subscription.Id,
+            StripeSubscriptionCreatedDto subscriptionDto = UserSubscriptionMapper.FromStripe(subscription.Id,
             subscription.CustomerId, subscription.StartDate, subscription.Status);
             return subscriptionDto;
         }

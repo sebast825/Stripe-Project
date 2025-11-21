@@ -4,6 +4,8 @@ using Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +14,7 @@ namespace Aplication.Helpers
     public static class UserSubscriptionMapper
     {
 
-        public static StripeSubscriptionCreatedDto StripeSubscriptionCreatedDtoMapper(string subscriptionId,
+        public static StripeSubscriptionCreatedDto FromStripe(string subscriptionId,
             string customerId, DateTime startDate, string status)
         {
             SubscriptionStatus parsed;
@@ -27,6 +29,19 @@ namespace Aplication.Helpers
                 StartDate = startDate,
                 Status = parsed
             };
+        }
+        public static UserSubscription ToEntity(int userId, SubscriptionPlanType plan, StripeSubscriptionCreatedDto subscriptionDto)
+        {
+            return new UserSubscription
+                {
+                UserId = userId,
+                    StripeCustomerId = subscriptionDto.CustomerId,
+                    StripeSubscriptionId = subscriptionDto.SubscriptionId,
+                    StartDate = subscriptionDto.StartDate,
+                    Plan = plan,
+                    Status = subscriptionDto.Status
+                }
+            ;
         }
     }
 }
