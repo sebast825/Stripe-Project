@@ -1,4 +1,5 @@
-﻿using Core.Enums;
+﻿using Aplication.Dto;
+using Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,8 @@ namespace Aplication.Interfaces.Payments
         /// </summary>
         /// <param name="stripeCustomerId">The Stripe Customer ID.</param>
         /// <param name="stripePriceId">The Stripe Price ID representing the subscription plan.</param>
-        /// <returns>
-        /// The ID of the newly created Stripe Subscription.
-        /// </returns>
 
-        Task<string> CreateSubscriptionAsync(string stripeCustomerId, string stripePriceId);
+        Task<StripeSubscriptionCreatedDto> CreateSubscriptionAsync(string stripeCustomerId, string stripePriceId);
         /// <summary>
         /// Creates a Stripe Checkout Session to collect payment method and start a subscription.
         /// Use when the customer doesn't have a saved payment method.

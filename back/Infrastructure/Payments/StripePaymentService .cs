@@ -1,4 +1,6 @@
-﻿using Aplication.Interfaces.Payments;
+﻿using Aplication.Dto;
+using Aplication.Helpers;
+using Aplication.Interfaces.Payments;
 using Core.Enums;
 using Microsoft.Extensions.Configuration;
 using Stripe;
@@ -83,7 +85,7 @@ namespace Infrastructure.Payments
             }
         }
 
-        public async Task<string> CreateSubscriptionAsync(string stripeCustomerId, string stripePriceId)
+        public async Task<StripeSubscriptionCreatedDto> CreateSubscriptionAsync(string stripeCustomerId, string stripePriceId)
         {
             await EnsureDefaultPaymentMethodAsync(stripeCustomerId);
             var options = new SubscriptionCreateOptions
@@ -100,8 +102,9 @@ namespace Infrastructure.Payments
 
             var service = new SubscriptionService();
             Subscription subscription = await service.CreateAsync(options);
-
-            return subscription.Id;
+            StripeSubscriptionCreatedDto subscriptionDto = UserSubscriptionMapper.StripeSubscriptionCreatedDtoMapper(subscription.Id,
+            subscription.CustomerId, subscription.StartDate, subscription.Status);
+            return subscriptionDto;
         }
 
         public async Task<string> CreateSubscriptionCheckoutSessionAsync(string stripeCustomerId, string stripePriceId)

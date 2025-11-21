@@ -14,7 +14,7 @@ namespace Aplication.Dto
     public class SubscriptionFlowResultDto
     {
         public SubscriptionFlowType FlowType { get; set; }
-        public string SubscriptionId { get; set; }
+        public StripeSubscriptionCreatedDto SubscriptionDto{ get; set; }
         public string CheckoutUrl { get; set; }
 
     }

@@ -41,18 +41,23 @@ namespace Aplication.UseCases.Subscriptions
 
             SubscriptionPlan  planType = DemoPlans.GetPlanByName(plan.ToString());
             SubscriptionFlowResultDto rsta = await CreateSubscriptionOrCheckoutSessionAsync(user.StripeCustomerId, planType.StripePriceId);
-            return rsta;
 
-            //var subscription = new UserSubscription
-            //{
-            //    UserId = user.Id,
-            //    StripeCustomerId = user.StripeCustomerId,
-            //    StripeSubscriptionId = stripeSubId,
-            //    Plan = plan,
-            //    CurrentPeriodEnd = DateTime.UtcNow.AddMonths(1),
-            //    Status = SubscriptionStatus.Active
-            //};
-           // return await _userSubscriptionService.AddAsync(subscription);
+            if(rsta.FlowType == SubscriptionFlowType.subscribed)
+            {
+                var subscription = new UserSubscription
+                {
+                    UserId = user.Id,
+                    StripeCustomerId = user.StripeCustomerId,
+                    StripeSubscriptionId = rsta.SubscriptionDto.SubscriptionId,
+                    StartDate = rsta.SubscriptionDto.StartDate,
+                    Plan = plan,
+                    Status = rsta.SubscriptionDto.Status
+                };
+                 await _userSubscriptionService.AddAsync(subscription);
+            }
+            return rsta;
+            
+        
 
         }
 
@@ -63,12 +68,12 @@ namespace Aplication.UseCases.Subscriptions
 
             if (hasPm)
             {
-                string subscriptionId = await _stripePaymentService.CreateSubscriptionAsync(customerId, priceId);
+                StripeSubscriptionCreatedDto subscriptionDto = await _stripePaymentService.CreateSubscriptionAsync(customerId, priceId);
 
                 return new SubscriptionFlowResultDto
                 {
                     FlowType = SubscriptionFlowType.subscribed,
-                    SubscriptionId = subscriptionId,
+                    SubscriptionDto = subscriptionDto,
 
                 }; 
             }

@@ -18,7 +18,7 @@ namespace Core.Entities
         public SubscriptionPlanType Plan { get; set; }
 
         public DateTime StartDate { get; set; }
-        public DateTime CurrentPeriodEnd { get; set; }
+        public DateTime? CurrentPeriodEnd { get; set; } 
 
         public SubscriptionStatus Status { get; set; }
     }
