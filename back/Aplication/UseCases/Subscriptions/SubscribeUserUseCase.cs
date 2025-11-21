@@ -29,31 +29,28 @@ namespace Aplication.UseCases.Subscriptions
             _userSubscriptionService = userSubscriptionService;
         }
 
-       public async Task<SubscriptionFlowResultDto> ExecuteAsync(int userId, SubscriptionPlanType plan)
+        public async Task<SubscriptionFlowResultDto> ExecuteAsync(int userId, SubscriptionPlanType plan)
         {
             UserResponseDto user = await _userService.GetByIdAsync(userId);
 
             if (string.IsNullOrEmpty(user.StripeCustomerId))
             {
                 string stripeCustomerId = await _stripePaymentService.CreateCustomerAsync(user.Id);
-                await _userService.UpdateStripeCustomerId(user.Id, stripeCustomerId); 
+                await _userService.UpdateStripeCustomerId(user.Id, stripeCustomerId);
             }
 
-            SubscriptionPlan  planType = DemoPlans.GetByType(plan);
+            SubscriptionPlan planType = DemoPlans.GetByType(plan);
             SubscriptionFlowResultDto rsta = await CreateSubscriptionOrCheckoutSessionAsync(user.StripeCustomerId, planType.StripePriceId);
 
-            if(rsta.FlowType == SubscriptionFlowType.subscribed)
+            if (rsta.FlowType == SubscriptionFlowType.subscribed)
             {
                 var subscription = UserSubscriptionMapper.ToEntity(userId, plan, rsta.SubscriptionDto);
-                 await _userSubscriptionService.AddAsync(subscription);
+                await _userSubscriptionService.AddAsync(subscription);
             }
             return rsta;
-            
-        
 
         }
 
-        // UseCase decision
         public async Task<SubscriptionFlowResultDto> CreateSubscriptionOrCheckoutSessionAsync(string customerId, string priceId)
         {
             var hasPm = await _stripePaymentService.CustomerHasPaymentMethodAsync(customerId);
@@ -67,7 +64,7 @@ namespace Aplication.UseCases.Subscriptions
                     FlowType = SubscriptionFlowType.subscribed,
                     SubscriptionDto = subscriptionDto,
 
-                }; 
+                };
             }
             else
             {

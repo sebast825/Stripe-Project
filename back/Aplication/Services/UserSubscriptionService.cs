@@ -26,6 +26,7 @@ namespace Aplication.Services
             {
                 Id = rsta.Id,
                 Plan = rsta.Plan.ToString(),
+                StartDate = rsta.StartDate,
                 CurrentPeriodEnd = rsta.CurrentPeriodEnd,
                 Status = rsta.Status.ToString()
             };
