@@ -41,71 +41,7 @@ namespace Infrastructure.Stripe.Payments
 
             return customer.Id; // returns StripeCustomerId
         }
-        public async Task<bool> CustomerHasPaymentMethodAsync(string stripeCustomerId)
-        {
-            List<PaymentMethod> paymentMethods = await GetCustomerPaymentMethodAsync(stripeCustomerId);
-            return paymentMethods.Any();
-        }
-        private async Task<List<PaymentMethod>> GetCustomerPaymentMethodAsync(string stripeCustomerId)
-        {
-            var pmService = new PaymentMethodService();
-            var list = await pmService.ListAsync(new PaymentMethodListOptions
-            {
-                Customer = stripeCustomerId,
-                Type = "card",
-                Limit = 1
-            });
-            return list.Data;
-        }
-        private async Task EnsureDefaultPaymentMethodAsync(string stripeCustomerId)
-        {
 
-            // 1) Get the customer to check whether a default payment method is already set
-            var customerService = new CustomerService();
-            var customer = await customerService.GetAsync(stripeCustomerId);
-
-            PaymentMethod currentDefault = customer.InvoiceSettings?.DefaultPaymentMethod;
-            // 2) If no default exists, fetch the customer's payment methods
-            if (currentDefault == null)
-            {
-                var paymentMethods = await GetCustomerPaymentMethodAsync(stripeCustomerId);
-
-                if (paymentMethods.Count == 0)
-                    throw new Exception("Customer has no payment method attached.");
-
-                // 3) If the customer has at least one payment method, assign the first one as the default
-                //    (Stripe requires a default payment method for subscription billing)
-                await customerService.UpdateAsync(stripeCustomerId, new CustomerUpdateOptions
-                {
-                    InvoiceSettings = new CustomerInvoiceSettingsOptions
-                    {
-                        DefaultPaymentMethod = paymentMethods.First().Id
-                    }
-                });
-            }
-        }
-
-        public async Task<StripeSubscriptionCreatedDto> CreateSubscriptionAsync(string stripeCustomerId, string stripePriceId)
-        {
-            await EnsureDefaultPaymentMethodAsync(stripeCustomerId);
-            var options = new SubscriptionCreateOptions
-                {
-                    Customer = stripeCustomerId,
-                    Items = new List<SubscriptionItemOptions>
-                {
-                    new SubscriptionItemOptions
-                    {
-                        Price = stripePriceId
-                    }
-                }
-            };
-
-            var service = new SubscriptionService();
-            Subscription subscription = await service.CreateAsync(options);
-            StripeSubscriptionCreatedDto subscriptionDto = UserSubscriptionMapper.FromStripe(subscription.Id,
-            subscription.CustomerId, subscription.StartDate, subscription.Status, "price_1SVGnvGjXgbUajlyJPFKyCJt");
-            return subscriptionDto;
-        }
 
         public async Task<string> CreateSubscriptionCheckoutSessionAsync(string stripeCustomerId, string stripePriceId)
         {
@@ -123,8 +59,7 @@ namespace Infrastructure.Stripe.Payments
                 }
             },
                 SuccessUrl = "https://localhost:5001/success",
-                CancelUrl = "https://localhost:5001/cancel",
-                PaymentMethodTypes = new List<string> { "card" },
+                CancelUrl = "https://localhost:5001/cancel"
 
             };
 
@@ -138,5 +73,6 @@ namespace Infrastructure.Stripe.Payments
         {
             throw new NotImplementedException();
         }
+
     }
 }

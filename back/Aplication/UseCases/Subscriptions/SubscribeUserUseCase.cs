@@ -27,7 +27,7 @@ namespace Aplication.UseCases.Subscriptions
             _userService = userService;
         }
 
-        public async Task<SubscriptionFlowResultDto> ExecuteAsync(int userId, SubscriptionPlanType plan)
+        public async Task<string> ExecuteAsync(int userId, SubscriptionPlanType plan)
         {
             UserResponseDto user = await _userService.GetByIdAsync(userId);
 
@@ -38,42 +38,14 @@ namespace Aplication.UseCases.Subscriptions
             }
 
             SubscriptionPlan planType = DemoPlans.GetByType(plan);
-            SubscriptionFlowResultDto rsta = await CreateSubscriptionOrCheckoutSessionAsync(user.StripeCustomerId, planType.StripePriceId);
+            string checkoutUrl = await _stripePaymentService.CreateSubscriptionCheckoutSessionAsync(user.StripeCustomerId, planType.StripePriceId);
 
-            if (rsta.FlowType == SubscriptionFlowType.subscribed)
-            {
-                var subscription = UserSubscriptionMapper.ToEntity(userId, plan, rsta.SubscriptionDto);
-            }
-            return rsta;
+
+            return checkoutUrl;
 
         }
 
-        public async Task<SubscriptionFlowResultDto> CreateSubscriptionOrCheckoutSessionAsync(string customerId, string priceId)
-        {
-            var hasPm = await _stripePaymentService.CustomerHasPaymentMethodAsync(customerId);
 
-            if (hasPm)
-            {
-                StripeSubscriptionCreatedDto subscriptionDto = await _stripePaymentService.CreateSubscriptionAsync(customerId, priceId);
-
-                return new SubscriptionFlowResultDto
-                {
-                    FlowType = SubscriptionFlowType.subscribed,
-                    SubscriptionDto = subscriptionDto,
-
-                };
-            }
-            else
-            {
-                string checkoutUrl = await _stripePaymentService.CreateSubscriptionCheckoutSessionAsync(customerId, priceId);
-                return new SubscriptionFlowResultDto
-                {
-                    FlowType = SubscriptionFlowType.checkout,
-                    CheckoutUrl = checkoutUrl,
-
-                };
-            }
-        }
 
 
 
