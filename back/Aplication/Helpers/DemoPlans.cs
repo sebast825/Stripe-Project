@@ -48,6 +48,11 @@ namespace Aplication.Helpers
             return GetPlans().FirstOrDefault(p => p.PlanType.Equals(plan))
                 ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound("SubscriptionPlan", plan.ToString()));
         }
+        public static SubscriptionPlan GetByTypeByStripePriceId(string stripeId)
+        {
+            return GetPlans().FirstOrDefault(p => p.StripePriceId.Equals(stripeId))
+                ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound("SubscriptionPlan", stripeId));
+        }
     }
 
 }

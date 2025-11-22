@@ -8,8 +8,9 @@ using AspNetCoreRateLimit;
 using Core.Interfaces;
 using Core.Interfaces.Repositories;
 using Infrastructure.Data;
-using Infrastructure.Payments;
 using Infrastructure.Repositories;
+using Infrastructure.Stripe.Payments;
+using Infrastructure.Stripe.Webhooks;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,9 @@ builder.Services.AddScoped<IUserSubscriptionService, UserSubscriptionService>();
 builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
 
 builder.Services.AddScoped<SubscribeUserUseCase>();
+
+builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionCreatedHandler>();
+builder.Services.AddScoped<WebhookHandlerFactory>();
 
 builder.Services.AddHttpContextAccessor();
 

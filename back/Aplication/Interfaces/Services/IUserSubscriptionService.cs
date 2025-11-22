@@ -1,4 +1,5 @@
-﻿using Core.Dto.UserSubscription;
+﻿using Aplication.Dto;
+using Core.Dto.UserSubscription;
 using Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Aplication.Interfaces.Services
 {
     public interface IUserSubscriptionService
     {
-        Task<UserSubscriptionResponseDto> AddAsync(UserSubscription userSubscription);
+        Task<UserSubscriptionResponseDto> AddAsync(StripeSubscriptionCreatedDto userSubscriptionDto);
+
     }
 }

@@ -15,7 +15,7 @@ namespace Aplication.Helpers
     {
 
         public static StripeSubscriptionCreatedDto FromStripe(string subscriptionId,
-            string customerId, DateTime startDate, string status)
+            string customerId, DateTime startDate, string status, string planId, DateTime? currentPeriodEnd = null)
         {
             SubscriptionStatus parsed;
 
@@ -27,20 +27,23 @@ namespace Aplication.Helpers
                 SubscriptionId = subscriptionId,
                 CustomerId = customerId,
                 StartDate = startDate,
-                Status = parsed
+                CurrentPeriodEnd = currentPeriodEnd,
+                Status = parsed,
+                PlanId = planId
             };
         }
         public static UserSubscription ToEntity(int userId, SubscriptionPlanType plan, StripeSubscriptionCreatedDto subscriptionDto)
         {
             return new UserSubscription
-                {
+            {
                 UserId = userId,
-                    StripeCustomerId = subscriptionDto.CustomerId,
-                    StripeSubscriptionId = subscriptionDto.SubscriptionId,
-                    StartDate = subscriptionDto.StartDate,
-                    Plan = plan,
-                    Status = subscriptionDto.Status
-                }
+                StripeCustomerId = subscriptionDto.CustomerId,
+                StripeSubscriptionId = subscriptionDto.SubscriptionId,
+                StartDate = subscriptionDto.StartDate,
+                CurrentPeriodEnd = subscriptionDto.CurrentPeriodEnd,
+                Plan = plan,
+                Status = subscriptionDto.Status
+            }
             ;
         }
     }

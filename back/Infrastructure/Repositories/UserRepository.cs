@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository : Repository<User>,IUserRepository 
+    public class UserRepository : Repository<User>, IUserRepository
     {
         private readonly DataContext _dataContext;
-        public UserRepository(DataContext dataContext) :base(dataContext){
+        public UserRepository(DataContext dataContext) : base(dataContext)
+        {
             _dataContext = dataContext;
         }
 
@@ -25,6 +26,13 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-
+        public async Task<int?> GetIdByStripeCustomerId(string stipeId)
+        {
+            return await _dataContext.Set<User>()
+                .AsNoTracking()
+                .Where(u => u.StripeCustomerId == stipeId)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
+        }
     }
 }

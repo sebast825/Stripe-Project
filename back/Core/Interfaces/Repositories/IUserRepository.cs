@@ -12,5 +12,7 @@ namespace Core.Interfaces.Repositories
         Task AddAsync(User user);
         Task<User?> GetByEmailAsync(string email);
 
+        Task<int?> GetIdByStripeCustomerId(string stipeId);
+
     }
 }

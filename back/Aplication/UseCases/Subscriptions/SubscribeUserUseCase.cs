@@ -20,13 +20,11 @@ namespace Aplication.UseCases.Subscriptions
     {
         private readonly IStripePaymentService _stripePaymentService;
         private readonly IUserService _userService;
-        private readonly IUserSubscriptionService _userSubscriptionService;
 
         public SubscribeUserUseCase(IStripePaymentService stripePaymentService, IUserService userService, IUserSubscriptionService userSubscriptionService)
         {
             _stripePaymentService = stripePaymentService;
             _userService = userService;
-            _userSubscriptionService = userSubscriptionService;
         }
 
         public async Task<SubscriptionFlowResultDto> ExecuteAsync(int userId, SubscriptionPlanType plan)
@@ -45,7 +43,6 @@ namespace Aplication.UseCases.Subscriptions
             if (rsta.FlowType == SubscriptionFlowType.subscribed)
             {
                 var subscription = UserSubscriptionMapper.ToEntity(userId, plan, rsta.SubscriptionDto);
-                await _userSubscriptionService.AddAsync(subscription);
             }
             return rsta;
 

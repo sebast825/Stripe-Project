@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Payments
+namespace Infrastructure.Stripe.Payments
 {
     public class StripePaymentService : IStripePaymentService
     {
@@ -103,7 +103,7 @@ namespace Infrastructure.Payments
             var service = new SubscriptionService();
             Subscription subscription = await service.CreateAsync(options);
             StripeSubscriptionCreatedDto subscriptionDto = UserSubscriptionMapper.FromStripe(subscription.Id,
-            subscription.CustomerId, subscription.StartDate, subscription.Status);
+            subscription.CustomerId, subscription.StartDate, subscription.Status, "price_1SVGnvGjXgbUajlyJPFKyCJt");
             return subscriptionDto;
         }
 

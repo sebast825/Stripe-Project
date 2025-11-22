@@ -12,6 +12,10 @@ namespace Aplication.Dto
         public string SubscriptionId { get; set; }
         public string CustomerId { get; set; }
         public DateTime StartDate { get; set; }
+        public DateTime? CurrentPeriodEnd { get; set; }
+
         public SubscriptionStatus Status { get; set; }
+        public string PlanId { get; set; }
+
     }
 }
