@@ -4,7 +4,7 @@ import {
 
 } from "react-bootstrap";
 
-import { useUserStore } from "../states/auth/auth.store";
+import { useUserStore } from "../states/auth/user.store";
 
 function Dashboard() {
 
