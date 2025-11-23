@@ -1,4 +1,5 @@
 using Api.Extensions;
+using Api.Middlewares;
 using Aplication.Interfaces.Payments;
 using Aplication.Interfaces.Services;
 using Aplication.Interfaces.Stripe;
@@ -91,6 +92,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseRouting();
 app.UseIpRateLimiting();

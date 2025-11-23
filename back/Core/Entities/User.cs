@@ -1,6 +1,7 @@
 ﻿using Core.Constants;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ namespace Core.Entities
         private void ValidatePassword()
         {
             if (Password?.Length < 8)
-                throw new FormatException(ErrorMessages.PasswordLengthMin);
+                throw new ValidationException(ErrorMessages.PasswordLengthMin);
         }
 
         private void ValidteEmail()
@@ -46,7 +47,7 @@ namespace Core.Entities
             }
             catch
             {
-                throw new FormatException(ErrorMessages.EmailFormat);
+                throw new ValidationException(ErrorMessages.EmailFormat);
             }
         }
     }
