@@ -1,0 +1,9 @@
+// src/api/client.ts
+import axios from 'axios';
+
+const apiClient = axios.create({
+  baseURL: 'https://localhost:7098/api',
+  withCredentials: true,
+});
+
+export default apiClient;
