@@ -24,23 +24,6 @@ namespace Infrastructure.Stripe.Payments
             throw new NotImplementedException();
         }
 
-        public async Task<string> CreateCustomerAsync(int userId)
-        {
-            var customerService = new CustomerService();
-
-            var options = new CustomerCreateOptions
-            {
-
-                Metadata = new Dictionary<string, string>
-            {
-                { "UserId", userId.ToString() }
-            }
-            };
-
-            var customer = await customerService.CreateAsync(options);
-
-            return customer.Id; // returns StripeCustomerId
-        }
 
 
         public async Task<string> CreateSubscriptionCheckoutSessionAsync(string stripeCustomerId, string stripePriceId)

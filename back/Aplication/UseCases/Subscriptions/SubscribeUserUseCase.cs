@@ -31,12 +31,6 @@ namespace Aplication.UseCases.Subscriptions
         {
             UserResponseDto user = await _userService.GetByIdAsync(userId);
 
-            if (string.IsNullOrEmpty(user.StripeCustomerId))
-            {
-                string stripeCustomerId = await _stripePaymentService.CreateCustomerAsync(user.Id);
-                await _userService.UpdateStripeCustomerId(user.Id, stripeCustomerId);
-            }
-
             SubscriptionPlan planType = DemoPlans.GetByType(plan);
             string checkoutUrl = await _stripePaymentService.CreateSubscriptionCheckoutSessionAsync(user.StripeCustomerId, planType.StripePriceId);
 

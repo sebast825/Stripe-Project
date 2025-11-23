@@ -19,15 +19,9 @@ namespace Aplication.Interfaces.Payments
         /// <param name="stripePriceId">The Stripe Price ID for the subscription plan.</param>
         /// <returns>URL to redirect the user to Stripe Checkout.</returns>
         Task<string> CreateSubscriptionCheckoutSessionAsync(string stripeCustomerId, string stripePriceId);        
-        Task CancelSubscriptionAsync(string stripeSubscriptionId);
         Task HandleWebhookAsync(string json, string signature);
-        /// <summary>
-        /// Creates a new Stripe Customer using the user's identifying data.
-        /// </summary>
-        /// <returns>
-        /// The Stripe Customer ID.
-        /// </returns>
-        Task<string> CreateCustomerAsync(int userId);
+
+        Task CancelSubscriptionAsync(string stripeSubscriptionId);
 
     }
 

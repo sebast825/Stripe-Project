@@ -23,19 +23,22 @@ namespace Aplication.Services
             _userRepository = userRepository;
         }
 
-        public async Task AddAsync(UserCreateRequestDto userCreateDto)
+        public async Task<UserResponseDto> AddAsync(UserCreateRequestDto userCreateDto)
         {
             User user = new User { Email = userCreateDto.Email, Password = userCreateDto.Password, FullName = userCreateDto.FullName };
-            user.Validate();
-            //add hashpassword after validate, if not validation don't work on password
-            user.Password = this.HashPassword(userCreateDto.Password);
-
             if (await this.EmailAlreadyUsed(user.Email))
             {
                 throw new InvalidOperationException(ErrorMessages.EmailNotAviable);
             }
 
+            user.Validate();
+            //add hashpassword after validate, if not validation don't work on password
+            user.Password = this.HashPassword(userCreateDto.Password);
+
+
             await _userRepository.AddAsync(user);
+
+            return UserMapper.ToResponseDto(user);
         }
 
         public async Task<UserResponseDto> GetByIdAsync(int id)
@@ -46,7 +49,7 @@ namespace Aplication.Services
                 throw new InvalidOperationException(ErrorMessages.EntityNotFound("User", id));
 
             }
-            return UserEventMapper.UserResponseDtoMapper(user);
+            return UserMapper.ToResponseDto(user);
 
         }
 
@@ -61,7 +64,7 @@ namespace Aplication.Services
             }
             user.StripeCustomerId = stripeCustomerId;
             await _userRepository.UpdateAsync(user);
-            return UserEventMapper.UserResponseDtoMapper(user);
+            return UserMapper.ToResponseDto(user);
         }
 
         public async Task<UserResponseDto> ValidateCredentialsAsync(LoginRequestDto loginDto)
@@ -78,7 +81,7 @@ namespace Aplication.Services
                 throw new InvalidCredentialException(ErrorMessages.InvalidCredentials);
 
             }
-            return UserEventMapper.UserResponseDtoMapper(user);
+            return UserMapper.ToResponseDto(user);
 
         }
         private async Task<bool> EmailAlreadyUsed(string email)

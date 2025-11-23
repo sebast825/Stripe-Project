@@ -3,6 +3,7 @@ using Core.Entities;
 using Aplication.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Aplication.UseCases.Users;
 
 namespace Api.Controllers
 {
@@ -10,16 +11,18 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userServicesI;
-        public UserController(IUserService userServicesI) {
-            _userServicesI = userServicesI;
+        private readonly CreateUserUseCase _createUserUseCase;
 
+        public UserController(CreateUserUseCase createUserUseCase)
+        {
+            _createUserUseCase = createUserUseCase;
         }
+
         [HttpPost]
         public async Task<ActionResult>  Create([FromBody] UserCreateRequestDto userCreateDto)
         {
            
-                await _userServicesI.AddAsync(userCreateDto);
+                await _createUserUseCase.ExecuteAsync(userCreateDto);
                 return Ok();
           
         }

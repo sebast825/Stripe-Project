@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Aplication.Helpers
 {
-    internal class UserEventMapper
+    internal class UserMapper
     {
-        public static UserResponseDto UserResponseDtoMapper(User user)
+        public static UserResponseDto ToResponseDto(User user)
         {
             return new UserResponseDto()
             {

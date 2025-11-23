@@ -1,15 +1,18 @@
 using Api.Extensions;
 using Aplication.Interfaces.Payments;
 using Aplication.Interfaces.Services;
+using Aplication.Interfaces.Stripe;
 using Aplication.Services;
 using Aplication.UseCases.Auth;
 using Aplication.UseCases.Subscriptions;
+using Aplication.UseCases.Users;
 using AspNetCoreRateLimit;
 using Core.Interfaces;
 using Core.Interfaces.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Stripe.Payments;
+using Infrastructure.Stripe.Services;
 using Infrastructure.Stripe.Webhooks;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -34,14 +37,18 @@ builder.Services.AddScoped<IUserLoginHistoryService, UserLoginHistoryService>();
 builder.Services.AddScoped<ISecurityLoginAttemptService, SecurityLoginAttemptService>();
 
 builder.Services.AddScoped<AuthUseCase>();
+builder.Services.AddScoped<CreateUserUseCase>();
 
 builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
+builder.Services.AddScoped<IStripeCustomerService, StripeCustomerService>();
+
 builder.Services.AddScoped<IUserSubscriptionService, UserSubscriptionService>();
 builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
 
 builder.Services.AddScoped<SubscribeUserUseCase>();
 
 builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionCreatedHandler>();
+
 builder.Services.AddScoped<WebhookHandlerFactory>();
 
 builder.Services.AddHttpContextAccessor();

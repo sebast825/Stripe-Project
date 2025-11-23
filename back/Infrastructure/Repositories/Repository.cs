@@ -24,10 +24,11 @@ namespace Infrastructure.Repositories
         public async Task<IReadOnlyList<T>> ListAsync()
             => await __dataContext.Set<T>().ToListAsync();
 
-        public async Task AddAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
             __dataContext.Set<T>().Add(entity);
             await __dataContext.SaveChangesAsync();
+            return entity;
         }
 
         public async Task UpdateAsync(T entity)

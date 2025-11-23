@@ -9,7 +9,6 @@ namespace Core.Interfaces.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task AddAsync(User user);
         Task<User?> GetByEmailAsync(string email);
 
         Task<int?> GetIdByStripeCustomerId(string stipeId);
