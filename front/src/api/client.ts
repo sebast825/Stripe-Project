@@ -9,4 +9,20 @@ const apiClient = axios.create({
   }
 });
 
+// Interceptor de errores
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Normalizamos el error
+    const formattedError = {
+      status: error.response?.status,
+      message: error.response?.data?.message || "Error inesperado",
+      data: error.response?.data,
+    };
+
+    return Promise.reject(formattedError);
+  }
+);
+
+
 export default apiClient;
