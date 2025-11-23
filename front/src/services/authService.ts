@@ -12,5 +12,14 @@ import type { LoginResponse } from "../types/loginResponse.types";
     });
     return response.data as LoginResponse;
   };
+
+  public logout = async (
+    refreshToken: string
+  ): Promise<number> => {
+    const response = await apiClient.post("/auth/logout",refreshToken);
+
+    return response.status;
+  };
+
 }
 export const authService = new AuthService();
