@@ -6,10 +6,10 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SuscriptionController : Controller
+    public class SubscriptionController : Controller
     {
 
-        [HttpGet("/plans")]
+        [HttpGet("plans")]
         public ActionResult<List<SubscriptionPlanResponseDto>> GetPlans()
         {
             return  Ok(DemoPlans.GetPlanResponse());

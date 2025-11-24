@@ -1,0 +1,20 @@
+import type { SubscriptionPlan } from "../types/SubscriptionPlan.types";
+import { Col, Row } from "react-bootstrap";
+import { PlanCard } from "./PlanCard";
+
+interface PlansListProps {
+  plans: SubscriptionPlan[];
+  onSelect?: (plan: SubscriptionPlan) => void;
+}
+
+export function PlansList({ plans, onSelect }: PlansListProps) {
+  return (
+    <Row>
+      {plans?.map((p) => (
+        <Col key={p.stripePriceId} xs={12} lg={4} md={4} className="d-flex">
+          <PlanCard plan={p} onSelect={onSelect} />
+        </Col>
+      ))}
+    </Row>
+  );
+}
