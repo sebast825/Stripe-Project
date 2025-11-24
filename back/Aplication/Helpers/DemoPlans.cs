@@ -1,4 +1,6 @@
 ﻿using Core.Constants;
+using Core.Dto.SubscriptionPlan;
+using Core.Dto.UserSubscription;
 using Core.Entities;
 using Core.Enums;
 using Microsoft.Extensions.Primitives;
@@ -12,6 +14,11 @@ namespace Aplication.Helpers
 {
     public static class DemoPlans
     {
+        public static List<SubscriptionPlanResponseDto> GetPlanResponse()
+        {
+            return GetPlans().Select(plan => SubscriptionPlanMapper.ToResponse(plan)).ToList();
+
+        }
         public static List<SubscriptionPlan> GetPlans()
         {
             return new List<SubscriptionPlan>{
@@ -21,7 +28,16 @@ namespace Aplication.Helpers
                     PlanType = SubscriptionPlanType.Yearly,
                     Price = 1000m,
                     StripePriceId = "price_1SVGnvGjXgbUajlyJPFKyCJt",
-                    Interval = "year"
+                    Interval = "year",
+                    Name = "Anual",
+                    Description = "Ideal para usuarios que buscan el mejor precio a largo plazo.",
+                    Features = new List<string>
+                    {
+                        "Acceso ilimitado a todas las funciones",
+                        "Soporte prioritario",
+                        "Actualizaciones incluidas",
+                        "Ahorro anual respecto al plan mensual"
+                    }
                 },
                 new SubscriptionPlan
                 {
@@ -29,7 +45,15 @@ namespace Aplication.Helpers
                     PlanType = SubscriptionPlanType.Monthly,
                     Price = 100m,
                     StripePriceId = "price_1SVGn7GjXgbUajlyIXwrBRKj",
-                    Interval = "month"
+                    Interval = "month",
+                    Name = "Mensual",
+                    Description = "La opción más equilibrada para uso continuo sin compromiso anual.",
+                    Features = new List<string>
+                    {
+                        "Acceso completo a todas las funciones",
+                        "Actualizaciones incluidas",
+                        "Costo mensual fijo"
+                    }
                 },
                 new SubscriptionPlan
                 {
@@ -37,7 +61,15 @@ namespace Aplication.Helpers
                     PlanType = SubscriptionPlanType.Daily,
                     Price = 15m,
                     StripePriceId = "price_1SVGndGjXgbUajly9H8F6VPm",
-                    Interval = "day"
+                    Interval = "day",
+                    Name = "Diario",
+                    Description = "Perfecto para uso puntual o de corta duración.",
+                    Features = new List<string>
+                    {
+                        "Acceso completo por 24 horas",
+                        "Sin compromisos",
+                        "Ideal para usuarios ocasionales"
+                    }
                 }
 
             };

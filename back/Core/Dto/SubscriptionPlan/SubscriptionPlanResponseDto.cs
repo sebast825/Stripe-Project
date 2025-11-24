@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Core.Dto.SubscriptionPlan
 {
-    public class SubscriptionPlan : ClassBase
+    public class SubscriptionPlanResponseDto
     {
-        public SubscriptionPlanType PlanType { get; set; } 
-        public string StripePriceId { get; set; } 
+        public string PlanType { get; set; }
+        public string StripePriceId { get; set; }
         public decimal Price { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
-        public string Interval { get; set; } // daily, monthly, yearly
+        public string Interval { get; set; } 
         public List<string> Features { get; set; }
     }
 }
