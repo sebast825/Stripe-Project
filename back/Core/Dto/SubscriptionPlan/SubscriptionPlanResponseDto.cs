@@ -9,6 +9,7 @@ namespace Core.Dto.SubscriptionPlan
 {
     public class SubscriptionPlanResponseDto
     {
+        public int Id { get; set; }
         public string PlanType { get; set; }
         public string StripePriceId { get; set; }
         public decimal Price { get; set; }

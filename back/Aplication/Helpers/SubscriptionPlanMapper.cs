@@ -21,6 +21,7 @@ namespace Aplication.Helpers
 
             return new SubscriptionPlanResponseDto
             {
+                Id = entity.Id,
                 PlanType = entity.PlanType.ToString(),
                 Price = entity.Price,
                 Name = entity.Name,

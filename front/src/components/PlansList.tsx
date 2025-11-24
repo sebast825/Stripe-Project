@@ -4,7 +4,7 @@ import { PlanCard } from "./PlanCard";
 
 interface PlansListProps {
   plans: SubscriptionPlan[];
-  onSelect?: (plan: SubscriptionPlan) => void;
+  onSelect: (planId:number ) => void;
 }
 
 export function PlansList({ plans, onSelect }: PlansListProps) {

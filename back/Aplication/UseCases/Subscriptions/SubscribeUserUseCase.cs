@@ -27,21 +27,16 @@ namespace Aplication.UseCases.Subscriptions
             _userService = userService;
         }
 
-        public async Task<string> ExecuteAsync(int userId, SubscriptionPlanType plan)
+        public async Task<string> ExecuteAsync(int userId, int planId)
         {
             UserResponseDto user = await _userService.GetByIdAsync(userId);
+            SubscriptionPlan planType = DemoPlans.GetById(planId);
 
-            SubscriptionPlan planType = DemoPlans.GetByType(plan);
             string checkoutUrl = await _stripePaymentService.CreateSubscriptionCheckoutSessionAsync(user.StripeCustomerId, planType.StripePriceId);
-
 
             return checkoutUrl;
 
         }
-
-
-
-
 
     }
 

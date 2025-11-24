@@ -3,12 +3,16 @@ import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import type { SubscriptionPlan } from "../types/SubscriptionPlan.types";
 
+
 interface PlanCardProps {
   plan: SubscriptionPlan;
-  onSelect?: (plan: SubscriptionPlan) => void;
+  onSelect: (planId:number) => void;
 }
 
 export function PlanCard({ plan, onSelect }: PlanCardProps) {
+
+
+
   return (
     <Card className="mb-3 shadow-sm min-h-100">
       <Card.Body>
@@ -38,7 +42,7 @@ export function PlanCard({ plan, onSelect }: PlanCardProps) {
         <Button
           variant="primary"
           className="mt-3 w-100 "
-          onClick={() => onSelect?.(plan)}
+          onClick={() => onSelect(plan.id)}
         >
           Elegir plan
         </Button>
