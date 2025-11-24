@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Aplication.Dto;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -36,15 +37,15 @@ namespace Api.Middlewares
 
         private Task HandleExceptionAsync(HttpContext context, Exception ex, int statusCode)
         {
-         
+
 
             var (message, errorType) = GetSafeErrorMessage(ex, statusCode);
 
-            var response = new
+            ErrorResponseDto response = new ErrorResponseDto
             {
-                success = false,
-                error = errorType,
-                message = message
+                Success = false,
+                Error = errorType,
+                Message = message
             };
 
             var result = JsonSerializer.Serialize(response);
@@ -76,7 +77,7 @@ namespace Api.Middlewares
         }
         private void LogError(Exception ex, int statusCode)
         {
-            if (statusCode <500)
+            if (statusCode < 500)
             {
                 _logger.LogInformation(ex, "Client error: {Message}", ex.Message);
             }
