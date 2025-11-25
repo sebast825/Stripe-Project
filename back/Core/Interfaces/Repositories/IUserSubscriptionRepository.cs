@@ -10,5 +10,7 @@ namespace Core.Interfaces.Repositories
     public interface IUserSubscriptionRepository
     {
         Task<UserSubscription> AddAsync(UserSubscription userSubscriptions);
+        Task<UserSubscription?> GetByUserId(int userId);
+
     }
 }

@@ -11,7 +11,7 @@ export function PlansList({ plans, onSelect }: PlansListProps) {
   return (
     <Row>
       {plans?.map((p) => (
-        <Col key={p.stripePriceId} xs={12} lg={4} md={4} className="d-flex">
+        <Col key={p.id} xs={12} lg={4} md={4} className="d-flex  flex-column">
           <PlanCard plan={p} onSelect={onSelect} />
         </Col>
       ))}

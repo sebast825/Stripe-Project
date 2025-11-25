@@ -1,4 +1,6 @@
 ﻿using Aplication.Helpers;
+using Aplication.Interfaces.Services;
+using Aplication.Services;
 using Aplication.UseCases.Subscriptions;
 using Core.Dto.SubscriptionPlan;
 using Core.Enums;
@@ -13,10 +15,16 @@ namespace Api.Controllers
     public class SubscriptionController : Controller
     {
         private readonly SubscribeUserUseCase _subscribeUserUseCase;
-        public SubscriptionController(SubscribeUserUseCase subscribeUserUseCase)
-        {
+        private readonly IUserSubscriptionService _userSubscriptionService;
+        public SubscriptionController(SubscribeUserUseCase subscribeUserUseCase, IUserSubscriptionService userSubscriptionService)
+        { 
+            _userSubscriptionService = userSubscriptionService;
+            
             _subscribeUserUseCase = subscribeUserUseCase;
         }
+
+   
+
         [HttpGet("plans")]
         public ActionResult<List<SubscriptionPlanResponseDto>> GetPlans()
         {
@@ -29,6 +37,14 @@ namespace Api.Controllers
             var userId = User.GetUserId();
 
             var rsta = await _subscribeUserUseCase.ExecuteAsync(userId, planId);
+            return Ok(rsta);
+        }
+        [HttpGet("current")]
+        public async Task<IActionResult> CurrentUserSubscription()
+        {
+            var userId = User.GetUserId();
+
+            var rsta = await _userSubscriptionService.GetByUserId(userId);
             return Ok(rsta);
         }
     }

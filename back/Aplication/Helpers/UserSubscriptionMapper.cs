@@ -1,4 +1,5 @@
 ﻿using Aplication.Dto;
+using Core.Dto.UserSubscription;
 using Core.Entities;
 using Core.Enums;
 using System;
@@ -43,6 +44,18 @@ namespace Aplication.Helpers
                 CurrentPeriodEnd = subscriptionDto.CurrentPeriodEnd,
                 Plan = plan,
                 Status = subscriptionDto.Status
+            }
+            ;
+        }
+        public static UserSubscriptionResponseDto ToResponse(UserSubscription entity)
+        {
+            return new UserSubscriptionResponseDto
+            {
+                Id = entity.Id,
+                StartDate = entity.StartDate,
+                CurrentPeriodEnd = entity.CurrentPeriodEnd,
+                Plan = entity.Plan.ToString(),
+                Status = entity.Status.ToString()
             }
             ;
         }

@@ -12,6 +12,7 @@ namespace Aplication.Interfaces.Services
     public interface IUserSubscriptionService
     {
         Task<UserSubscriptionResponseDto> AddAsync(StripeSubscriptionCreatedDto userSubscriptionDto);
+        Task<UserSubscriptionResponseDto> GetByUserId(int userId);
 
     }
 }

@@ -35,23 +35,24 @@ namespace Aplication.Services
            
             SubscriptionPlan plan =   DemoPlans.GetByTypeByStripePriceId(userSubscriptionDto.PlanId);
             UserSubscription userSubscription = UserSubscriptionMapper.ToEntity(userId.Value, plan.PlanType, userSubscriptionDto);
-            UserSubscription rsta = await _userSubscriptionRepository.AddAsync(userSubscription);
+            UserSubscription subscription = await _userSubscriptionRepository.AddAsync(userSubscription);
 
-            return new UserSubscriptionResponseDto
-            {
-                Id = rsta.Id,
-                Plan = rsta.Plan.ToString(),
-                StartDate = rsta.StartDate,
-                CurrentPeriodEnd = rsta.CurrentPeriodEnd,
-                Status = rsta.Status.ToString()
-            };
-
-   
+            return UserSubscriptionMapper.ToResponse(subscription);
         }
 
-        public Task HandleSubscriptionCreatedAsync(UserSubscription userSubscription)
+        public async Task<UserSubscriptionResponseDto> GetByUserId(int userId)
         {
-            throw new NotImplementedException();
+            UserSubscription? subscription = await _userSubscriptionRepository.GetByUserId(userId);
+
+            if (subscription == null)
+            {
+                throw new KeyNotFoundException();
+
+            }
+            return UserSubscriptionMapper.ToResponse(subscription);
+       
         }
+
+  
     }
 }
