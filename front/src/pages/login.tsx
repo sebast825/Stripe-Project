@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useRedirect } from "../hooks/useRedirect";
 
 function Login() {
   const { login, error, setError } = useAuth();
-  const navigate = useNavigate();
+
+  const {goToDashboard}= useRedirect();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,6 +14,7 @@ function Login() {
     e.preventDefault();
     console.log(email, password);
     await login("test@gmail.com", "stringstringstring");
+    goToDashboard();
     //await login(email, password);
   }
   useEffect(() => {
@@ -68,9 +70,7 @@ function Login() {
           </Form>
           <div className="mt-2 d-flex flex-column border-top pt-3">
             <Button
-              onClick={() => {
-                navigate("/register");
-              }}
+
               variant="secondary"
               type="submit"
             >

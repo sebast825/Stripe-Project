@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 import { useGetCurrentSubscription } from "../hooks/subscription/useGetCurrentSubscription";
 import type { userSubscriptionPlan } from "../types/userSubscriptionPlan.types";
 import { UserSubscriptionCard } from "../components/userSubscriptionCard";
-import { useNavigate } from "react-router-dom";
+import  { useRedirect } from "../hooks/useRedirect";
 
 function Dashboard() {
   const user = useUserStore((state) => state.user);
 
   const { data: userPlan} = useGetCurrentSubscription();
   const [unPlan, setUnPlan] = useState<userSubscriptionPlan|null>(null);
+  const {goToPlans}= useRedirect();
   const boolean = false
-    const navigate = useNavigate();
  
   useEffect(() => {setUnPlan(userPlan)}, [userPlan]);
  <p>Error al cargar los planes</p>;
@@ -28,7 +28,7 @@ function Dashboard() {
       {unPlan && <UserSubscriptionCard plan={unPlan}/>
     
       }
-             <Button onClick={()=>navigate("/plans")}>Nuestros Planes</Button>
+             <Button onClick={goToPlans}>Nuestros Planes</Button>
 
      
       </div>
