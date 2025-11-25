@@ -11,7 +11,6 @@ export function UserSubscriptionCard({ plan, onManage }: UserSubscriptionCard) {
   const [endDate, setEndDate] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("currentStartDate");
 
     const currentEndDate = plan.currentPeriodEnd
       ? new Date(plan.currentPeriodEnd).toISOString().split("T")[0]
@@ -25,12 +24,12 @@ export function UserSubscriptionCard({ plan, onManage }: UserSubscriptionCard) {
 
   return (
 
-      <div>
+      <div className="w-100 px-lg-5" >
         <h2 className="mb-3 border-bottom">Mi Plan</h2>
         <Card
           className=" d-flex flex-column mx-auto mb-4"
           style={{ maxWidth: "500px" }}
-        >
+        > 
           <Card.Body>
             <div className="d-flex justify-content-between align-items-center mb-2">
               <Card.Title className="fw-bold mb-0">{plan.plan}</Card.Title>

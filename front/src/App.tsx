@@ -10,7 +10,7 @@ function App() {
   return (
     <>
     <BrowserRouter>
-              <div className='d-flex flex-column  align-items-center vh-100 vw-100'>
+              <div className=' d-flex flex-column justify-content-start align-items-start vw-100 vh-100 '>
 
    <NavBar/>
     <AppRoutes />

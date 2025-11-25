@@ -1,0 +1,11 @@
+body {
+  overflow-x: hidden !important;
+}
+
+.margin-top {
+  margin-top: 50px !important;
+
+  @media screen and (max-width: 600px) {
+    margin-top: 80px !important;
+  }
+}

@@ -11,8 +11,9 @@ function Login() {
   const [password, setPassword] = useState("");
   async function handleSubmit(e: React.FormEvent<HTMLButtonElement>) {
     e.preventDefault();
-    console.log(email,password)
-    await login(email, password);
+    console.log(email, password);
+    await login("test@gmail.com", "stringstringstring");
+    //await login(email, password);
   }
   useEffect(() => {
     if (error) {
@@ -23,13 +24,13 @@ function Login() {
 
   return (
     <>
-      <Row className="flex-grow-1 d-flex justify-content-center align-items-center vw-100">
+      <Row className="w-100 vh-100 justify-content-center align-items-center m-0">
         <Col
-          xs={11}
-          sm={15}
-          md={6}
-          lg={4}
-          className="m-3 p-4 border rounded-3 shadow-lg "
+          xs={11} 
+          sm={8} 
+          md={6} 
+          lg={4} 
+          className="p-4 border rounded-3 shadow-lg"
         >
           <h2 className="text-center mb-2 text-secondary ">Iniciar Sesión</h2>
           <Form onSubmit={() => {}} className="d-flex flex-column ">

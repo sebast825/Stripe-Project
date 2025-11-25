@@ -1,4 +1,5 @@
 import { Container } from "react-bootstrap";
+import '../App.css'
 
 import { useUserStore } from "../states/auth/user.store";
 import { usePlans } from "../hooks/subscription/usePlans";
@@ -32,18 +33,19 @@ function Dashboard() {
   if (error) return <p>Error al cargar los planes</p>;
   return (
     <>
-      <div className="flex-grow-1  d-flex flex-column vw-100 mt-5 pt-5 p-3 p-sm-5 ">
-        <Container
-          fluid
-          className="bg-primary text-white text-center py-5 rounded-3 mb-4"
+      <div className=" margin-top  d-flex flex-column justify-content-center align-items-center w-100 p-3 p-sm-5 ">
+        <div
+          
+          className="bg-primary text-white text-center py-5 rounded-3 mb-4 w-100"
         >
           <h1 className="fw-bold">Bienvenido {user?.fullName}!</h1>
-        </Container>
+        </div>
       {unPlan && <UserSubscriptionCard plan={unPlan}/>}
        
         <PlansList plans={plans} onSelect={createCheckout} />
       </div>
     </>
+
   );
 }
 
