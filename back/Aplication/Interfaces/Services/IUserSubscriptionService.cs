@@ -13,6 +13,7 @@ namespace Aplication.Interfaces.Services
     {
         Task<UserSubscriptionResponseDto> AddAsync(StripeSubscriptionCreatedDto userSubscriptionDto);
         Task<UserSubscriptionResponseDto> GetByUserId(int userId);
+        Task<UserSubscriptionResponseDto> UpdateAsync(UserSubscriptionUpdateDto updateDto, string customerId);
 
     }
 }

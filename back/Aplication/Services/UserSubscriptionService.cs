@@ -43,7 +43,6 @@ namespace Aplication.Services
         public async Task<UserSubscriptionResponseDto> GetByUserId(int userId)
         {
             UserSubscription? subscription = await _userSubscriptionRepository.GetByUserId(userId);
-
             if (subscription == null)
             {
                 throw new KeyNotFoundException();
@@ -53,6 +52,18 @@ namespace Aplication.Services
        
         }
 
-  
+        public async Task<UserSubscriptionResponseDto> UpdateAsync(UserSubscriptionUpdateDto updateDto, string customerId)
+        {
+            UserSubscription? subscription = await _userSubscriptionRepository.GetByStripeCustomerIdAsync(customerId);
+            if(subscription == null)
+            {
+                throw new KeyNotFoundException(ErrorMessages.EntityNotFound("UserSubscription",$"customerId {customerId}"));
+            }
+            SubscriptionPlanType plan = DemoPlans.GetByTypeByStripePriceId(updateDto.StripeSubscriptionId).PlanType;
+            UserSubscriptionMapper.ApplyUpdate(subscription, updateDto,plan);
+
+            await _userSubscriptionRepository.UpdateAsync(subscription);
+            return UserSubscriptionMapper.ToResponse(subscription);
+        }
     }
 }

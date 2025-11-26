@@ -18,10 +18,7 @@ namespace Aplication.Helpers
         public static StripeSubscriptionCreatedDto FromStripe(string subscriptionId,
             string customerId, DateTime startDate, string status, string planId, DateTime? currentPeriodEnd = null)
         {
-            SubscriptionStatus parsed;
-
-            if (!Enum.TryParse(status, ignoreCase: true, out parsed))
-                throw new ArgumentException($"Invalid subscription status: {status}");
+            SubscriptionStatus parsed = GetSubscriptionStatus(status);
 
             return new StripeSubscriptionCreatedDto
             {
@@ -58,6 +55,30 @@ namespace Aplication.Helpers
                 Status = entity.Status.ToString()
             }
             ;
+        }
+        public static void ApplyUpdate(UserSubscription entity, UserSubscriptionUpdateDto dto, SubscriptionPlanType planType)
+        {
+            entity.StartDate = dto.StartDate;
+            entity.CurrentPeriodEnd = dto.CurrentPeriodEnd;
+            entity.Status = GetSubscriptionStatus(dto.Status);
+            entity.CancelAtPeriodEnd = dto.CancelAtPeriodEnd;
+            entity.CanceledAt = dto.CanceledAt;
+            entity.StripeSubscriptionId = dto.StripeSubscriptionId;
+            entity.Plan = planType;
+
+        }
+
+
+        public static SubscriptionStatus GetSubscriptionStatus(string status)
+        {
+
+            SubscriptionStatus parsedStatus;
+
+            if (!Enum.TryParse(status, ignoreCase: true, out parsedStatus))
+            {
+                parsedStatus = SubscriptionStatus.Unknow;
+            }
+            return parsedStatus;
         }
     }
 }

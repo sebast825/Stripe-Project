@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Repositories
 {
-    public interface IUserSubscriptionRepository
+    public interface IUserSubscriptionRepository : IRepository<UserSubscription>
     {
-        Task<UserSubscription> AddAsync(UserSubscription userSubscriptions);
         Task<UserSubscription?> GetByUserId(int userId);
+        Task<UserSubscription?> GetByStripeCustomerIdAsync(string customerId);
 
     }
 }

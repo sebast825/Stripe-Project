@@ -21,5 +21,8 @@ namespace Core.Entities
         public DateTime? CurrentPeriodEnd { get; set; } 
 
         public SubscriptionStatus Status { get; set; }
+        public bool CancelAtPeriodEnd { get; set; } = false;
+        public DateTime? CanceledAt { get; set; }
+
     }
 }

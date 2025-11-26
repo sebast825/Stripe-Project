@@ -14,6 +14,17 @@ namespace Aplication.Helpers
 {
     public static class DemoPlans
     {
+          public static SubscriptionPlanType GetSubscriptionPlanType(string plan)
+        {
+
+            SubscriptionPlanType parsedStatus;
+
+            if (!Enum.TryParse(plan, ignoreCase: true, out parsedStatus))
+            {
+                throw new InvalidOperationException($"Unknown Stripe Plan: {plan}");
+            }
+            return parsedStatus;
+        }
         public static List<SubscriptionPlanResponseDto> GetPlanResponse()
         {
             return GetPlans().Select(plan => SubscriptionPlanMapper.ToResponse(plan)).ToList();
@@ -44,7 +55,7 @@ namespace Aplication.Helpers
                     Id = 2,
                     PlanType = SubscriptionPlanType.Monthly,
                     Price = 100m,
-                    StripePriceId = "price_1SVGn7GjXgbUajlyIXwrBRKj",
+                    StripePriceId = "price_1SXYgOGjXgbUajlyf5LyKmvV",
                     Interval = "month",
                     Name = "Mensual",
                     Description = "La opción más equilibrada para uso continuo sin compromiso anual.",
@@ -60,7 +71,7 @@ namespace Aplication.Helpers
                     Id = 3,
                     PlanType = SubscriptionPlanType.Daily,
                     Price = 15m,
-                    StripePriceId = "price_1SVGndGjXgbUajly9H8F6VPm",
+                    StripePriceId = "price_1SXYhLGjXgbUajlycoXCF8tK",
                     Interval = "day",
                     Name = "Diario",
                     Description = "Perfecto para uso puntual o de corta duración.",

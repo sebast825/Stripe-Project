@@ -48,7 +48,8 @@ builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionReposito
 
 builder.Services.AddScoped<SubscribeUserUseCase>();
 
-builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionCreatedHandler>();
+builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionCreatedHandler>(); 
+    builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionUpdatedHandler>(); 
 
 builder.Services.AddScoped<WebhookHandlerFactory>();
 

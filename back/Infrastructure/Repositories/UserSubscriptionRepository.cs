@@ -10,26 +10,29 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class UserSubscriptionRepository : IUserSubscriptionRepository
+    public class UserSubscriptionRepository : Repository<UserSubscription> ,IUserSubscriptionRepository 
     {
         private readonly DataContext _dataContext;
-        public UserSubscriptionRepository(DataContext dataContext)
+        public UserSubscriptionRepository(DataContext dataContext): base(dataContext)
         {
             _dataContext = dataContext;
         }
 
-        public async Task<UserSubscription> AddAsync(UserSubscription userSubscriptions)
+
+
+        public async Task<UserSubscription?> GetByStripeCustomerIdAsync(string customerId)
         {
-            await _dataContext.Set<UserSubscription>().AddAsync(userSubscriptions);
-            await _dataContext.SaveChangesAsync();
-            return userSubscriptions;
+            return await _dataContext.Set<UserSubscription>()
+             .Where(u => u.StripeCustomerId == customerId)
+             .FirstOrDefaultAsync();
         }
 
         public async Task<UserSubscription?> GetByUserId(int userId)
         {
-            return await _dataContext.Set<UserSubscription>()   
-                 .Where(u => u.UserId == userId)
-                 .FirstOrDefaultAsync();
+            return await _dataContext.Set<UserSubscription>()
+                .OrderByDescending(x => x.Id)
+                .Where(u => u.UserId == userId)
+                .FirstOrDefaultAsync();
 
         }
     }

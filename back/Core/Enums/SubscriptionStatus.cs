@@ -12,6 +12,9 @@ namespace Core.Enums
         Active,
         PastDue,
         Canceled,
-        Unpaid
+        Unpaid,
+        Unknow
     }
+
+  
 }
