@@ -8,7 +8,7 @@ namespace Core.Interfaces.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        Task<T> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync(int id);
         Task<IReadOnlyList<T>> ListAsync();
         Task<T> AddAsync(T entity);
         Task UpdateAsync(T entity);

@@ -5,6 +5,7 @@ using Aplication.Interfaces.Services;
 using Aplication.Interfaces.Stripe;
 using Aplication.Services;
 using Aplication.UseCases.Auth;
+using Aplication.UseCases.Billing;
 using Aplication.UseCases.Subscriptions;
 using Aplication.UseCases.Users;
 using AspNetCoreRateLimit;
@@ -46,7 +47,8 @@ builder.Services.AddScoped<IStripeCustomerService, StripeCustomerService>();
 builder.Services.AddScoped<IUserSubscriptionService, UserSubscriptionService>();
 builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
 
-builder.Services.AddScoped<SubscribeUserUseCase>();
+builder.Services.AddScoped<SubscribeUserUseCase>(); 
+builder.Services.AddScoped<GetCustomerBillingPortalUrlUseCase>(); 
 
 builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionCreatedHandler>(); 
     builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionUpdatedHandler>(); 
