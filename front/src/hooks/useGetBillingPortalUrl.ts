@@ -8,6 +8,7 @@ export const useGetBillingPortalUrl =()=> {
        queryFn: async () => {
          const res = await apiClient.get("/subscription/billing-portal");
          return res.data;
-       }
+       },
+       enabled: false
      });
 }

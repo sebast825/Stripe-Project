@@ -1,37 +1,37 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { useAuth } from "../hooks/useAuth";
 import { useRedirect } from "../hooks/useRedirect";
+import { useLogin } from "../hooks/auth/useLogin";
 
 function Login() {
-  const { login, error, setError } = useAuth();
-
-  const {goToDashboard}= useRedirect();
-
+  const { mutateAsync: login } = useLogin();
+  const { goToDashboard } = useRedirect();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   async function handleSubmit(e: React.FormEvent<HTMLButtonElement>) {
     e.preventDefault();
-    console.log(email, password);
-    await login("test@gmail.com", "stringstringstring");
-    goToDashboard();
-    //await login(email, password);
-  }
-  useEffect(() => {
-    if (error) {
-      alert("Usuario o contraseña incorrectos");
+    try {
+      await login({ email, password });
+      goToDashboard();
+    } catch (err: any) {
+      if (err.status === 401) {
+        alert("Usuario o contraseña incorrectos");
+        return;
+      } else {
+        alert("No pudimos establecer conexion con el servidor");
+      }
     }
-    setError(false);
-  }, [error]);
+  }
 
   return (
     <>
       <Row className="w-100 vh-100 justify-content-center align-items-center m-0">
         <Col
-          xs={11} 
-          sm={8} 
-          md={6} 
-          lg={4} 
+          xs={11}
+          sm={8}
+          md={6}
+          lg={4}
           className="p-4 border rounded-3 shadow-lg"
         >
           <h2 className="text-center mb-2 text-secondary ">Iniciar Sesión</h2>
@@ -69,11 +69,7 @@ function Login() {
             </div>
           </Form>
           <div className="mt-2 d-flex flex-column border-top pt-3">
-            <Button
-
-              variant="secondary"
-              type="submit"
-            >
+            <Button variant="secondary" type="submit">
               Crear Usuario
             </Button>
           </div>

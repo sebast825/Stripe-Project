@@ -11,7 +11,7 @@ interface UserSubscriptionCard {
 export function UserSubscriptionCard({ plan }: UserSubscriptionCard) {
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
-  const { data: billingPortalUrl, isLoading, error } = useGetBillingPortalUrl();
+  const { data:billingPortalUrl, isFetching, error ,refetch } = useGetBillingPortalUrl();
   useEffect(() => {
     const currentEndDate = plan.currentPeriodEnd
       ? new Date(plan.currentPeriodEnd).toISOString().split("T")[0]
@@ -24,6 +24,7 @@ export function UserSubscriptionCard({ plan }: UserSubscriptionCard) {
   }, []);
 
   async function showBillingPortal() {
+      const { data } = await refetch ();
     await window.open(billingPortalUrl, "_blank");
   }
   {
@@ -62,7 +63,7 @@ export function UserSubscriptionCard({ plan }: UserSubscriptionCard) {
             onClick={() => {
               showBillingPortal();
             }}
-            disabled={isLoading}
+            disabled={isFetching}
           >
             Gestionar plan
           </Button>
