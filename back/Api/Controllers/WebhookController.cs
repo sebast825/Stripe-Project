@@ -28,31 +28,20 @@ namespace Api.Controllers
         {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
             var headerSignature = Request.Headers["Stripe-Signature"];
-
-
             Event stripeEvent;
-
             try
             {
                 //transfor to validate the signature is valid
                 stripeEvent = EventUtility.ConstructEvent(json, headerSignature, _stripeSignatureKey);
-                Console.WriteLine(stripeEvent.Type);
-
-                 await _stripeWebhookService.ProcessAsync(stripeEvent);
-            
-
+                await _stripeWebhookService.ProcessAsync(stripeEvent);       
             }
             catch (Exception ex)
             {
-                Console.WriteLine("lanza excepcion");
-
                 Console.WriteLine(ex);
                 return BadRequest();
             }
 
             return Ok();
-
-
         }
     }
 }
