@@ -25,19 +25,9 @@ namespace Infrastructure.Stripe.Webhooks
         {
             var subscription = stripeEvent.Data.Object as Subscription;
 
-            var subscriptionData = new UserSubscriptionUpdateDto
-            {
-                StripeSubscriptionId = subscription.Items.Data.First().Plan.Id,
-                Status = subscription.Status,
-                StartDate = subscription.Items.Data.First().CurrentPeriodStart,
-                CurrentPeriodEnd = subscription.Items.Data.First().CurrentPeriodEnd,
-                CancelAtPeriodEnd = subscription.CancelAtPeriodEnd,
-                CanceledAt = subscription.CanceledAt.HasValue
-                    ? subscription.CanceledAt.Value
-                    : (DateTime?)null
-            };
-
-            var rsta = await _userSubscriptionService.UpdateAsync(subscriptionData, subscription.CustomerId);
+            UserSubscriptionUpdateDto userSubscriptionDto = UserSubscriptionMapper.ToUpdateDto(subscription);
+     
+            var rsta = await _userSubscriptionService.UpdateAsync(userSubscriptionDto, subscription.CustomerId);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Core.Dto.UserSubscription;
 using Core.Entities;
 using Core.Enums;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,10 @@ namespace Aplication.Helpers
     public static class UserSubscriptionMapper
     {
 
-        public static StripeSubscriptionCreatedDto FromStripe(string subscriptionId,
+        public static StripeSubscriptionCreatedDto MapSubscriptionCreated(string subscriptionId,
             string customerId, DateTime startDate, string status, string planId, DateTime? currentPeriodEnd = null)
         {
-            SubscriptionStatus parsed = GetSubscriptionStatus(status);
+            SubscriptionStatus parsed = ParseSubscriptionStatus(status);
 
             return new StripeSubscriptionCreatedDto
             {
@@ -56,20 +57,41 @@ namespace Aplication.Helpers
             }
             ;
         }
-        public static void ApplyUpdate(UserSubscription entity, UserSubscriptionUpdateDto dto, SubscriptionPlanType planType)
+        public static void ApplySubscriptionUpdate(UserSubscription entity, UserSubscriptionUpdateDto dto, SubscriptionPlanType planType)
         {
             entity.StartDate = dto.StartDate;
             entity.CurrentPeriodEnd = dto.CurrentPeriodEnd;
-            entity.Status = GetSubscriptionStatus(dto.Status);
+            entity.Status = ParseSubscriptionStatus(dto.Status);
             entity.CancelAtPeriodEnd = dto.CancelAtPeriodEnd;
             entity.CanceledAt = dto.CanceledAt;
             entity.StripeSubscriptionId = dto.StripeSubscriptionId;
             entity.Plan = planType;
 
         }
+        public static UserSubscriptionUpdateDto ToUpdateDto(Subscription subscription)
+        {
+            if (subscription == null)
+                throw new ArgumentNullException(nameof(subscription));
+
+            var item = subscription.Items?.Data?.FirstOrDefault();
+            if (item == null)
+                throw new InvalidOperationException("Subscription has no items.");
+
+            return new UserSubscriptionUpdateDto
+            {
+                StripeSubscriptionId = item.Plan.Id,
+                Status = subscription.Status,
+                StartDate = item.CurrentPeriodStart,
+                CurrentPeriodEnd = item.CurrentPeriodEnd,
+                CancelAtPeriodEnd = subscription.CancelAtPeriodEnd,
+                CanceledAt = subscription.CanceledAt.HasValue
+                    ? subscription.CanceledAt.Value
+                    : (DateTime?)null
+            };
+        }
 
 
-        public static SubscriptionStatus GetSubscriptionStatus(string status)
+        public static SubscriptionStatus ParseSubscriptionStatus(string status)
         {
 
             SubscriptionStatus parsedStatus;

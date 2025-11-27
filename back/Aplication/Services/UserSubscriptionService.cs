@@ -60,7 +60,7 @@ namespace Aplication.Services
                 throw new KeyNotFoundException(ErrorMessages.EntityNotFound("UserSubscription",$"customerId {customerId}"));
             }
             SubscriptionPlanType plan = DemoPlans.GetByTypeByStripePriceId(updateDto.StripeSubscriptionId).PlanType;
-            UserSubscriptionMapper.ApplyUpdate(subscription, updateDto,plan);
+            UserSubscriptionMapper.ApplySubscriptionUpdate(subscription, updateDto,plan);
 
             await _userSubscriptionRepository.UpdateAsync(subscription);
             return UserSubscriptionMapper.ToResponse(subscription);

@@ -48,7 +48,7 @@ namespace Infrastructure.Stripe.Webhooks
                     CurrentPeriodEnd = currentPeriodEnd
                 };
 
-                StripeSubscriptionCreatedDto subscriptionDto = UserSubscriptionMapper.FromStripe(subscriptionId,
+                StripeSubscriptionCreatedDto subscriptionDto = UserSubscriptionMapper.MapSubscriptionCreated(subscriptionId,
                     customerId, startDate,"Active" ,  planId, currentPeriodEnd);
 
                 var rsta = await _userSubscriptionService.AddAsync(subscriptionDto);

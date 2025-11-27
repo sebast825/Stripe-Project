@@ -1,4 +1,5 @@
 ﻿
+using Aplication.Helpers;
 using Aplication.Interfaces.Services;
 using Aplication.Interfaces.Stripe;
 using Core.Dto.UserSubscription;
@@ -24,21 +25,9 @@ namespace Infrastructure.Stripe.Webhooks
         public async Task HandleAsync(Event stripeEvent)
         {
             var subscription = stripeEvent.Data.Object as Subscription;
-            var subscriptionData = new UserSubscriptionUpdateDto
-            {
-                StripeSubscriptionId = subscription.Items.Data.First().Plan.Id,
-                Status = subscription.Status,
-                StartDate = subscription.Items.Data.First().CurrentPeriodStart,
-                CurrentPeriodEnd = subscription.Items.Data.First().CurrentPeriodEnd,
-                CancelAtPeriodEnd = subscription.CancelAtPeriodEnd,
-                CanceledAt = subscription.CancelAt.HasValue
-                    ? subscription.CancelAt.Value
-                    : (DateTime?)null
-            };
+            UserSubscriptionUpdateDto userSubscriptionDto = UserSubscriptionMapper.ToUpdateDto(subscription);
 
-            var rsta = await _userSubscriptionService.UpdateAsync(subscriptionData, subscription.CustomerId);
-
-
+            var rsta = await _userSubscriptionService.UpdateAsync(userSubscriptionDto, subscription.CustomerId);
 
         }
     }
