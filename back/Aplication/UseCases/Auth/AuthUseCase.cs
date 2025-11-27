@@ -88,7 +88,7 @@ namespace Aplication.UseCases.Auth
                         "Blocked login attempt detected for {Email} from {IpAddress} ({DeviceInfo})",
                       loginAttemptContext.Email, loginAttemptContext.IpAddress, loginAttemptContext.DeviceInfo);
                 }
-                throw new InvalidOperationException(ErrorMessages.MaxLoginAttemptsExceeded);
+                throw new InvalidCredentialException(ErrorMessages.MaxLoginAttemptsExceeded);
 
             }
         }
@@ -140,7 +140,7 @@ namespace Aplication.UseCases.Auth
                 loginAttemptContext.IpAddress, loginAttemptContext.DeviceInfo);
             await _securityLoginAttemptService.AddFailedLoginAttemptAsync(securityAttempt);
 
-            throw new InvalidOperationException(ErrorMessages.InvalidCredentials);
+            throw new InvalidCredentialException(ErrorMessages.InvalidCredentials);
         }
 
 

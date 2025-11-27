@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Authentication;
 using System.Text.Json;
 
 namespace Api.Middlewares
@@ -70,6 +71,8 @@ namespace Api.Middlewares
             {
                 ValidationException => StatusCodes.Status400BadRequest,
                 UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+                InvalidCredentialException => StatusCodes.Status401Unauthorized,
+
                 KeyNotFoundException => StatusCodes.Status404NotFound,
                 _ => StatusCodes.Status500InternalServerError
             };
