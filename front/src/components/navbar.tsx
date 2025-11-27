@@ -8,7 +8,7 @@ export const NavBar = () => {
   const location = useLocation();
   var refreshToken = useAuthStore((state) => state.refreshToken);
 
-  const showBtn = location.pathname == "/dashboard";
+  const showBtn = location.pathname != "/";
   return (
     <>
       <Navbar
