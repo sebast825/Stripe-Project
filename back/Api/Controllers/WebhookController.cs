@@ -1,4 +1,5 @@
 ﻿using Aplication.Interfaces.Services;
+using Aplication.Interfaces.Stripe;
 using Core.Dto.User;
 using Core.Entities;
 using Infrastructure.Stripe.Webhooks;
@@ -14,12 +15,14 @@ namespace Api.Controllers
     public class WebhookController : ControllerBase
     {
         private readonly string _stripeSignatureKey;
-        private readonly WebhookHandlerFactory _webhookFactory;
-        public WebhookController(IConfiguration configuration, WebhookHandlerFactory webhookFactory)
+        private  IStripeWebhookService _stripeWebhookService;
+
+        public WebhookController(IConfiguration configuration, IStripeWebhookService _stripeWebhookServic)
         {
             _stripeSignatureKey = configuration["Stripe:Signature"];
-            _webhookFactory = webhookFactory;
+            _stripeWebhookService = _stripeWebhookServic;
         }
+     
         [HttpPost]
         public async Task<ActionResult> Webhook()
         {
@@ -33,20 +36,16 @@ namespace Api.Controllers
             {
                 //transfor to validate the signature is valid
                 stripeEvent = EventUtility.ConstructEvent(json, headerSignature, _stripeSignatureKey);
+                Console.WriteLine(stripeEvent.Type);
 
-                IStripeWebhookHandler handler = _webhookFactory.GetHandler(stripeEvent.Type);
-                if (handler != null)
-                {
-                    await handler.HandleAsync(stripeEvent);
-                }
-                else
-                {
-                    Console.WriteLine(stripeEvent.Type);
-                }
+                 await _stripeWebhookService.ProcessAsync(stripeEvent);
+            
 
             }
             catch (Exception ex)
             {
+                Console.WriteLine("lanza excepcion");
+
                 Console.WriteLine(ex);
                 return BadRequest();
             }

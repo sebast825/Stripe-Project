@@ -51,9 +51,11 @@ builder.Services.AddScoped<SubscribeUserUseCase>();
 builder.Services.AddScoped<GetCustomerBillingPortalUrlUseCase>(); 
 
 builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionCreatedHandler>(); 
-    builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionUpdatedHandler>(); 
+builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionUpdatedHandler>();
+builder.Services.AddScoped<IStripeBillingService, StripeBillingService>();
+builder.Services.AddScoped<IStripeWebhookService, StripeWebhookService>();
 
-builder.Services.AddScoped<WebhookHandlerFactory>();
+builder.Services.AddScoped<IStripeWebhookFactory, WebhookHandlerFactory>();
 
 builder.Services.AddHttpContextAccessor();
 

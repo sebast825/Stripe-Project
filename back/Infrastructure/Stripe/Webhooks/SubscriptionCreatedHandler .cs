@@ -1,9 +1,7 @@
 ﻿using Aplication.Dto;
 using Aplication.Helpers;
 using Aplication.Interfaces.Services;
-using Aplication.Services;
-using Core.Entities;
-using Core.Enums;
+using Aplication.Interfaces.Stripe;
 using Stripe;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aplication.Interfaces.Stripe;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Stripe.Webhooks
 {
-    public class WebhookHandlerFactory
+    public class WebhookHandlerFactory : IStripeWebhookFactory
     {
         private readonly Dictionary<string, IStripeWebhookHandler> _handlers;
 

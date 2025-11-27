@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Stripe.Webhooks
+namespace Aplication.Interfaces.Stripe
 {
     public interface IStripeWebhookHandler
     {
