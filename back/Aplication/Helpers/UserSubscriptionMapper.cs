@@ -16,23 +16,30 @@ namespace Aplication.Helpers
     public static class UserSubscriptionMapper
     {
 
-        public static StripeSubscriptionCreatedDto MapSubscriptionCreated(string subscriptionId,
-            string customerId, DateTime startDate, string status, string planId, DateTime? currentPeriodEnd = null)
+        public static StripeSubscriptionCreatedDto ToCreateDto(Subscription subscription)
         {
-            SubscriptionStatus parsed = ParseSubscriptionStatus(status);
+            if (subscription == null)
+                throw new ArgumentNullException(nameof(subscription));
+
+            var item = subscription.Items?.Data?.FirstOrDefault();
+            if (item == null)
+                throw new InvalidOperationException("Subscription has no items.");
+            SubscriptionStatus parsed = ParseSubscriptionStatus(subscription.Status);
 
             return new StripeSubscriptionCreatedDto
             {
-                SubscriptionId = subscriptionId,
-                CustomerId = customerId,
-                StartDate = startDate,
-                CurrentPeriodEnd = currentPeriodEnd,
+                SubscriptionId = subscription.Id,
+                CustomerId = subscription.CustomerId,
                 Status = parsed,
-                PlanId = planId
+                StartDate = item.CurrentPeriodStart,
+                CurrentPeriodEnd = item.CurrentPeriodEnd,
+                PlanId = item.Plan.Id
+
             };
         }
         public static UserSubscription ToEntity(int userId, SubscriptionPlanType plan, StripeSubscriptionCreatedDto subscriptionDto)
         {
+
             return new UserSubscription
             {
                 UserId = userId,
@@ -89,6 +96,8 @@ namespace Aplication.Helpers
                     : (DateTime?)null
             };
         }
+
+
 
 
         public static SubscriptionStatus ParseSubscriptionStatus(string status)

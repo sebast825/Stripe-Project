@@ -14,56 +14,18 @@ namespace Infrastructure.Stripe.Webhooks
 {
     public class SubscriptionCreatedHandler : IStripeWebhookHandler
     {
-        public string EventType => "invoice.payment_succeeded";
+        public string EventType => "customer.subscription.created";
         private readonly IUserSubscriptionService _userSubscriptionService;
         public SubscriptionCreatedHandler(IUserSubscriptionService userSubscriptionService)
         {
             _userSubscriptionService = userSubscriptionService;
         }
-        public async Task HandleAsync(Event stripeEvent)
+
+          public async Task HandleAsync(Event stripeEvent)
         {
-
-            var invoice = stripeEvent.Data.Object as Invoice;
-
-            if (invoice != null)
-            {
-                var subscriptionId = invoice.Lines.First().Parent.SubscriptionItemDetails.Subscription;
-                var customerId = invoice.CustomerId;
-                var startDate = invoice.Created;
-                var currentPeriodEnd = invoice.Lines?.Data?.FirstOrDefault()?.Period?.End;
-  
-                var planId = "";
-                if (invoice.Lines?.Data?.Count > 0)
-                { 
-                    var lineItem = invoice.Lines.Data.First();
-
-                    planId = lineItem.Pricing.PriceDetails.Price;
-                }
-                var subscriptionData = new
-                {
-                    StripeSubscriptionId = subscriptionId,
-                    StripeCustomerId = customerId,
-                    StartDate = invoice.Created,
-                    Plan = planId,
-                    CurrentPeriodEnd = currentPeriodEnd
-                };
-
-                StripeSubscriptionCreatedDto subscriptionDto = UserSubscriptionMapper.MapSubscriptionCreated(subscriptionId,
-                    customerId, startDate,"Active" ,  planId, currentPeriodEnd);
-
-                var rsta = await _userSubscriptionService.AddAsync(subscriptionDto);
-
-
-
-                Console.WriteLine(rsta);
-            }
-
-
-
-
-            Console.WriteLine("Recive evento");
-            //Console.WriteLine(stripeEvent);
-           // return Task.CompletedTask;
+            var subscription = stripeEvent.Data.Object as Subscription;
+            StripeSubscriptionCreatedDto subscriptionDto = UserSubscriptionMapper.ToCreateDto(subscription);
+            await _userSubscriptionService.AddAsync(subscriptionDto);
         }
     }
 }
