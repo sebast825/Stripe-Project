@@ -20,6 +20,9 @@ namespace Infrastructure.Data
 
         //Payments
         public DbSet<UserSubscription> UserSubscriptions { get; set; } = null!;
+        public DbSet<SubscriptionPaymentRecord> SubscriptionPaymentRecords { get; set; } = null!;
+
+        
 
     }
 }

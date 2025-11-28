@@ -38,6 +38,9 @@ builder.Services.AddSingleton<IEmailAttemptsService,EmailAttemptsService> ();
 builder.Services.AddScoped<IUserLoginHistoryService, UserLoginHistoryService>();
 builder.Services.AddScoped<ISecurityLoginAttemptService, SecurityLoginAttemptService>();
 
+builder.Services.AddScoped<ISubscriptionPaymentRecordService, SubscriptionPaymentRecordService>();
+builder.Services.AddScoped<ISubscriptionPaymentRecordRepository, SubscriptionPaymentRecordRepository>();
+
 builder.Services.AddScoped<AuthUseCase>();
 builder.Services.AddScoped<CreateUserUseCase>();
 

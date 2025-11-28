@@ -18,7 +18,7 @@ namespace Infrastructure.Repositories
             __dataContext = _dataContext;
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(int id)
             => await __dataContext.Set<T>().FindAsync(id);
 
         public async Task<IReadOnlyList<T>> ListAsync()

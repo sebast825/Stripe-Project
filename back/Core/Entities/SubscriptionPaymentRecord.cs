@@ -11,8 +11,8 @@ namespace Core.Entities
         public string InvoiceId { get; set; }         
         public int UserId { get; set; }               
         public User User { get; set; }
-        public UserSubscription Subscription { get; set; }
-        public int SubscriptionId { get; set; }    
+        public UserSubscription UserSubscription { get; set; }
+        public int UserSubscriptionId { get; set; }    
         public long AmountPaid { get; set; }
         public long AmountTotal { get; set; }
         public string Currency { get; set; }
