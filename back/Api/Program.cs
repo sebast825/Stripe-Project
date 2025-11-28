@@ -52,7 +52,8 @@ builder.Services.AddScoped<GetCustomerBillingPortalUrlUseCase>();
 
 builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionCreatedHandler>(); 
 builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionUpdatedHandler>();
-builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionDeletedHandler>();
+builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionDeletedHandler>(); 
+builder.Services.AddScoped<IStripeWebhookHandler, InvoicePaymentSuccededHandler>(); 
 
 builder.Services.AddScoped<IStripeBillingService, StripeBillingService>();
 builder.Services.AddScoped<IStripeWebhookService, StripeWebhookService>();
