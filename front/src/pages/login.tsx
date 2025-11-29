@@ -4,7 +4,7 @@ import { useRedirect } from "../hooks/useRedirect";
 import { useLogin } from "../hooks/auth/useLogin";
 
 function Login() {
-  const { mutateAsync: login } = useLogin();
+  const { mutateAsync: login,isPending} = useLogin();
   const { goToDashboard } = useRedirect();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,6 +63,7 @@ function Login() {
                 onClick={(e) => handleSubmit(e)}
                 variant="primary"
                 type="submit"
+                disabled={isPending}
               >
                 Iniciar Sesión
               </Button>
