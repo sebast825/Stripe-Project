@@ -78,6 +78,29 @@ namespace Tests.Services
             _subscriptionPaymentRecordRepository.Verify(x => x.AddAsync(It.IsAny<SubscriptionPaymentRecord>()), Times.Exactly(1));
            
         }
+
+        [TestMethod]
+        public async Task AddAsync__WhenInvoiceExist_ShouldUpdateRecord()
+        {
+            //arrange
+            Invoice invoice = LoadInvoiceFromFile("succeeded");
+            int userId = 1;
+            UserSubscription userSubscription = new UserSubscription
+            {
+                Id = userId
+            };
+            SubscriptionPaymentRecord subscriptionPaymentRecord = new SubscriptionPaymentRecord { };
+
+            _userRepository.Setup(x => x.GetIdByStripeCustomerId(invoice.CustomerId)).ReturnsAsync(userId);
+            _userSubscriptionRepository.Setup(x => x.GetByStripeCustomerIdAsync(invoice.CustomerId)).ReturnsAsync(userSubscription);
+            _subscriptionPaymentRecordRepository.Setup(x => x.GetByInvoiceId(invoice.Id)).ReturnsAsync(subscriptionPaymentRecord);
+            //act
+            await _userSubscriptionService.AddAsync(invoice);
+            //assert
+            _subscriptionPaymentRecordRepository.Verify(x => x.AddAsync(It.IsAny<SubscriptionPaymentRecord>()), Times.Exactly(0));
+            _subscriptionPaymentRecordRepository.Verify(x => x.UpdateAsync(It.IsAny<SubscriptionPaymentRecord>()), Times.Exactly(1));
+
+        }
         public Invoice LoadInvoiceFromFile(string scenario)
         {
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
