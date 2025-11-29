@@ -1,14 +1,20 @@
 ﻿using Aplication.Interfaces.Services;
 using Aplication.Services;
+using Castle.Core.Resource;
 using Core.Entities;
 using Core.Interfaces.Repositories;
+using Infrastructure.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
+using Stripe;
+using Stripe.V2.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using File = System.IO.File;
 
 namespace Tests.Services
 {
@@ -48,6 +54,37 @@ namespace Tests.Services
             //assert
             Assert.AreEqual(mockSubscription.Id, subscritpionId);
             _userSubscriptionRepository.Verify(r => r.GetByStripeCustomerIdAsync(customerId), Times.Exactly(1));
+        }
+
+
+        [TestMethod]
+        public async Task AddAsync__WhenInvoiceDoesNotExist_ShouldAddNewRecord()
+        {
+            //arrange
+            Invoice invoice = LoadInvoiceFromFile("succeeded");
+            int userId = 1;
+            UserSubscription userSubscription = new UserSubscription
+            {
+                Id = userId
+            };
+            SubscriptionPaymentRecord subscriptionPaymentRecord = new SubscriptionPaymentRecord { };
+
+            _userRepository.Setup(x =>x.GetIdByStripeCustomerId(invoice.CustomerId)).ReturnsAsync(userId);
+            _userSubscriptionRepository.Setup(x => x.GetByStripeCustomerIdAsync(invoice.CustomerId)).ReturnsAsync(userSubscription);
+            _subscriptionPaymentRecordRepository.Setup(x => x.GetByInvoiceId(invoice.Id)).ReturnsAsync((SubscriptionPaymentRecord)null);
+            //act
+            await _userSubscriptionService.AddAsync(invoice);
+            //assert
+            _subscriptionPaymentRecordRepository.Verify(x => x.AddAsync(It.IsAny<SubscriptionPaymentRecord>()), Times.Exactly(1));
+           
+        }
+        public Invoice LoadInvoiceFromFile(string scenario)
+        {
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string jsonPath = Path.Combine(baseDir, "Data", $"invoice-{scenario}.json");
+            string json = File.ReadAllText(jsonPath);     
+            return JsonConvert.DeserializeObject<Invoice>(json);
+
         }
 
     }
