@@ -29,22 +29,14 @@ namespace Aplication.Services
 
         public async Task AddAsync(Invoice invoice)
         {
-            string customerId = invoice.CustomerId;
             string subscriptionId = invoice.Lines.Data.First().Parent.SubscriptionItemDetails.Subscription;
 
-            int? userId = await _userRepository.GetIdByStripeCustomerId(customerId);
-            if (userId == null) { 
-                throw new ArgumentNullException(ErrorMessages.EntityNotFound(typeof(User).Name,customerId));
-            }
+            int userId = await GetUserIdByCustomerIdAsync(invoice.CustomerId);
+            int userSubscriptionId = await GetUserSubscriptionIdByCustomerIdAsync(invoice.CustomerId);
 
-            UserSubscription? userSubscription = await _userSubscriptionRepository.GetByStripeCustomerIdAsync(customerId);
-            if (userSubscription == null)
-            {
-                throw new ArgumentNullException(ErrorMessages.EntityNotFound(typeof(UserSubscription).Name, customerId));
-            }
-            SubscriptionPaymentRecord entity = SubscriptionPaymentRecordMapper.ToEntity(invoice, userId.Value, userSubscription.Id);
-
+            SubscriptionPaymentRecord entity = SubscriptionPaymentRecordMapper.ToEntity(invoice, userId, userSubscriptionId);
             SubscriptionPaymentRecord? existingRecord = await _subscriptionPaymentRecordRepository.GetByInvoiceId(invoice.Id);
+
             if(existingRecord != null)
             {
                 SubscriptionPaymentRecordMapper.ApplyUpdates(existingRecord, entity);
@@ -53,8 +45,27 @@ namespace Aplication.Services
             else
             {
                 await _subscriptionPaymentRecordRepository.AddAsync(entity);
-
             }
+        }
+        private async Task<int>GetUserIdByCustomerIdAsync(string customerId)
+        {
+            int? userId = await _userRepository.GetIdByStripeCustomerId(customerId);
+            if (userId == null)
+            {
+                throw new ArgumentNullException(ErrorMessages.EntityNotFound(typeof(User).Name, customerId));
+            }
+            return userId.Value;
+        }
+
+        private async Task<int> GetUserSubscriptionIdByCustomerIdAsync(string customerId)
+        {
+            UserSubscription? userSubscription = await _userSubscriptionRepository.GetByStripeCustomerIdAsync(customerId);
+            if (userSubscription == null)
+            {
+                throw new ArgumentNullException(ErrorMessages.EntityNotFound(typeof(UserSubscription).Name, customerId));
+            }
+            return userSubscription.Id;
         }
     }
 }
+
