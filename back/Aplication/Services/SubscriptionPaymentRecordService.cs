@@ -7,8 +7,10 @@ using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Aplication.Services
 {
@@ -57,7 +59,7 @@ namespace Aplication.Services
             return userId.Value;
         }
 
-        private async Task<int> GetUserSubscriptionIdByCustomerIdAsync(string customerId)
+        internal async Task<int> GetUserSubscriptionIdByCustomerIdAsync(string customerId)
         {
             UserSubscription? userSubscription = await _userSubscriptionRepository.GetByStripeCustomerIdAsync(customerId);
             if (userSubscription == null)
