@@ -24,7 +24,7 @@ namespace Api.Controllers
             return Ok(await _authUseCase.LoginAsync(loginDto, ipAddress, deviceInfo));
         }
 
-        [HttpPost("access-token")]
+        [HttpPost("refresh")]
         public async Task<ActionResult<string>> RefreshToken([FromBody] string refrehToken)
         {
             return Ok(await _authUseCase.GenerateNewAccessTokenAsync(refrehToken));

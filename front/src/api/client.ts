@@ -32,7 +32,7 @@ apiClient.interceptors.response.use(
         const refreshToken = useAuthStore.getState().refreshToken;
 
         const { data } = await apiClient.post(
-          "/auth/access-token",
+          "/auth/refresh",
           JSON.stringify(refreshToken)
         );
         useAuthStore.getState().setTokens(data, refreshToken!);
