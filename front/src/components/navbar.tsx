@@ -10,7 +10,7 @@ export const NavBar = () => {
   const location = useLocation();
   var refreshToken = useAuthStore((state) => state.refreshToken);
 
-  const showBtn = location.pathname != "/";
+  const showBtn = location.pathname != "/" && location.pathname != "/register";
   async function handleLogout() {
     try {
       await logout({refreshToken: refreshToken! });

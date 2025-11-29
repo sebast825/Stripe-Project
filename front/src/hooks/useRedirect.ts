@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
 export const useRedirect = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
- const goToPlans = () => navigate("/plans");
+  const goToPlans = () => navigate("/plans");
   const goToDashboard = () => navigate("/dashboard");
   const goToLogin = () => navigate("/");
-     
-  return { goToPlans, goToDashboard, goToLogin };
-   }
+  const goToRegister = () => navigate("/register");
+
+  return { goToPlans, goToDashboard, goToLogin,goToRegister };
+};

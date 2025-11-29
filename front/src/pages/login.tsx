@@ -5,7 +5,7 @@ import { useLogin } from "../hooks/auth/useLogin";
 
 function Login() {
   const { mutateAsync: login,isPending} = useLogin();
-  const { goToDashboard } = useRedirect();
+  const { goToDashboard,goToRegister } = useRedirect();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -70,7 +70,7 @@ function Login() {
             </div>
           </Form>
           <div className="mt-2 d-flex flex-column border-top pt-3">
-            <Button variant="secondary" type="submit">
+            <Button variant="secondary" onClick={goToRegister} type="submit">
               Crear Usuario
             </Button>
           </div>
