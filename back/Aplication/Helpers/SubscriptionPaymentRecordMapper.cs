@@ -12,7 +12,21 @@ namespace Aplication.Helpers
     public static class SubscriptionPaymentRecordMapper
     {
  
-        public static SubscriptionPaymentRecord toEntity(Invoice invoice, int userId, int userSubscriptionId)
+        public static SubscriptionPaymentRecord ApplyUpdates(SubscriptionPaymentRecord existing, SubscriptionPaymentRecord source) 
+        {
+            existing.Status = source.Status;
+            existing.AmountPaid = source.AmountPaid;
+            existing.AmountTotal = source.AmountTotal;
+            existing.InvoicePdf = source.InvoicePdf;
+            existing.InvoiceUrl = source.InvoiceUrl;
+            existing.PeriodEnd = source.PeriodEnd;
+            existing.PeriodStart = source.PeriodStart;
+            existing.PaymentAttempts = source.PaymentAttempts;
+            existing.PaidAt = source.PaidAt;
+            existing.UpdatedAt = DateTime.UtcNow;
+            return existing;
+        }
+        public static SubscriptionPaymentRecord ToEntity(Invoice invoice, int userId, int userSubscriptionId)
         {
             string subscriptionId = invoice.Lines.Data.First().SubscriptionId;          
 

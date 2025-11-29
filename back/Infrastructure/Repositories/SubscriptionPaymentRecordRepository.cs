@@ -1,6 +1,8 @@
 ﻿using Core.Entities;
 using Core.Interfaces.Repositories;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +18,15 @@ namespace Infrastructure.Repositories
         {            
             _dataContext = dataContext;            
         }
+
+        public async Task<SubscriptionPaymentRecord?>  GetByInvoiceId(string invoiceId)
+        {
+            {
+                return await _dataContext.Set<SubscriptionPaymentRecord>()
+                    .Where(x => x.InvoiceId == invoiceId)
+                    .FirstOrDefaultAsync();
+            }
+        }
+
     }
 }

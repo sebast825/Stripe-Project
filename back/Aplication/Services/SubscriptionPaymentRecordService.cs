@@ -42,8 +42,19 @@ namespace Aplication.Services
             {
                 throw new ArgumentNullException(ErrorMessages.EntityNotFound(typeof(UserSubscription).Name, customerId));
             }
-            SubscriptionPaymentRecord entity = SubscriptionPaymentRecordMapper.toEntity(invoice, userId.Value, userSubscription.Id);
-            await _subscriptionPaymentRecordRepository.AddAsync(entity);
+            SubscriptionPaymentRecord entity = SubscriptionPaymentRecordMapper.ToEntity(invoice, userId.Value, userSubscription.Id);
+
+            SubscriptionPaymentRecord? existingRecord = await _subscriptionPaymentRecordRepository.GetByInvoiceId(invoice.Id);
+            if(existingRecord != null)
+            {
+                SubscriptionPaymentRecordMapper.ApplyUpdates(existingRecord, entity);
+                await _subscriptionPaymentRecordRepository.UpdateAsync(existingRecord);
+            }
+            else
+            {
+                await _subscriptionPaymentRecordRepository.AddAsync(entity);
+
+            }
         }
     }
 }

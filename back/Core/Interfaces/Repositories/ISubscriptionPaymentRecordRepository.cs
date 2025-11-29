@@ -9,5 +9,6 @@ namespace Core.Interfaces.Repositories
 {
     public interface ISubscriptionPaymentRecordRepository : IRepository<SubscriptionPaymentRecord>
     {
+        Task<SubscriptionPaymentRecord?> GetByInvoiceId(string invoiceId);
     }
 }

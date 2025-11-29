@@ -27,7 +27,6 @@ namespace Infrastructure.Stripe.Webhooks
         {
 
             var invoice = stripeEvent.Data.Object as Invoice;
-            Console.WriteLine(invoice);
             await _subscriptionPaymentRecordService.AddAsync(invoice);
 
         }
