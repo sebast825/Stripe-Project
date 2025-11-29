@@ -7,9 +7,10 @@ import type { SubscriptionPlan } from "../types/SubscriptionPlan.types";
 interface PlanCardProps {
   plan: SubscriptionPlan;
   onSelect: (planId:number) => void;
+  isPending: boolean;
 }
 
-export function PlanCard({ plan, onSelect }: PlanCardProps) {
+export function PlanCard({ plan, onSelect,isPending }: PlanCardProps) {
 
 
 
@@ -43,6 +44,7 @@ export function PlanCard({ plan, onSelect }: PlanCardProps) {
           variant="primary"
           className="mt-3 w-100 "
           onClick={() => onSelect(plan.id)}
+          disabled={isPending}
         >
           Elegir plan
         </Button>

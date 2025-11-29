@@ -10,6 +10,8 @@ export function PlansPage() {
     mutate: createCheckout,
     isSuccess,
     data,
+    isPending: isCreatingCheckout,
+    
   } = useCreateSubscriptionCheckout();
   useEffect(() => {
     if (isSuccess && data) {
@@ -26,7 +28,7 @@ export function PlansPage() {
       <div className="bg-primary text-white text-center py-5 rounded-3 mb-4 w-100">
         <h1 className="fw-bold">Nuestros Planes</h1>
       </div>
-      <PlansList plans={plans} onSelect={createCheckout} />
+      <PlansList plans={plans} onSelect={createCheckout} isPending={isCreatingCheckout}/>
     </div>
   );
 }

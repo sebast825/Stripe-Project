@@ -5,14 +5,15 @@ import { PlanCard } from "./PlanCard";
 interface PlansListProps {
   plans: SubscriptionPlan[];
   onSelect: (planId:number ) => void;
+  isPending : boolean;
 }
 
-export function PlansList({ plans, onSelect }: PlansListProps) {
+export function PlansList({ plans, onSelect,isPending }: PlansListProps) {
   return (
     <Row>
       {plans?.map((p) => (
         <Col key={p.id} xs={12} lg={4} md={4} className="d-flex  flex-column">
-          <PlanCard plan={p} onSelect={onSelect} />
+          <PlanCard plan={p} onSelect={onSelect} isPending={isPending} />
         </Col>
       ))}
     </Row>
