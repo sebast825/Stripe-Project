@@ -116,7 +116,7 @@ namespace Tests.UseCases
             SecurityLoginAttempt securityAttempt = LoginEventMapper.SecurityLoginAttemptMapper(loginDto.Email, LoginFailureReasons.InvalidCredentials, "127.0.0.1", "device");
 
             // Act
-            var ex = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => _authUseCase.LoginAsync(loginDto, "127.0.0.1", "device"));
+            var ex = await Assert.ThrowsExceptionAsync<InvalidCredentialException>(() => _authUseCase.LoginAsync(loginDto, "127.0.0.1", "device"));
 
             // Assert
             Assert.AreEqual(ErrorMessages.InvalidCredentials, ex.Message);
@@ -140,7 +140,7 @@ namespace Tests.UseCases
             _mockEmailAttemptsService.Setup(s => s.EmailIsBlocked(loginDto.Email)).Returns(true);
 
             // Act
-            var ex = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => _authUseCase.LoginAsync(loginDto, "127.0.0.1", "device"));
+            var ex = await Assert.ThrowsExceptionAsync<InvalidCredentialException>(() => _authUseCase.LoginAsync(loginDto, "127.0.0.1", "device"));
 
             // Assert
             _mockEmailAttemptsService.Verify(s => s.EmailIsBlocked(loginDto.Email), Times.Once);
