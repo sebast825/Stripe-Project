@@ -4,7 +4,7 @@ import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
 import PaginationBtns from "../../components/paginationBtns";
 import { usePagination } from "../../hooks/usePagination";
-import InputRegex from "../../components/InputRegex";
+import InputRegex from "../../components/inputRegex";
 import { useState } from "react";
 
 function DashboardAdminPage() {
@@ -54,7 +54,9 @@ function DashboardAdminPage() {
                 <td>{u.plan}</td>
                 <td>{u.status}</td>
                 <td className="text-center">
-                  <Link to={`/users/${u.id}`}>Ver</Link>
+                  <Link to={`/users/${u.id}`} state={{ userName: u.fullName }}>
+                    Ver
+                  </Link>
                 </td>
               </tr>
             ))}
