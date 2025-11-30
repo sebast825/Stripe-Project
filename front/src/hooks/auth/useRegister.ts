@@ -1,13 +1,14 @@
-import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/client";
 import { useMutation } from "@tanstack/react-query";
 import useToastit from "../useToastit";
 import { successMessages } from "../../constants/successMessages";
 import { errorMessages } from "../../constants/errorMessages";
+import { useRedirect } from "../useRedirect";
 
 export const useRegister = () => {
-  const navigate = useNavigate();
-  const {success,error} = useToastit();
+  const { goToLogin } = useRedirect();
+  const { success, error } = useToastit();
+  
   return useMutation({
     mutationFn: async ({
       email,
@@ -25,8 +26,8 @@ export const useRegister = () => {
       });
     },
     onSuccess: () => {
-      success(successMessages.USER_CREATE_SUCCESS)
-      navigate("/");
+      success(successMessages.USER_CREATE_SUCCESS);
+      goToLogin();
     },
     onError: (err: unknown) => {
       console.log(err);
