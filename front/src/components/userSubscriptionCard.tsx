@@ -24,7 +24,7 @@ export function UserSubscriptionCard({ plan }: UserSubscriptionCard) {
   }, []);
 
   async function showBillingPortal() {
-      const { data } = await refetch ();
+      await refetch ();
     await window.open(billingPortalUrl, "_blank");
   }
   {
