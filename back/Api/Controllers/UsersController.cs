@@ -11,12 +11,12 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly CreateUserUseCase _createUserUseCase;
         private readonly IUserService _userService;
 
-          public UserController(CreateUserUseCase createUserUseCase, IUserService userService)
+          public UsersController(CreateUserUseCase createUserUseCase, IUserService userService)
         {
             _createUserUseCase = createUserUseCase;
             _userService = userService;

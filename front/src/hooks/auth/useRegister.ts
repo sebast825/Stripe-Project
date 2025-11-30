@@ -19,7 +19,7 @@ export const useRegister = () => {
       password: string;
       fullName: string;
     }) => {
-      return await apiClient.post("/user", {
+      return await apiClient.post("/users", {
         email,
         password,
         fullName,
