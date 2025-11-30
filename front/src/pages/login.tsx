@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useRedirect } from "../hooks/useRedirect";
 import { useLogin } from "../hooks/auth/useLogin";
+import useToastit from "../hooks/useToastit";
+import { errorMessages } from "../constants/errorMessages";
 
 function Login() {
-  const { mutateAsync: login,isPending} = useLogin();
-  const { goToDashboard,goToRegister } = useRedirect();
+  const { mutateAsync: login, isPending } = useLogin();
+  const { goToDashboard, goToRegister } = useRedirect();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const { error } = useToastit();
   async function handleSubmit(e: React.FormEvent<HTMLButtonElement>) {
     e.preventDefault();
     try {
@@ -16,10 +18,10 @@ function Login() {
       goToDashboard();
     } catch (err: any) {
       if (err.status === 401) {
-        alert("Usuario o contraseña incorrectos");
+        error(errorMessages.AUTH_INVALID_CREDENTIALS);
         return;
       } else {
-        alert("No pudimos establecer conexion con el servidor");
+        error(errorMessages.AUTH_SERVER_UNREACHABLE);
       }
     }
   }
