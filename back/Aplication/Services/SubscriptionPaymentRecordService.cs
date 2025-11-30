@@ -1,6 +1,9 @@
-﻿using Aplication.Helpers;
+﻿using Aplication.Dto;
+using Aplication.Helpers;
 using Aplication.Interfaces.Services;
 using Core.Constants;
+using Core.Dto;
+using Core.Dto.SubscriptionPaymentRecord;
 using Core.Entities;
 using Core.Interfaces.Repositories;
 using Stripe;
@@ -19,9 +22,9 @@ namespace Aplication.Services
         private readonly IUserRepository _userRepository;
         private readonly IUserSubscriptionRepository _userSubscriptionRepository;
         private readonly ISubscriptionPaymentRecordRepository _subscriptionPaymentRecordRepository;
-   
 
-        public SubscriptionPaymentRecordService(IUserRepository userRepository, IUserSubscriptionRepository userSubscriptionRepository, 
+
+        public SubscriptionPaymentRecordService(IUserRepository userRepository, IUserSubscriptionRepository userSubscriptionRepository,
             ISubscriptionPaymentRecordRepository subscriptionPaymentRecordRepository)
         {
             _userRepository = userRepository;
@@ -39,7 +42,7 @@ namespace Aplication.Services
             SubscriptionPaymentRecord entity = SubscriptionPaymentRecordMapper.ToEntity(invoice, userId, userSubscriptionId);
             SubscriptionPaymentRecord? existingRecord = await _subscriptionPaymentRecordRepository.GetByInvoiceId(invoice.Id);
 
-            if(existingRecord != null)
+            if (existingRecord != null)
             {
                 SubscriptionPaymentRecordMapper.ApplyUpdates(existingRecord, entity);
                 await _subscriptionPaymentRecordRepository.UpdateAsync(existingRecord);
@@ -49,7 +52,7 @@ namespace Aplication.Services
                 await _subscriptionPaymentRecordRepository.AddAsync(entity);
             }
         }
-        private async Task<int>GetUserIdByCustomerIdAsync(string customerId)
+        private async Task<int> GetUserIdByCustomerIdAsync(string customerId)
         {
             int? userId = await _userRepository.GetIdByStripeCustomerId(customerId);
             if (userId == null)
@@ -68,6 +71,24 @@ namespace Aplication.Services
             }
             return userSubscription.Id;
         }
+
+        public async Task<PagedResponseDto<SubscriptionPaymentRecordResponseDto>> GetPaymentsByUserIdAsync(int userId, int page, int pageSize)
+        {
+            PagedResult<SubscriptionPaymentRecord?> rsta = await _subscriptionPaymentRecordRepository.GetPagedByUserIdAsync(userId, page, pageSize);
+            List<SubscriptionPaymentRecordResponseDto> dataMapped = rsta.Data.Select(x => SubscriptionPaymentRecordMapper.ToResponse(x)).ToList();
+            return new PagedResponseDto<SubscriptionPaymentRecordResponseDto>
+            {
+                Data = dataMapped,
+                TotalItems = rsta.TotalItems,
+                Page = page,
+                PageSize = pageSize,
+                // Round up in case the division has decimals 
+                TotalPages = (int)Math.Ceiling(rsta.TotalItems / (double)pageSize)
+
+            };
+        }
+
+
     }
 }
 

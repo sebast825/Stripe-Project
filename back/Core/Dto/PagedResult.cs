@@ -8,7 +8,7 @@ namespace Core.Dto
 {
     public class PagedResult<T>
     {
-        public IEnumerable<T> Data { get; set; } = new List<T>();
+        public IEnumerable<T?> Data { get; set; } = new List<T>();
         public int TotalItems { get; set; }
     }
 }

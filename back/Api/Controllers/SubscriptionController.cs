@@ -1,15 +1,19 @@
-﻿using Aplication.Helpers;
+﻿using Aplication.Dto;
+using Aplication.Helpers;
 using Aplication.Interfaces.Services;
 using Aplication.Interfaces.Stripe;
 using Aplication.Services;
 using Aplication.UseCases.Billing;
 using Aplication.UseCases.Subscriptions;
+using Core.Dto.SubscriptionPaymentRecord;
 using Core.Dto.SubscriptionPlan;
 using Core.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Newtonsoft.Json.Schema;
 using Stripe;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 
 namespace Api.Controllers
@@ -21,12 +25,14 @@ namespace Api.Controllers
         private readonly SubscribeUserUseCase _subscribeUserUseCase;
         private readonly IUserSubscriptionService _userSubscriptionService;
         private readonly GetCustomerBillingPortalUrlUseCase _getCustomerBillingPortalUrlUseCase;
+        private readonly ISubscriptionPaymentRecordService _subscriptionPaymentRecordService;
 
-        public SubscriptionController(SubscribeUserUseCase subscribeUserUseCase, IUserSubscriptionService userSubscriptionService, GetCustomerBillingPortalUrlUseCase getCustomerBillingPortalUrlUseCase)
+        public SubscriptionController(SubscribeUserUseCase subscribeUserUseCase, IUserSubscriptionService userSubscriptionService, GetCustomerBillingPortalUrlUseCase getCustomerBillingPortalUrlUseCase, ISubscriptionPaymentRecordService subscriptionPaymentRecordService)
         {
+            _subscribeUserUseCase = subscribeUserUseCase;
             _userSubscriptionService = userSubscriptionService;
             _getCustomerBillingPortalUrlUseCase = getCustomerBillingPortalUrlUseCase;
-            _subscribeUserUseCase = subscribeUserUseCase;
+            _subscriptionPaymentRecordService = subscriptionPaymentRecordService;
         }
 
         [Authorize]
@@ -62,6 +68,14 @@ namespace Api.Controllers
             var userId = User.GetUserId();
 
             var rsta = await _userSubscriptionService.GetByUserId(userId);
+            return Ok(rsta);
+        }
+      [Authorize(Roles =nameof(UserRole.Admin))]
+
+        [HttpGet("/api/admin/users/{userId:int}/subscriptions-payments")]
+        public async Task<IActionResult> GetSubscriptionPaymentRecordByUser(int userId, [FromQuery] int page = 0, [FromQuery] int pageSize = 10)
+        {
+            PagedResponseDto<SubscriptionPaymentRecordResponseDto> rsta = await _subscriptionPaymentRecordService.GetPaymentsByUserIdAsync(userId,page,pageSize);
             return Ok(rsta);
         }
     }

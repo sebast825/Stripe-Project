@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Core.Dto.SubscriptionPaymentRecord;
+using Core.Entities;
 using Stripe;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,22 @@ namespace Aplication.Helpers
                 PaymentAttempts = invoice.AttemptCount,
                 InvoicePdf = invoice.InvoicePdf,
                 InvoiceUrl = invoice.HostedInvoiceUrl
+            };
+
+          
+
+        }
+        public static SubscriptionPaymentRecordResponseDto ToResponse(SubscriptionPaymentRecord entitty)
+        {
+            return new SubscriptionPaymentRecordResponseDto
+            {
+                AmountPaid = entitty.AmountPaid,
+                Currency = entitty.Currency,
+                Status = entitty.Status,
+                PaidAt = entitty.PaidAt,
+                InvoiceUrl = entitty.InvoiceUrl,
+                PeriodEnd = entitty.PeriodEnd,
+                PeriodStart = entitty.PeriodStart
             };
         }
     }
