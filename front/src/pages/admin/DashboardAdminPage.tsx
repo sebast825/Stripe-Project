@@ -1,16 +1,15 @@
-import { useEffect } from "react";
 import { useGetUsers } from "../../hooks/useGetUsers";
 import { useUserStore } from "../../states/auth/user.store";
 import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
+import PaginationBtns from "../../components/paginationBtns";
+import { usePagination } from "../../hooks/usePagination";
 
 function DashboardAdminPage() {
   const user = useUserStore((state) => state.user);
-  const { data: users } = useGetUsers(1,3,"s");
+  const { page, pageSize, goToPage } = usePagination();
+  const { data: users } = useGetUsers(page, pageSize, "s");
 
-  useEffect(() => {
-    console.log(users);
-  }, [users]);
 
   return (
     <>
@@ -19,7 +18,8 @@ function DashboardAdminPage() {
           <h1 className="fw-bold">Bienvenido {user?.fullName}!</h1>
           <p>Panel Administrador</p>
         </div>
-        <Table striped bordered hover >
+     
+        <Table striped bordered hover>
           <thead>
             <tr className="text-center">
               <th>Nombre</th>
@@ -41,6 +41,11 @@ function DashboardAdminPage() {
             ))}
           </tbody>
         </Table>
+           <PaginationBtns
+          page={page}
+          totalPages={users?.totalPages}
+          goToPage={goToPage}
+        />
       </div>
     </>
   );
