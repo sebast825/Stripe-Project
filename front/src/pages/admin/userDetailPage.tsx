@@ -3,14 +3,16 @@ import { useGetSubscriptionPayments } from "../../hooks/subscription/useGetSubsc
 import { Table } from "react-bootstrap";
 import type { SubscriptionPaymentDto } from "../../types/SubscriptionPaymentDto.types";
 import { useLocation } from 'react-router-dom';
+import { usePagination } from "../../hooks/usePagination";
+import PaginationBtns from "../../components/paginationBtns";
 
 export const UserDetailPage = () => {
      const location = useLocation();
-
+  const { page, pageSize, goToPage} = usePagination();
   const { id } = useParams<{ id: string }>();
     const userName = location.state?.userName || 'NameEmpty';
 
-  const { data: payments } = useGetSubscriptionPayments(Number(id));
+  const { data: payments } = useGetSubscriptionPayments(Number(id),page,pageSize);
   return (
     <>
       <div className=" margin-top  d-flex flex-column justify-content-center align-items-center w-100 p-3 p-sm-5 ">
@@ -83,6 +85,11 @@ export const UserDetailPage = () => {
               ))}
           </tbody>
         </Table>
+           <PaginationBtns
+          page={page}
+          totalPages={payments?.totalPages!}
+          goToPage={goToPage}
+        />
       </div>
     </>
   );
