@@ -20,11 +20,15 @@ function DashboardAdminPage() {
           <h1 className="fw-bold">Bienvenido {user?.fullName}!</h1>
           <p>Panel Administrador</p>
         </div>
-         <div className="w-100 ">
-      <h2 className="mb-3 border-bottom">Usuarios</h2>
-      </div>
-        <InputRegex onFraseRegexChage={setFraseRegex} placeholder="Buscar usuario por nombre" />
-        <Table striped bordered hover>
+        <div className="w-100 ">
+          <h2 className="mb-3 border-bottom">Usuarios</h2>
+        </div>
+        <InputRegex
+          onFraseRegexChage={setFraseRegex}
+          placeholder="Buscar usuario por nombre"
+        />
+
+        <Table striped bordered hover style={{ overflowX: "hidden" }}>
           <thead>
             <tr className="text-center">
               <th>Nombre</th>
@@ -36,7 +40,17 @@ function DashboardAdminPage() {
           <tbody>
             {users?.data.map((u: any) => (
               <tr key={u.id} className="text-center">
-                <td className="text-left">{u.fullName}</td>
+                <td
+                  className="text-left"
+                  style={{
+                    maxWidth: "120px",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {u.fullName}
+                </td>
                 <td>{u.plan}</td>
                 <td>{u.status}</td>
                 <td className="text-center">
