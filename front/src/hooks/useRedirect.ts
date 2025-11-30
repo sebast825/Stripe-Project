@@ -4,9 +4,15 @@ export const useRedirect = () => {
   const navigate = useNavigate();
 
   const goToPlans = () => navigate("/plans");
-  const goToDashboard = () => navigate("/dashboard");
+  const goToDashboard = (role?: string) => {
+    if (role === "Admin") {
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/dashboard");
+    }
+  };
   const goToLogin = () => navigate("/");
   const goToRegister = () => navigate("/register");
 
-  return { goToPlans, goToDashboard, goToLogin,goToRegister };
+  return { goToPlans, goToDashboard, goToLogin, goToRegister };
 };

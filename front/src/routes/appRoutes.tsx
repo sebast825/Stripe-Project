@@ -3,6 +3,7 @@ import Login from "../pages/login";
 import Dashboard from "../pages/dashboard";
 import { PlansPage } from "../pages/plansPage";
 import RegisterPage from "../pages/registerPage";
+import DashboardAdminPage from "../pages/admin/DashboardAdminPage";
 
 export const AppRoutes = () => (
   <Routes>
@@ -10,5 +11,7 @@ export const AppRoutes = () => (
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/plans" element={<PlansPage />} />
     <Route path="/register" element={<RegisterPage />} />
+        <Route path="/admin/dashboard" element={<DashboardAdminPage />} />
+
   </Routes>
 );

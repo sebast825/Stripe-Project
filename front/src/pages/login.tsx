@@ -14,8 +14,8 @@ function Login() {
   async function handleSubmit(e: React.FormEvent<HTMLButtonElement>) {
     e.preventDefault();
     try {
-      await login({ email, password });
-      goToDashboard();
+      var rsta = await login({ email, password });
+      goToDashboard(rsta.user.role);
     } catch (err: any) {
       if (err.status === 401) {
         error(errorMessages.AUTH_INVALID_CREDENTIALS);
