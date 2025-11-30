@@ -76,19 +76,8 @@ namespace Aplication.Services
         {
             PagedResult<SubscriptionPaymentRecord?> rsta = await _subscriptionPaymentRecordRepository.GetPagedByUserIdAsync(userId, page, pageSize);
             List<SubscriptionPaymentRecordResponseDto> dataMapped = rsta.Data.Select(x => SubscriptionPaymentRecordMapper.ToResponse(x)).ToList();
-            return new PagedResponseDto<SubscriptionPaymentRecordResponseDto>
-            {
-                Data = dataMapped,
-                TotalItems = rsta.TotalItems,
-                Page = page,
-                PageSize = pageSize,
-                // Round up in case the division has decimals 
-                TotalPages = (int)Math.Ceiling(rsta.TotalItems / (double)pageSize)
-
-            };
+            return PagedMapper.ToResponse(page, pageSize, rsta.TotalItems, dataMapped);                
         }
-
-
     }
 }
 

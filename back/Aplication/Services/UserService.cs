@@ -28,16 +28,8 @@ namespace Aplication.Services
         public async Task<PagedResponseDto<UserWithSubscriptionResponseDto>> GetPagedAsync(int page, int pageSize, string? searchTerm)
         {
             PagedResult<UserWithSubscriptionResponseDto> rsta = await _userRepository.GetPagedAsync(page, pageSize, searchTerm);
-          
-            return new PagedResponseDto<UserWithSubscriptionResponseDto>
-            {
-                Data = rsta.Data,
-                TotalItems = rsta.TotalItems,
-                Page = page,
-                PageSize = pageSize,
-                // Round up in case the division has decimals 
-                TotalPages = (int)Math.Ceiling(rsta.TotalItems / (double)pageSize)
-            };
+            return PagedMapper.ToResponse(page, pageSize, rsta.TotalItems,rsta.Data.ToList());
+    
         }
         public async Task<UserResponseDto> AddAsync(UserCreateRequestDto userCreateDto)
         {

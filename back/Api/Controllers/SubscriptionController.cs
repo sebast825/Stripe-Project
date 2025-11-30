@@ -70,7 +70,7 @@ namespace Api.Controllers
             var rsta = await _userSubscriptionService.GetByUserId(userId);
             return Ok(rsta);
         }
-      [Authorize(Roles =nameof(UserRole.Admin))]
+         [Authorize(Roles =nameof(UserRole.Admin))]
 
         [HttpGet("/api/admin/users/{userId:int}/subscriptions-payments")]
         public async Task<IActionResult> GetSubscriptionPaymentRecordByUser(int userId, [FromQuery] int page = 0, [FromQuery] int pageSize = 10)

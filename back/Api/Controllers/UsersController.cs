@@ -1,11 +1,13 @@
-﻿using Core.Dto.User;
-using Core.Entities;
+﻿using Aplication.Dto;
 using Aplication.Interfaces.Services;
+using Aplication.Services;
+using Aplication.UseCases.Users;
+using Core.Dto.User;
+using Core.Entities;
+using Core.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Aplication.UseCases.Users;
-using Aplication.Services;
-using Aplication.Dto;
 
 namespace Api.Controllers
 {
@@ -30,6 +32,9 @@ namespace Api.Controllers
                 return Ok();
           
         }
+
+        [Authorize(Roles = nameof(UserRole.Admin))]
+
         [HttpGet]
         public async Task<ActionResult<PagedResponseDto<UserWithSubscriptionResponseDto>>> GetPaginated(
             [FromQuery] int page, [FromQuery] int pageSize, [FromQuery] string? searchTerm)
