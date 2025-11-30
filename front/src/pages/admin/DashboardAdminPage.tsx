@@ -4,12 +4,14 @@ import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
 import PaginationBtns from "../../components/paginationBtns";
 import { usePagination } from "../../hooks/usePagination";
+import InputRegex from "../../components/InputRegex";
+import { useState } from "react";
 
 function DashboardAdminPage() {
   const user = useUserStore((state) => state.user);
+  const [fraseRegex, setFraseRegex] = useState<string>("");
   const { page, pageSize, goToPage } = usePagination();
-  const { data: users } = useGetUsers(page, pageSize, "s");
-
+  const { data: users } = useGetUsers(page, pageSize, fraseRegex);
 
   return (
     <>
@@ -18,7 +20,10 @@ function DashboardAdminPage() {
           <h1 className="fw-bold">Bienvenido {user?.fullName}!</h1>
           <p>Panel Administrador</p>
         </div>
-     
+         <div className="w-100 ">
+      <h2 className="mb-3 border-bottom">Usuarios</h2>
+      </div>
+        <InputRegex onFraseRegexChage={setFraseRegex} placeholder="Buscar usuario por nombre" />
         <Table striped bordered hover>
           <thead>
             <tr className="text-center">
@@ -41,7 +46,7 @@ function DashboardAdminPage() {
             ))}
           </tbody>
         </Table>
-           <PaginationBtns
+        <PaginationBtns
           page={page}
           totalPages={users?.totalPages}
           goToPage={goToPage}
