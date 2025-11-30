@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/client";
 import { useMutation } from "@tanstack/react-query";
+import useToastit from "../useToastit";
+import { successMessages } from "../../constants/successMessages";
+import { errorMessages } from "../../constants/errorMessages";
 
 export const useRegister = () => {
   const navigate = useNavigate();
+  const {success,error} = useToastit();
   return useMutation({
     mutationFn: async ({
       email,
@@ -21,12 +25,12 @@ export const useRegister = () => {
       });
     },
     onSuccess: () => {
-      alert("Usuario creado con éxito");
+      success(successMessages.USER_CREATE_SUCCESS)
       navigate("/");
     },
-    onError: (error: unknown) => {
-      console.error("Error al crear el usuario", error);
-      alert("Error al crear el usuario");
+    onError: (err: unknown) => {
+      console.log(err);
+      error(errorMessages.USER_CREATE_ERROR);
     },
   });
 };
