@@ -2,8 +2,8 @@
 import axios from "axios";
 import { useAuthStore } from "../states/auth/auth.store";
 const apiClient = axios.create({
-  baseURL: "https://bhx92f9r-7098.brs.devtunnels.ms/api",
-  //baseURL: 'https://localhost:7098/api',
+  //baseURL: "https://bhx92f9r-7098.brs.devtunnels.ms/api",
+  baseURL: "https://localhost:7098/api",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -25,7 +25,11 @@ apiClient.interceptors.response.use(
   async (error) => {
     const original = error.config;
 
-    if (error.response?.status === 401 && !original._retry) {
+    if (
+      error.response?.status === 401 &&
+      !original._retry &&
+      !original.url?.includes("/login")
+    ) {
       original._retry = true;
 
       try {
@@ -41,7 +45,7 @@ apiClient.interceptors.response.use(
       } catch (err) {
         //logout if refresh token also fails
         //in app is a hook that will redirect to login
-          useAuthStore.getState().logout();
+        useAuthStore.getState().logout();
 
         return Promise.reject(err);
       }
