@@ -25,14 +25,13 @@ namespace Aplication.Services
 
             _userRepository = userRepository;
         }
-        public async Task<PagedResponseDto<UserResponseDto>> GetPagedAsync(int page, int pageSize, string? searchTerm)
+        public async Task<PagedResponseDto<UserWithSubscriptionResponseDto>> GetPagedAsync(int page, int pageSize, string? searchTerm)
         {
-            PagedResult<User> rsta = await _userRepository.GetPagedAsync(page, pageSize, searchTerm);
+            PagedResult<UserWithSubscriptionResponseDto> rsta = await _userRepository.GetPagedAsync(page, pageSize, searchTerm);
           
-            List<UserResponseDto> userResponseList = rsta.Data.Select(x => UserMapper.ToResponseDto(x)).ToList();
-            return new PagedResponseDto<UserResponseDto>
+            return new PagedResponseDto<UserWithSubscriptionResponseDto>
             {
-                Data = userResponseList,
+                Data = rsta.Data,
                 TotalItems = rsta.TotalItems,
                 Page = page,
                 PageSize = pageSize,

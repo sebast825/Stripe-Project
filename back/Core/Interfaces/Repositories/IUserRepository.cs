@@ -1,4 +1,5 @@
 ﻿using Core.Dto;
+using Core.Dto.User;
 using Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,6 @@ namespace Core.Interfaces.Repositories
         Task<User?> GetByEmailAsync(string email);
 
         Task<int?> GetIdByStripeCustomerId(string stipeId);
-        Task<PagedResult<User>> GetPagedAsync(int page, int pageSize, string? searchTerm);
+        Task<PagedResult<UserWithSubscriptionResponseDto>> GetPagedAsync(int page, int pageSize, string? searchTerm);
 }
 }

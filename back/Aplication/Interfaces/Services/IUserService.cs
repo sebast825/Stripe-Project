@@ -12,7 +12,7 @@ namespace Aplication.Interfaces.Services
 {
     public interface IUserService
     {
-        Task<PagedResponseDto<UserResponseDto>> GetPagedAsync(int page, int pageSize, string? searchTerm);
+        Task<PagedResponseDto<UserWithSubscriptionResponseDto>> GetPagedAsync(int page, int pageSize, string? searchTerm);
         Task<UserResponseDto> AddAsync(UserCreateRequestDto userCreateDto);
         Task<UserResponseDto> UpdateStripeCustomerId(int userId, string stripeCustomerId);
         Task<UserResponseDto> ValidateCredentialsAsync(LoginRequestDto loginDto);

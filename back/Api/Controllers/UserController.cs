@@ -31,7 +31,8 @@ namespace Api.Controllers
           
         }
         [HttpGet]
-        public async Task<ActionResult<PagedResponseDto<UserResponseDto>>> GetPaginated([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] string? searchTerm)
+        public async Task<ActionResult<PagedResponseDto<UserWithSubscriptionResponseDto>>> GetPaginated(
+            [FromQuery] int page, [FromQuery] int pageSize, [FromQuery] string? searchTerm)
         {
 
             var rsta = await _userService.GetPagedAsync(page,pageSize,searchTerm);

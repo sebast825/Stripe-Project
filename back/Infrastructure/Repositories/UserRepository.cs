@@ -1,5 +1,6 @@
 ﻿using Aplication.Dto;
 using Core.Dto;
+using Core.Dto.User;
 using Core.Entities;
 using Core.Interfaces.Repositories;
 using Infrastructure.Data;
@@ -42,25 +43,33 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<PagedResult<User>> GetPagedAsync(int page, int pageSize, string? searchTerm)
+        public async Task<PagedResult<UserWithSubscriptionResponseDto>> GetPagedAsync(int page, int pageSize, string? searchTerm)
         {
             int skipAmount = (page - 1) * pageSize;
             if (skipAmount < 0) skipAmount = 0;
 
-            var query = _dataContext.Set<User>()
-                .AsQueryable();
 
-            if (searchTerm != null)
+            var query = from u in _dataContext.Users
+                        join s in _dataContext.UserSubscriptions on u.StripeCustomerId equals s.StripeCustomerId
+                        into subs
+                        let sub = subs.OrderByDescending(x => x.CreatedAt).FirstOrDefault()
+                        select new UserWithSubscriptionResponseDto { Id = u.Id, FullName = u.FullName, Plan = sub.Plan, Status = sub.Status };
+
+
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(x => x.FullName.Contains(searchTerm));
+                query = query.Where(x => (x.FullName).Contains(searchTerm));
             }
+
             var totalItems = await query.CountAsync();
             var data = await query
+              .OrderBy(x => x.FullName)
               .Skip(skipAmount)
               .Take(pageSize)
+              .AsNoTracking()
               .ToListAsync();
 
-            return new PagedResult<User>
+            return new PagedResult<UserWithSubscriptionResponseDto>
             {
                 Data = data,
                 TotalItems = totalItems
