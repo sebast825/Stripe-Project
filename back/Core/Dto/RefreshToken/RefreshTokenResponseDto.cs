@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Core.Dto.RefreshToken
         public string Token { get; set; } = null!;
         public DateTime ExpiresAt { get; set; }
         public bool Revoked { get; set; } = false;
+        public UserRole Role { get; set; }
 
     }
 }

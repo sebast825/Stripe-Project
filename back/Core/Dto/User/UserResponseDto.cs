@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,6 @@ namespace Core.Dto.User
         public required int Id { get; set; }
         public string FullName { get; set; }
         public string StripeCustomerId { get; set; }
-
+        public UserRole Role { get; set; }
     }
 }

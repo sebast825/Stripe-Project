@@ -22,6 +22,7 @@ using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 using Aplication.UseCases.Auth;
+using Core.Enums;
 
 namespace Tests.UseCases
 {
@@ -72,12 +73,12 @@ namespace Tests.UseCases
             // Arrange
             int userId = 1;
             var loginDto = new LoginRequestDto { Email = "test@test.com", Password = "1234" };
-            var userResponse = new UserResponseDto { Id = userId, FullName = "Carmelo Sanchez" };
+            var userResponse = new UserResponseDto { Id = userId, FullName = "Carmelo Sanchez" ,Role= UserRole.User};
 
             _mockEmailAttemptsService.Setup(s => s.EmailIsBlocked(loginDto.Email)).Returns(false);
             _mockUserServices.Setup(s => s.ValidateCredentialsAsync(loginDto))
                 .ReturnsAsync(userResponse);
-            _mockJwtService.Setup(s => s.GenerateAccessToken(userResponse.Id.ToString()))
+            _mockJwtService.Setup(s => s.GenerateAccessToken(userResponse.Id.ToString(),userResponse.Role))
                 .Returns("jwt_token");
             _mockRefreshTokenService.Setup(s => s.CreateRefreshToken(userResponse.Id))
                 .Returns(new RefreshToken { Token = "refresh_token" });
@@ -154,9 +155,9 @@ namespace Tests.UseCases
             string refreshToken = "refresh";
             string acessToken2 = "acess";
             int userId = 1;
-            RefreshTokenResponseDto refreshTokenDto = new RefreshTokenResponseDto { Token = refreshToken, UserId = userId, ExpiresAt = DateTime.UtcNow.AddDays(2) };
+            RefreshTokenResponseDto refreshTokenDto = new RefreshTokenResponseDto { Token = refreshToken, UserId = userId, ExpiresAt = DateTime.UtcNow.AddDays(2),Role = UserRole.Admin };
             _mockRefreshTokenService.Setup(s => s.GetValidRefreshTokenAsync(refreshToken)).ReturnsAsync(refreshTokenDto);
-            _mockJwtService.Setup(s => s.GenerateAccessToken(userId.ToString())).Returns(acessToken2);
+            _mockJwtService.Setup(s => s.GenerateAccessToken(userId.ToString(), refreshTokenDto.Role)).Returns(acessToken2);
 
             string acessToken = await _authUseCase.GenerateNewAccessTokenAsync(refreshToken);
 

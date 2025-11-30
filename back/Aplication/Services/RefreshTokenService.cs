@@ -74,8 +74,8 @@ namespace Aplication.Services
                     UserId = refreshTokenEntity.UserId,
                     ExpiresAt = refreshTokenEntity.ExpiresAt,
                     Revoked = refreshTokenEntity.Revoked,
-                    Token = refreshTokenEntity.Token
-
+                    Token = refreshTokenEntity.Token,
+                    Role = refreshTokenEntity.User.Role
                 };
         }
         private string GenerateRefreshToken()

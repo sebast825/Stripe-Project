@@ -28,7 +28,9 @@ namespace Infrastructure.Repositories
 
         public async Task<RefreshToken?> GetAsync(Expression<Func<RefreshToken, bool>> predicate)
         {
-            return await _dataContext.Set<RefreshToken>().FirstOrDefaultAsync(predicate);
+            return await _dataContext.Set<RefreshToken>()
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(predicate);
 
         }
 

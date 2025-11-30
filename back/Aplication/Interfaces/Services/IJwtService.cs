@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace Aplication.Interfaces.Services
 {
     public interface IJwtService
     {
-        public string GenerateAccessToken(string id);
+       // public string GenerateAccessToken(string id);
+        public string GenerateAccessToken(string id, UserRole role);
+
     }
 }

@@ -1,5 +1,6 @@
-﻿using Core.Entities;
-using Aplication.Interfaces.Services;
+﻿using Aplication.Interfaces.Services;
+using Core.Entities;
+using Core.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,7 +20,7 @@ namespace Aplication.Services
         public JwtService(IConfiguration configuration) {
             _configuration = configuration;
         }
-        public string GenerateAccessToken(string id)
+        public string GenerateAccessToken(string id,UserRole role)
         {         
             var claims = new[]
             {
@@ -29,6 +30,7 @@ namespace Aplication.Services
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 // Issued At (en formato Unix timestamp)
                 new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
+                new Claim(ClaimTypes.Role, role.ToString())
             };
 
             // Generar la clave de firma a partir del secreto de configuración

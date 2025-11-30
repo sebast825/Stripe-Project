@@ -64,7 +64,7 @@ namespace Aplication.UseCases.Auth
 
             RefreshTokenResponseDto refreshTokenResponse = await _refreshTokenService.GetValidRefreshTokenAsync(refreshToken);
 
-            string accessToken = _jwtService.GenerateAccessToken(refreshTokenResponse.UserId.ToString());
+            string accessToken = _jwtService.GenerateAccessToken(refreshTokenResponse.UserId.ToString(), refreshTokenResponse.Role);
             return accessToken;
 
         }
@@ -120,7 +120,7 @@ namespace Aplication.UseCases.Auth
         }
         private async Task<AuthResponseDto> HandleTokenAsync(UserResponseDto userResponseDto)
         {
-            string jwtToken = _jwtService.GenerateAccessToken(userResponseDto.Id.ToString());
+            string jwtToken = _jwtService.GenerateAccessToken(userResponseDto.Id.ToString(),userResponseDto.Role);
             await _refreshTokenService.RevokeRefreshTokenIfExistAsync(userResponseDto.Id);
             RefreshToken refreshToken = _refreshTokenService.CreateRefreshToken(userResponseDto.Id);
             await _refreshTokenService.AddAsync(refreshToken);

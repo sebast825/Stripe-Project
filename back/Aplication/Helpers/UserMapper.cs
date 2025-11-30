@@ -16,7 +16,8 @@ namespace Aplication.Helpers
             {
                 Id = user.Id,
                 FullName = user.FullName,
-                StripeCustomerId = user.StripeCustomerId
+                StripeCustomerId = user.StripeCustomerId,
+                Role = user.Role               
 
             };
         }
