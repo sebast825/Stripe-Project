@@ -1,4 +1,6 @@
-﻿using Core.Entities;
+﻿using Aplication.Dto;
+using Core.Dto;
+using Core.Entities;
 using Core.Interfaces.Repositories;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +21,11 @@ namespace Infrastructure.Repositories
             _dataContext = dataContext;
         }
 
+        public Task<int> CountAsync(string? searchTerm)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await _dataContext.Set<User>()
@@ -33,6 +40,31 @@ namespace Infrastructure.Repositories
                 .Where(u => u.StripeCustomerId == stipeId)
                 .Select(x => x.Id)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<PagedResult<User>> GetPagedAsync(int page, int pageSize, string? searchTerm)
+        {
+            int skipAmount = (page - 1) * pageSize;
+            if (skipAmount < 0) skipAmount = 0;
+
+            var query = _dataContext.Set<User>()
+                .AsQueryable();
+
+            if (searchTerm != null)
+            {
+                query = query.Where(x => x.FullName.Contains(searchTerm));
+            }
+            var totalItems = await query.CountAsync();
+            var data = await query
+              .Skip(skipAmount)
+              .Take(pageSize)
+              .ToListAsync();
+
+            return new PagedResult<User>
+            {
+                Data = data,
+                TotalItems = totalItems
+            };
         }
     }
 }

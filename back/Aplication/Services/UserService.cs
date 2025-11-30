@@ -1,6 +1,8 @@
-﻿using Aplication.Helpers;
+﻿using Aplication.Dto;
+using Aplication.Helpers;
 using Aplication.Interfaces.Services;
 using Core.Constants;
+using Core.Dto;
 using Core.Dto.Auth;
 using Core.Dto.User;
 using Core.Entities;
@@ -11,6 +13,7 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Aplication.Services
 {
@@ -22,7 +25,21 @@ namespace Aplication.Services
 
             _userRepository = userRepository;
         }
-
+        public async Task<PagedResponseDto<UserResponseDto>> GetPagedAsync(int page, int pageSize, string? searchTerm)
+        {
+            PagedResult<User> rsta = await _userRepository.GetPagedAsync(page, pageSize, searchTerm);
+          
+            List<UserResponseDto> userResponseList = rsta.Data.Select(x => UserMapper.ToResponseDto(x)).ToList();
+            return new PagedResponseDto<UserResponseDto>
+            {
+                Data = userResponseList,
+                TotalItems = rsta.TotalItems,
+                Page = page,
+                PageSize = pageSize,
+                // Round up in case the division has decimals 
+                TotalPages = (int)Math.Ceiling(rsta.TotalItems / (double)pageSize)
+            };
+        }
         public async Task<UserResponseDto> AddAsync(UserCreateRequestDto userCreateDto)
         {
             User user = new User { Email = userCreateDto.Email, Password = userCreateDto.Password, FullName = userCreateDto.FullName };

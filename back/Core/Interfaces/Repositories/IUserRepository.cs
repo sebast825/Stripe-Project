@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Core.Dto;
+using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace Core.Interfaces.Repositories
         Task<User?> GetByEmailAsync(string email);
 
         Task<int?> GetIdByStripeCustomerId(string stipeId);
-
-    }
+        Task<PagedResult<User>> GetPagedAsync(int page, int pageSize, string? searchTerm);
+}
 }

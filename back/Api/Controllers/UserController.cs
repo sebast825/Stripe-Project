@@ -4,6 +4,8 @@ using Aplication.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Aplication.UseCases.Users;
+using Aplication.Services;
+using Aplication.Dto;
 
 namespace Api.Controllers
 {
@@ -12,10 +14,12 @@ namespace Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly CreateUserUseCase _createUserUseCase;
+        private readonly IUserService _userService;
 
-        public UserController(CreateUserUseCase createUserUseCase)
+          public UserController(CreateUserUseCase createUserUseCase, IUserService userService)
         {
             _createUserUseCase = createUserUseCase;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -25,6 +29,15 @@ namespace Api.Controllers
                 await _createUserUseCase.ExecuteAsync(userCreateDto);
                 return Ok();
           
+        }
+        [HttpGet]
+        public async Task<ActionResult<PagedResponseDto<UserResponseDto>>> GetPaginated([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] string? searchTerm)
+        {
+
+            var rsta = await _userService.GetPagedAsync(page,pageSize,searchTerm);
+          
+            return Ok(rsta);
+
         }
     }
 }
