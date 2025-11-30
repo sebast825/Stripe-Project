@@ -17,7 +17,7 @@ const PaginationBtns = ({ page,totalPages, goToPage }:PaginationBtnsProps) => {
              goToPage(page-1);
       }
    }
-
+if(totalPages <=1)return;
   return(
   <>
     <Container className="w-100 d-flex align-items-center justify-content-around p-2 " style={{maxWidth:"200px"}}>
