@@ -1,17 +1,8 @@
-import { useGetUsers } from "../../hooks/useGetUsers";
 import { useUserStore } from "../../states/auth/user.store";
-import Table from "react-bootstrap/Table";
-import { Link } from "react-router-dom";
-import PaginationBtns from "../../components/paginationBtns";
-import { usePagination } from "../../hooks/usePagination";
-import InputRegex from "../../components/inputRegex";
-import { useState } from "react";
+import { UsersubscriptionsTable } from "../../components/tables/userSubscriptionsTable";
 
 function DashboardAdminPage() {
   const user = useUserStore((state) => state.user);
-  const [fraseRegex, setFraseRegex] = useState<string>("");
-  const { page, pageSize, goToPage } = usePagination();
-  const { data: users } = useGetUsers(page, pageSize, fraseRegex);
 
   return (
     <>
@@ -23,50 +14,7 @@ function DashboardAdminPage() {
         <div className="w-100 ">
           <h2 className="mb-3 border-bottom">Usuarios</h2>
         </div>
-        <InputRegex
-          onFraseRegexChage={setFraseRegex}
-          placeholder="Buscar usuario por nombre"
-        />
-
-        <Table striped bordered hover style={{ overflowX: "hidden" }}>
-          <thead>
-            <tr className="text-center">
-              <th>Nombre</th>
-              <th>Plan</th>
-              <th>Estado</th>
-              <th>Historial</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users?.data.map((u: any) => (
-              <tr key={u.id} className="text-center">
-                <td
-                  className="text-left"
-                  style={{
-                    maxWidth: "120px",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {u.fullName}
-                </td>
-                <td>{u.plan}</td>
-                <td>{u.status}</td>
-                <td className="text-center">
-                  <Link to={`/users/${u.id}`} state={{ userName: u.fullName }}>
-                    Ver
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-        <PaginationBtns
-          page={page}
-          totalPages={users?.totalPages}
-          goToPage={goToPage}
-        />
+        <UsersubscriptionsTable /> 
       </div>
     </>
   );

@@ -2,17 +2,21 @@ import { useParams } from "react-router-dom";
 import { useGetSubscriptionPayments } from "../../hooks/subscription/useGetSubscriptionPayments";
 import { Table } from "react-bootstrap";
 import type { SubscriptionPaymentDto } from "../../types/SubscriptionPaymentDto.types";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { usePagination } from "../../hooks/usePagination";
 import PaginationBtns from "../../components/paginationBtns";
 
 export const UserDetailPage = () => {
-     const location = useLocation();
-  const { page, pageSize, goToPage} = usePagination();
+  const location = useLocation();
   const { id } = useParams<{ id: string }>();
-    const userName = location.state?.userName || 'NameEmpty';
+  const { page, pageSize, goToPage } = usePagination();
+  const userName = location.state?.userName || "NameEmpty";
 
-  const { data: payments } = useGetSubscriptionPayments(Number(id),page,pageSize);
+  const { data: payments } = useGetSubscriptionPayments(
+    Number(id),
+    page,
+    pageSize
+  );
   return (
     <>
       <div className=" margin-top  d-flex flex-column justify-content-center align-items-center w-100 p-3 p-sm-5 ">
@@ -34,8 +38,7 @@ export const UserDetailPage = () => {
           <tbody>
             {payments?.data
               ?.filter(
-                (payment): payment is SubscriptionPaymentDto =>
-                  payment !== null
+                (payment): payment is SubscriptionPaymentDto => payment !== null
               )
               .map((payment, index) => (
                 <tr key={index} className="text-center">
@@ -85,7 +88,7 @@ export const UserDetailPage = () => {
               ))}
           </tbody>
         </Table>
-           <PaginationBtns
+        <PaginationBtns
           page={page}
           totalPages={payments?.totalPages!}
           goToPage={goToPage}
