@@ -4,6 +4,7 @@ using Aplication.Interfaces.Payments;
 using Aplication.Interfaces.Services;
 using Aplication.Interfaces.Stripe;
 using Aplication.Services;
+using Aplication.UseCases.Admin;
 using Aplication.UseCases.Auth;
 using Aplication.UseCases.Billing;
 using Aplication.UseCases.Subscriptions;
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository > ();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IUserLoginHistoryRepository, UserLoginHistoryRepository>();
 builder.Services.AddScoped<ISecurityLoginAttemptRepository,SecurityLoginAttemptRepository>();
+builder.Services.AddScoped<IStatsReadRepository, StatsReadRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtService,JwtService> ();
@@ -51,7 +53,8 @@ builder.Services.AddScoped<IUserSubscriptionService, UserSubscriptionService>();
 builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
 
 builder.Services.AddScoped<SubscribeUserUseCase>(); 
-builder.Services.AddScoped<GetCustomerBillingPortalUrlUseCase>(); 
+builder.Services.AddScoped<GetCustomerBillingPortalUrlUseCase>();
+builder.Services.AddScoped<GetAdminDashboardStatsUseCase>();
 
 builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionCreatedHandler>(); 
 builder.Services.AddScoped<IStripeWebhookHandler, SubscriptionUpdatedHandler>();
