@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { PlansList } from "../components/PlansList";
 import { usePlans } from "../hooks/subscription/usePlans";
 import { useCreateSubscriptionCheckout } from "../hooks/subscription/useCreateSubscriptionCheckout";
-import BackLink from "../components/BackLink";
+import BackLink from "../components/buttons/backLink";
 
 export function PlansPage() {
   const { data: plans, isLoading, error } = usePlans();

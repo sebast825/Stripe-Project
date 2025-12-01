@@ -1,6 +1,7 @@
 import { useParams, useLocation } from "react-router-dom";
 import { UserPaymentsTable } from "../../components/tables/userPaymentsTable";
-import BackLink from "../../components/BackLink";
+import BackLink from "../../components/buttons/backLink";
+
 
 export const UserDetailPage = () => {
   const location = useLocation();

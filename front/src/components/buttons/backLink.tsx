@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import { useRedirect } from "../hooks/useRedirect";
+import { useRedirect } from "../../hooks/useRedirect";
 
 interface IBackLink {
   variant?: string;
