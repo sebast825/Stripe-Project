@@ -1,5 +1,6 @@
 import { useUserStore } from "../../states/auth/user.store";
 import { UsersubscriptionsTable } from "../../components/tables/userSubscriptionsTable";
+import AdminDashboardStats from "../../components/adminStats";
 
 function DashboardAdminPage() {
   const user = useUserStore((state) => state.user);
@@ -10,7 +11,9 @@ function DashboardAdminPage() {
         <div className="bg-primary text-white text-center py-5 rounded-3 mb-4 w-100">
           <h1 className="fw-bold">Bienvenido {user?.fullName}!</h1>
           <p>Panel Administrador</p>
-        </div>
+        </div>      
+          <AdminDashboardStats/>
+
         <div className="w-100 ">
           <h2 className="mb-3 border-bottom">Usuarios</h2>
         </div>
