@@ -1,11 +1,11 @@
-import { useParams ,useLocation} from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { UserPaymentsTable } from "../../components/tables/userPaymentsTable";
+import BackLink from "../../components/BackLink";
 
 export const UserDetailPage = () => {
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
   const userName = location.state?.userName || "NameEmpty";
-
 
   return (
     <>
@@ -14,7 +14,8 @@ export const UserDetailPage = () => {
           <h1 className="fw-bold">Detalles de {userName}!</h1>
           <p>Panel Administrador</p>
         </div>
-        <UserPaymentsTable id={Number(id)}/>
+        <UserPaymentsTable id={Number(id)} />
+        <BackLink />
       </div>
     </>
   );

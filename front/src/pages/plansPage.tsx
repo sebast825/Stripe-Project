@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { PlansList } from "../components/PlansList";
 import { usePlans } from "../hooks/subscription/usePlans";
 import { useCreateSubscriptionCheckout } from "../hooks/subscription/useCreateSubscriptionCheckout";
-
+import BackLink from "../components/BackLink";
 
 export function PlansPage() {
   const { data: plans, isLoading, error } = usePlans();
@@ -11,15 +11,12 @@ export function PlansPage() {
     isSuccess,
     data,
     isPending: isCreatingCheckout,
-    
   } = useCreateSubscriptionCheckout();
   useEffect(() => {
     if (isSuccess && data) {
       window.open(data, "_blank");
     }
   }, [isSuccess, data]);
-
-
 
   if (isLoading) return <p>Cargando...</p>;
   if (error) return;
@@ -28,7 +25,12 @@ export function PlansPage() {
       <div className="bg-primary text-white text-center py-5 rounded-3 mb-4 w-100">
         <h1 className="fw-bold">Nuestros Planes</h1>
       </div>
-      <PlansList plans={plans} onSelect={createCheckout} isPending={isCreatingCheckout}/>
+      <PlansList
+        plans={plans}
+        onSelect={createCheckout}
+        isPending={isCreatingCheckout}
+      />
+      <BackLink />
     </div>
   );
 }

@@ -13,6 +13,7 @@ export const useRedirect = () => {
   };
   const goToLogin = () => navigate("/");
   const goToRegister = () => navigate("/register");
+  const goToPreviousPage = () => navigate(-1);
 
-  return { goToPlans, goToDashboard, goToLogin, goToRegister };
+  return { goToPlans, goToDashboard, goToLogin, goToRegister,goToPreviousPage };
 };
