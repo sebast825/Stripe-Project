@@ -15,5 +15,8 @@ namespace Core.Dto.UserSubscription
         public string Status { get; set; }
         public bool CancelAtPeriodEnd { get; set; }
         public DateTime? CanceledAt { get; set; }
+        public decimal Price { get; set; }
+
+        
     }
 }

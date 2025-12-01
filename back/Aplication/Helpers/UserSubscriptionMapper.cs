@@ -33,7 +33,8 @@ namespace Aplication.Helpers
                 Status = parsed,
                 StartDate = item.CurrentPeriodStart,
                 CurrentPeriodEnd = item.CurrentPeriodEnd,
-                PlanId = item.Plan.Id
+                PlanId = item.Plan.Id,
+                Price = GetUsdFromDecimal(item.Price.UnitAmountDecimal)
 
             };
         }
@@ -48,7 +49,8 @@ namespace Aplication.Helpers
                 StartDate = subscriptionDto.StartDate,
                 CurrentPeriodEnd = subscriptionDto.CurrentPeriodEnd,
                 Plan = plan,
-                Status = subscriptionDto.Status
+                Status = subscriptionDto.Status,
+                Price = subscriptionDto.Price 
             }
             ;
         }
@@ -71,6 +73,7 @@ namespace Aplication.Helpers
             entity.Status = ParseSubscriptionStatus(dto.Status);
             entity.CancelAtPeriodEnd = dto.CancelAtPeriodEnd;
             entity.CanceledAt = dto.CanceledAt;
+            entity.Price = dto.Price;
             entity.StripeSubscriptionId = dto.StripeSubscriptionId;
             entity.Plan = planType;
 
@@ -91,9 +94,9 @@ namespace Aplication.Helpers
                 StartDate = item.CurrentPeriodStart,
                 CurrentPeriodEnd = item.CurrentPeriodEnd,
                 CancelAtPeriodEnd = subscription.CancelAtPeriodEnd,
-                CanceledAt = subscription.CanceledAt.HasValue
-                    ? subscription.CanceledAt.Value
-                    : (DateTime?)null
+                CanceledAt = subscription.CanceledAt ?? null,
+                Price = GetUsdFromDecimal(item.Price.UnitAmountDecimal)
+
             };
         }
 
@@ -110,6 +113,14 @@ namespace Aplication.Helpers
                 parsedStatus = SubscriptionStatus.Unknow;
             }
             return parsedStatus;
+        }
+
+
+        private static decimal GetUsdFromDecimal(decimal? price)
+        {
+            //the price may be undefined depending of wich kind of billing we are using
+            if (price == null) return 0;
+            return price.Value / 100m;
         }
     }
 }

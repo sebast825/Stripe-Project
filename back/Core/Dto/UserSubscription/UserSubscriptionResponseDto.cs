@@ -13,5 +13,8 @@ namespace Core.Dto.UserSubscription
         public DateTime? StartDate { get; set; }
         public DateTime? CurrentPeriodEnd { get; set; }
         public string Status { get; set; }
+        public decimal Price { get; set; }
+
+        
     }
 }

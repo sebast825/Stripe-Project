@@ -16,6 +16,7 @@ namespace Aplication.Dto
 
         public SubscriptionStatus Status { get; set; }
         public string PlanId { get; set; }
+        public decimal Price { get; set; }
 
     }
 }

@@ -23,6 +23,7 @@ namespace Core.Entities
         public SubscriptionStatus Status { get; set; }
         public bool CancelAtPeriodEnd { get; set; } = false;
         public DateTime? CanceledAt { get; set; }
+        public decimal Price { get; set; }
 
     }
 }
