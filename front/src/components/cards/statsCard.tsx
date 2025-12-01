@@ -9,7 +9,7 @@ export const StatsCard = ({
 }) => {
   if (!estadistic) return null;
   return (
-    <Col md={4} style={{ maxWidth: "300px" }}>
+    <Col md={4} >
       <Card className="shadow-sm text-center">
         <Card.Body>
           <Card.Title> {title}</Card.Title>
