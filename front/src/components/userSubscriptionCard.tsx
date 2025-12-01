@@ -2,7 +2,7 @@ import { Card, Button } from "react-bootstrap";
 import type { userSubscriptionPlan } from "../types/userSubscriptionPlan.types";
 import { useEffect, useState } from "react";
 import { useGetBillingPortalUrl } from "../hooks/useGetBillingPortalUrl";
-import { ErrorMessage } from "./errorMessage";
+import { CardMessage } from "./cardMessage";
 import { errorMessages } from "../constants/errorMessages";
 
 interface UserSubscriptionCard {
@@ -29,7 +29,7 @@ export function UserSubscriptionCard({ plan }: UserSubscriptionCard) {
   }
   {
     !error && (
-      <ErrorMessage
+      <CardMessage
         message={errorMessages.genericMessage("al cargar el Portal de Usuario")}
       />
     );

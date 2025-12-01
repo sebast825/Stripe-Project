@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import InputRegex from "../inputRegex";
 import PaginationBtns from "../paginationBtns";
 
-import { ErrorMessage } from "../errorMessage";
+import { CardMessage } from "../cardMessage";
 import { useState } from "react";
 import { useGetUsers } from "../../hooks/useGetUsers";
 import { usePagination } from "../../hooks/usePagination";
@@ -20,7 +20,7 @@ export function UsersubscriptionsTable() {
       />
 
       {users?.totalItems === 0 ? (
-        <ErrorMessage message="No se encontraron usuarios" />
+        <CardMessage message="No se encontraron usuarios" />
       ) : (
         <Table striped bordered hover style={{ overflowX: "hidden" }}>
           <thead>

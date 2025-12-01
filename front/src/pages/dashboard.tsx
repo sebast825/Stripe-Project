@@ -5,7 +5,7 @@ import { useGetCurrentSubscription } from "../hooks/subscription/useGetCurrentSu
 import type { userSubscriptionPlan } from "../types/userSubscriptionPlan.types";
 import { UserSubscriptionCard } from "../components/userSubscriptionCard";
 import { useRedirect } from "../hooks/useRedirect";
-import { ErrorMessage } from "../components/errorMessage";
+import { CardMessage } from "../components/cardMessage";
 import { errorMessages } from "../constants/errorMessages";
 
 function Dashboard() {
@@ -20,7 +20,7 @@ function Dashboard() {
   }, [userPlan]);
   {
     !error && (
-      <ErrorMessage
+      <CardMessage
         message={errorMessages.genericMessage("al cargar la subscripción")}
       />
     );
