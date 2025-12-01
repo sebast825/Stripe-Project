@@ -12,7 +12,7 @@ export function UserPaymentsTable({ id }: { id: number }) {
   return (
     <>
       <div className="w-100 ">
-        <h2 className="mb-3 border-bottom">Mi Plan</h2>
+        <h2 className="mb-3 border-bottom">Historial de Pagos</h2>
       </div>
       {payments?.totalItems === 0 ? (
         <CardMessage
