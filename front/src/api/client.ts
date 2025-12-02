@@ -2,8 +2,8 @@
 import axios from "axios";
 import { useAuthStore } from "../states/auth/auth.store";
 const apiClient = axios.create({
-  //baseURL: "https://bhx92f9r-7098.brs.devtunnels.ms/api",
-  baseURL: "https://localhost:7098/api",
+  baseURL: "https://bhx92f9r-7098.brs.devtunnels.ms/api",
+  // baseURL: "https://localhost:7098/api",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -60,12 +60,22 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     // Normalize error format
-    const formattedError = {
-      status: error.response?.status,
-      message: error.response?.data?.message || "Error inesperado",
-      data: error.response?.data,
-    };
-
+    var formattedError;
+    //si if there is no conexion
+    if (!error.response) {
+      formattedError = {
+        status: error.code || "NETWORK_ERROR",
+        message: "No se pudo establecer conexión con el servidor",
+        data: error.response?.data,
+      };
+    } else {
+      //error from server
+      formattedError = {
+        status: error.response?.status,
+        message: error.response?.data?.message || "Error inesperado",
+        data: error.response?.data,
+      };
+    }
     return Promise.reject(formattedError);
   }
 );
