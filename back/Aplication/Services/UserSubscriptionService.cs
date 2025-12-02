@@ -33,7 +33,7 @@ namespace Aplication.Services
                 throw new InvalidOperationException(ErrorMessages.EntityNotFound("User", userSubscriptionDto.CustomerId));
 
            
-            SubscriptionPlan plan =   DemoPlans.GetByTypeByStripePriceId(userSubscriptionDto.PlanId);
+            SubscriptionPlan plan =   DemoPlans.GetByStripeId(userSubscriptionDto.PlanId);
             UserSubscription userSubscription = UserSubscriptionMapper.ToEntity(userId.Value, plan.PlanType, userSubscriptionDto);
             UserSubscription subscription = await _userSubscriptionRepository.AddAsync(userSubscription);
 
@@ -59,7 +59,7 @@ namespace Aplication.Services
             {
                 throw new KeyNotFoundException(ErrorMessages.EntityNotFound("UserSubscription",$"customerId {customerId}"));
             }
-            SubscriptionPlanType plan = DemoPlans.GetByTypeByStripePriceId(updateDto.StripeSubscriptionId).PlanType;
+            SubscriptionPlanType plan = DemoPlans.GetByStripeId(updateDto.StripeSubscriptionId).PlanType;
             UserSubscriptionMapper.ApplySubscriptionUpdate(subscription, updateDto,plan);
 
             await _userSubscriptionRepository.UpdateAsync(subscription);

@@ -30,7 +30,7 @@ namespace Aplication.Helpers
             return GetPlans().Select(plan => SubscriptionPlanMapper.ToResponse(plan)).ToList();
 
         }
-        public static List<SubscriptionPlan> GetPlans()
+        private static List<SubscriptionPlan> GetPlans()
         {
             return new List<SubscriptionPlan>{
                 new SubscriptionPlan
@@ -97,7 +97,7 @@ namespace Aplication.Helpers
             return GetPlans().FirstOrDefault(p => p.Id == planId)
                 ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound("SubscriptionPlan", planId));
         }
-        public static SubscriptionPlan GetByTypeByStripePriceId(string stripeId)
+        public static SubscriptionPlan GetByStripeId(string stripeId)
         {
             return GetPlans().FirstOrDefault(p => p.StripePriceId.Equals(stripeId))
                 ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound("SubscriptionPlan", stripeId));
