@@ -23,13 +23,15 @@ function DashboardAdminPage() {
           onClickButton2={() => setActiveSection("users")}
         ></ToggleButtons>
 
-        {activeSection === "stats" && <AdminDashboardStats />}
+        {activeSection === "stats" && (
+          <>
+            <div className=" border-bottom w-100"></div>
+            <AdminDashboardStats />
+          </>
+        )}
 
         {activeSection === "users" && (
           <>
-            <div className="w-100">
-              <h2 className="mb-3 border-bottom">Usuarios</h2>
-            </div>
             <UsersubscriptionsTable />
           </>
         )}
