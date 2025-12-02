@@ -26,9 +26,10 @@ const PlanDistributionGraphic = ( {planDistribution}: Props ) => {
   ).getPropertyValue("--bs-primary");
 
   return (
-    <div className="w-100 d-flex justify-content-center flex-column align-items-center p-3">
-      <h4>Cantidad de usuarios por plan</h4>
-      <BarChart width={300} height={300} data={chartData} margin={{ top: 20 }}>
+    <div className="w-100 d-flex justify-content-center flex-column align-items-center">
+      <h4 >Usuarios por Plan</h4>
+
+      <BarChart width={300} height={300} data={chartData} margin={{ top: 20 , left: -40}}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />

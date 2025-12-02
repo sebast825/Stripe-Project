@@ -16,33 +16,40 @@ const AdminStats = () => {
   };
 
   return (
-    <div className="p-3">
-      <Row className="g-3 d-flex justify-content-center">
-        <StatsCard
-          title="Ingresos Totales"
-          estadistic={"US$" + stats.totalRevenue}
-        />
-        <StatsCard
-          title="Ingresos Mensuales"
-          estadistic={"US$" + stats.estimatedMonthlyRevenue}
-        />
-        <StatsCard
-          title="Suscripciones Activas"
-          estadistic={stats.activeSubscriptions}
-        />
+    <div
+      className="p-3 d-flex flex-column flex-md-row gap-2 align-items-start"
+      style={{ maxWidth: "1200px" }}
+    >
+      <div className="w-100 d-flex">
+        <PlanDistributionGraphic planDistribution={stats.planDistribution} />
+      </div>
+      <div className="w-100 d-flex flex-column">
+        <h4 className="text-center ">Estadisticas</h4>
+        <Row className=" g-3 ">
+          <StatsCard
+            title="Ingresos Totales"
+            estadistic={"US$" + stats.totalRevenue}
+          />
+          <StatsCard
+            title="Ingresos Mensuales"
+            estadistic={"US$" + stats.estimatedMonthlyRevenue}
+          />
+          <StatsCard
+            title="Suscripciones Activas"
+            estadistic={stats.activeSubscriptions}
+          />
 
-        <StatsCard title="Usuarios Totales" estadistic={stats.totalUsers} />
-        <StatsCard
-          title="Suscripciones Totales"
-          estadistic={stats.totalSubscriptions}
-        />
-        <StatsCard
-          title="Suscripciones Canceladas"
-          estadistic={stats.canceledSubscriptions}
-        />
-      </Row>
-
-      <PlanDistributionGraphic planDistribution={stats.planDistribution} />
+          <StatsCard title="Usuarios Totales" estadistic={stats.totalUsers} />
+          <StatsCard
+            title="Suscripciones Totales"
+            estadistic={stats.totalSubscriptions}
+          />
+          <StatsCard
+            title="Suscripciones Canceladas"
+            estadistic={stats.canceledSubscriptions}
+          />
+        </Row>
+      </div>
     </div>
   );
 };
