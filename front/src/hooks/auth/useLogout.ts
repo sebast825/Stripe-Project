@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "../../states/auth/auth.store";
 import { useUserStore } from "../../states/auth/user.store";
 import { authService } from "../../services/authService";
+import { queryClient } from "../../states/queryClient";
 
 export const useLogout = () => {
 
@@ -16,6 +17,7 @@ export const useLogout = () => {
     onSuccess: () => {
       useUserStore.getState().clearUser();
       useAuthStore.getState().logout();
+        queryClient.clear();
     },
   });
 };
