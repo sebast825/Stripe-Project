@@ -24,7 +24,8 @@ function Dashboard() {
   const { data: userPlan, error } = useGetCurrentSubscription();
   const [unPlan, setUnPlan] = useState<userSubscriptionPlan | null>(null);
   const { goToPlans } = useRedirect();
-  const [currentPlanInfo, setCurrentPlanInfo] = useState<SubscriptionTestData | null>(null);
+  const [currentPlanInfo, setCurrentPlanInfo] =
+    useState<SubscriptionTestData | null>(null);
 
   function handlerCurrentPlanInfo() {
     const planId = planMapping[userPlan.plan.toLowerCase()];
@@ -55,16 +56,28 @@ function Dashboard() {
         <div className="bg-primary text-white text-center py-5 rounded-3 mb-4 w-100">
           <h1 className="fw-bold">Bienvenido {user?.fullName}!</h1>
         </div>
-        {currentPlanInfo && (
-          <ImageTextCard
-            title={currentPlanInfo.name}
-            content={currentPlanInfo.description}
-            imageUrl={currentPlanInfo.photoUrl}
-            altImg={currentPlanInfo.altText}
-            imageLeft={false}
-          ></ImageTextCard>
-        )}
 
+        {currentPlanInfo && (
+          <>
+            <div className="w-100 px-lg-5">
+              <h2 className="m-3 border-bottom">
+                Informacion del plan {currentPlanInfo.name}
+              </h2>
+              <ImageTextCard
+                title={""}
+                content={currentPlanInfo.description}
+                imageUrl={currentPlanInfo.photoUrl}
+                altImg={currentPlanInfo.altText}
+                imageLeft={false}
+              ></ImageTextCard>{" "}
+            </div>
+            <small className="mt-2 " style={{ opacity: 0.8 }}>
+              Vista simplificada para demostración. En una suscripción real,
+              cada plan incluye beneficios y características adicionales.
+            </small>
+          </>
+        )}
+        
         {unPlan && <UserSubscriptionCard plan={unPlan} />}
         <Button onClick={goToPlans}>Nuestros Planes</Button>
       </div>

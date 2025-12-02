@@ -36,7 +36,7 @@ export function UserSubscriptionCard({ plan }: UserSubscriptionCard) {
   }
 
   return (
-    <div className="w-100 px-lg-5">
+    <div className="w-100 px-lg-5 mt-3">
       <h2 className="mb-3 border-bottom">Mi Plan</h2>
       <Card
         className=" d-flex flex-column mx-auto mb-4"
