@@ -10,8 +10,8 @@ export const StatsCard = ({
   if (!estadistic) return null;
   return (
     <Col  >
-      <Card className="shadow-sm text-center">
-        <Card.Body>
+      <Card className="shadow-sm text-center h-100 ">
+        <Card.Body className="d-flex flex-column justify-content-center">
           <Card.Title> {title}</Card.Title>
 
           <h3 className="fw-bold text-primary"> {estadistic}</h3>
