@@ -13,5 +13,5 @@ export interface AdminDashboardStats {
   canceledSubscriptions: number;
   estimatedMonthlyRevenue: number;
 
-  planDistribution: ReadonlyArray<PlanStats>;
+  planDistribution: Array<PlanStats>;
 }

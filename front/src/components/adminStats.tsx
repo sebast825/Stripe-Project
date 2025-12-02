@@ -1,6 +1,7 @@
 import { Row } from "react-bootstrap";
 import { useGetAdminStats } from "../hooks/useGetAdminStats";
 import { StatsCard } from "./cards/statsCard";
+import PlanDistributionGraphic from "./planDistributionGraphic";
 
 const AdminStats = () => {
   const { data } = useGetAdminStats();
@@ -11,6 +12,7 @@ const AdminStats = () => {
     totalSubscriptions: data?.totalSubscriptions,
     estimatedMonthlyRevenue: data?.estimatedMonthlyRevenue,
     canceledSubscriptions: data?.canceledSubscriptions,
+    planDistribution: data?.planDistribution || [],
   };
 
   return (
@@ -39,6 +41,8 @@ const AdminStats = () => {
           estadistic={stats.canceledSubscriptions}
         />
       </Row>
+
+      <PlanDistributionGraphic planDistribution={stats.planDistribution} />
     </div>
   );
 };
