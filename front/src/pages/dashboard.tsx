@@ -10,6 +10,7 @@ import { errorMessages } from "../constants/errorMessages";
 import plansData from "../constants/testDataArt.json";
 import ImageTextCard from "../components/ImageTextCard";
 import type { SubscriptionTestData } from "../types/subscriptionTestData.types";
+import { CallToAction } from "../components/buttons/callToAction";
 
 // planMapping.ts
 export const planMapping: Record<string, string> = {
@@ -77,9 +78,12 @@ function Dashboard() {
             </small>
           </>
         )}
-        
+
         {unPlan && <UserSubscriptionCard plan={unPlan} />}
-        <Button onClick={goToPlans}>Nuestros Planes</Button>
+        <CallToAction
+          action={goToPlans}
+          text="¿Querés conocer nuestras opciones de suscripción?"
+        />
       </div>
     </>
   );
