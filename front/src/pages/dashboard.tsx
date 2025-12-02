@@ -7,6 +7,14 @@ import { UserSubscriptionCard } from "../components/userSubscriptionCard";
 import { useRedirect } from "../hooks/useRedirect";
 import { CardMessage } from "../components/cardMessage";
 import { errorMessages } from "../constants/errorMessages";
+import plansData from "../constants/testDataArt.json";
+
+// planMapping.ts
+export const planMapping: Record<string, string> = {
+  boceto: "1",
+  lienzo: "2",
+  galería: "3",
+};
 
 function Dashboard() {
   const user = useUserStore((state) => state.user);
@@ -14,10 +22,24 @@ function Dashboard() {
   const { data: userPlan, error } = useGetCurrentSubscription();
   const [unPlan, setUnPlan] = useState<userSubscriptionPlan | null>(null);
   const { goToPlans } = useRedirect();
+  const [currentPlanInfo, setCurrentPlanInfo] = useState<any>(null);
+
+  function handlerCurrentPlanInfo() {
+    const planId = planMapping[userPlan.plan.toLowerCase()];
+    if (!planId) {
+      setCurrentPlanInfo(null);
+      return;
+    }
+    const match = plansData.find((p) => p.planId === planId);
+    setCurrentPlanInfo(match || null);
+  }
 
   useEffect(() => {
+    if (userPlan == null) return;
     setUnPlan(userPlan);
+    handlerCurrentPlanInfo();
   }, [userPlan]);
+
   {
     !error && (
       <CardMessage
@@ -31,6 +53,7 @@ function Dashboard() {
         <div className="bg-primary text-white text-center py-5 rounded-3 mb-4 w-100">
           <h1 className="fw-bold">Bienvenido {user?.fullName}!</h1>
         </div>
+        <img src={currentPlanInfo?.photoUrl}></img>
         {unPlan && <UserSubscriptionCard plan={unPlan} />}
         <Button onClick={goToPlans}>Nuestros Planes</Button>
       </div>

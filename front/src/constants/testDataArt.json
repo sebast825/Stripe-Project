@@ -1,0 +1,20 @@
+[
+   {
+      "planId": "1",
+      "name": "Boceto",
+      "description": "",
+      "photoUrl": "../assets/planBoceto.jpg"
+   },
+   {
+      "planId": "2",
+      "name": "Lienzo",
+      "description": "",
+      "photoUrl": "../assets/planLienzo.jpg"
+   },
+   {
+      "planId": "3",
+      "name": "Galería",
+      "description": "",
+      "photoUrl": "../assets/planGaleria.jpg"
+   }
+]
