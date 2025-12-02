@@ -22,7 +22,7 @@ namespace Infrastructure.Repositories
         }
 
         public Task<int> GetTotalUsersAsync()
-            => _context.Users.CountAsync();
+            => _context.Users.Where(x => x.Role == UserRole.User).CountAsync();
 
         public async Task<decimal> GetTotalRevenueAsync()
         {

@@ -2,6 +2,7 @@
 using Core.Dto;
 using Core.Dto.User;
 using Core.Entities;
+using Core.Enums;
 using Core.Interfaces.Repositories;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,7 @@ namespace Infrastructure.Repositories
 
 
             var query = from u in _dataContext.Users
+                        where u.Role == UserRole.User
                         join s in _dataContext.UserSubscriptions on u.StripeCustomerId equals s.StripeCustomerId
                         into subs
                         let sub = subs.OrderByDescending(x => x.CreatedAt).FirstOrDefault()
