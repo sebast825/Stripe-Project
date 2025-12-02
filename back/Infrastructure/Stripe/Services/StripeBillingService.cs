@@ -27,7 +27,7 @@ namespace Infrastructure.Stripe.Services
             var service = new SessionService(client);
             var options = new SessionCreateOptions
             {
-                Customer = "cus_TUnIfVMzfyf58L",
+                Customer = stripeCustomerId,
             };
             var session = await service.CreateAsync(options);
 
