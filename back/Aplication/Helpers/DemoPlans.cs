@@ -14,17 +14,6 @@ namespace Aplication.Helpers
 {
     public static class DemoPlans
     {
-          public static SubscriptionPlanType GetSubscriptionPlanType(string plan)
-        {
-
-            SubscriptionPlanType parsedStatus;
-
-            if (!Enum.TryParse(plan, ignoreCase: true, out parsedStatus))
-            {
-                throw new InvalidOperationException($"Unknown Stripe Plan: {plan}");
-            }
-            return parsedStatus;
-        }
         public static List<SubscriptionPlanResponseDto> GetPlanResponse()
         {
             return GetPlans().Select(plan => SubscriptionPlanMapper.ToResponse(plan)).ToList();
@@ -86,16 +75,11 @@ namespace Aplication.Helpers
             };
         }
 
-        public static SubscriptionPlan GetByType(SubscriptionPlanType plan)
+ 
+        public static SubscriptionPlan GetById(int id)
         {
-            return GetPlans().FirstOrDefault(p => p.PlanType.Equals(plan))
-                ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound("SubscriptionPlan", plan.ToString()));
-        }
-
-        public static SubscriptionPlan GetById(int planId)
-        {
-            return GetPlans().FirstOrDefault(p => p.Id == planId)
-                ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound("SubscriptionPlan", planId));
+            return GetPlans().FirstOrDefault(p => p.Id == id)
+                ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound("SubscriptionPlan", id));
         }
         public static SubscriptionPlan GetByStripeId(string stripeId)
         {
