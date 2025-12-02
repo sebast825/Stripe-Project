@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "../../states/auth/auth.store";
 import { useUserStore } from "../../states/auth/user.store";
-import { authService } from "../../services/authService";
+import apiClient from "../../api/client";
+import type { LoginResponse } from "../../types/loginResponse.types";
 
 export const useLogin = () => {
-
   return useMutation({
     mutationFn: async ({
       email,
@@ -12,8 +12,12 @@ export const useLogin = () => {
     }: {
       email: string;
       password: string;
-    }) => {
-      return await authService.login(email, password);
+    }): Promise<LoginResponse> => {
+      var rsta = await apiClient.post("/auth/login", {
+        email,
+        password,
+      });
+      return rsta.data;
     },
     onSuccess: (data) => {
       useUserStore.getState().setUser(data.user);
