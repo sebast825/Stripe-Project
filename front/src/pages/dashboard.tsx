@@ -80,6 +80,14 @@ function Dashboard() {
         )}
 
         {unPlan && <UserSubscriptionCard plan={unPlan} />}
+        {!unPlan && (
+          <div className="m-5">
+            <h2 className="m-4 text-center">
+              Actualmente no tenés ninguna subscripción
+            </h2>
+          </div>
+        )}
+
         <CallToAction
           action={goToPlans}
           text="¿Querés conocer nuestras opciones de suscripción?"
