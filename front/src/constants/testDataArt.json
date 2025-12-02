@@ -2,19 +2,22 @@
    {
       "planId": "1",
       "name": "Boceto",
-      "description": "",
-      "photoUrl": "../assets/planBoceto.jpg"
+      "description": "Tu espacio creativo inicial. Boceto te permite experimentar, probar conceptos y avanzar a tu propio ritmo. Es el punto de partida perfecto para quien quiere explorar sin presión y darle forma a sus primeras ideas.",
+      "photoUrl": "../assets/planBoceto.jpg",
+      "altText": "Boceto"
    },
    {
       "planId": "2",
       "name": "Lienzo",
-      "description": "",
-      "photoUrl": "../assets/planLienzo.jpg"
+      "description": "Con Lienzo obtenés un área de trabajo más amplia y recursos adicionales para profundizar en tus proyectos. Es el lugar donde las ideas ya no son borradores: empiezan a tomar forma real con claridad y estructura.",
+      "photoUrl": "../assets/planLienzo.jpg",
+      "altText": "Lienzo"
    },
    {
       "planId": "3",
       "name": "Galería",
-      "description": "",
-      "photoUrl": "../assets/planGaleria.jpg"
+      "description": "Galería es la experiencia completa: un entorno pensado para presentar tu obra con máxima calidad, acceso a herramientas avanzadas y un nivel de detalle digno de exhibición. Ideal para quienes buscan rendimiento, impacto y presencia.",
+      "photoUrl": "../assets/planGaleria.jpg",
+      "altText": "Galería"
    }
 ]
