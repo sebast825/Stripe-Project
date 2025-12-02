@@ -25,66 +25,70 @@ namespace Aplication.Helpers
                 new SubscriptionPlan
                 {
                     Id = 1,
-                    PlanType = SubscriptionPlanType.Yearly,
-                    Price = 1000m,
-                    StripePriceId = "price_1SVGnvGjXgbUajlyJPFKyCJt",
-                    Interval = "year",
-                    Name = "Anual",
-                    Description = "Ideal para usuarios que buscan el mejor precio a largo plazo.",
-                    Features = new List<string>
-                    {
-                        "Acceso ilimitado a todas las funciones",
-                        "Soporte prioritario",
-                        "Actualizaciones incluidas",
-                        "Ahorro anual respecto al plan mensual"
-                    }
+                    PlanType = SubscriptionPlanType.Galería,
+                    Price = 500m,
+                    StripePriceId = "price_1SZwFrGjXgbUajlyremR5Js7",
+                    Interval = "month",
+                    Name = "Galería",
+                  Description = "Todo para exponer, pulir y mostrar tu trabajo con calidad profesional.",
+                Features = new List<string>
+                {
+                    "Acceso a herramientas avanzadas para acabado profesional",
+                    "Optimización de obras para exhibición y presentación",
+                    "Gestión completa de tu portafolio creativo",
+                    "Recursos premium orientados a impacto visual y detalle"
+                }
+
                 },
                 new SubscriptionPlan
                 {
                     Id = 2,
-                    PlanType = SubscriptionPlanType.Monthly,
-                    Price = 100m,
-                    StripePriceId = "price_1SXYgOGjXgbUajlyf5LyKmvV",
+                    PlanType = SubscriptionPlanType.Lienzo,
+                    Price = 300m,
+                    StripePriceId = "price_1SZwFfGjXgbUajlyeYiy6QG0",
                     Interval = "month",
-                    Name = "Mensual",
-                    Description = "La opción más equilibrada para uso continuo sin compromiso anual.",
+                    Name = "Lienzo",
+                    Description = "Más herramientas y espacio para desarrollar tu obra.",
                     Features = new List<string>
                     {
-                        "Acceso completo a todas las funciones",
-                        "Actualizaciones incluidas",
-                        "Costo mensual fijo"
+                        "Área de trabajo ampliada para proyectos en evolución",
+                        "Herramientas intermedias para estructurar y pulir tus ideas",
+                        "Capacidad para gestionar varias piezas en simultáneo",
+                        "Opciones de color y detalle más avanzadas"
                     }
+
                 },
                 new SubscriptionPlan
                 {
                     Id = 3,
-                    PlanType = SubscriptionPlanType.Daily,
-                    Price = 15m,
-                    StripePriceId = "price_1SXYhLGjXgbUajlycoXCF8tK",
-                    Interval = "day",
-                    Name = "Diario",
-                    Description = "Perfecto para uso puntual o de corta duración.",
+                    PlanType = SubscriptionPlanType.Boceto,
+                    Price = 100m,
+                    StripePriceId = "price_1SZwFOGjXgbUajly98vAJit8",
+                    Interval = "month",
+                    Name = "Boceto",
+                    Description = "Lo esencial para comenzar a trazar tus primeras ideas.",
                     Features = new List<string>
-                    {
-                        "Acceso completo por 24 horas",
-                        "Sin compromisos",
-                        "Ideal para usuarios ocasionales"
+                   {
+                        "Espacio creativo básico para explorar conceptos",
+                        "Herramientas iniciales para experimentar sin presión",
+                        "Ideal para quienes comienzan a delinear sus primeras obras",
+                        "Permite guardar y revisar tus primeros trazos"
                     }
                 }
 
             };
         }
 
- 
+
         public static SubscriptionPlan GetById(int id)
         {
             return GetPlans().FirstOrDefault(p => p.Id == id)
-                ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound("SubscriptionPlan", id));
+                ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound(nameof(SubscriptionPlan), id));
         }
         public static SubscriptionPlan GetByStripeId(string stripeId)
         {
             return GetPlans().FirstOrDefault(p => p.StripePriceId.Equals(stripeId))
-                ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound("SubscriptionPlan", stripeId));
+                ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound(nameof(SubscriptionPlan), stripeId));
         }
     }
 

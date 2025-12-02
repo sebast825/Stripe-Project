@@ -9,9 +9,9 @@ namespace Core.Enums
 {
     public enum SubscriptionPlanType
     {
-        Daily,
-        Monthly,
-        Yearly
+        Boceto,
+        Lienzo,
+        Galería
     }
 }
 

@@ -8,21 +8,37 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class DataContext:DbContext
+    public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) :base(options) { }
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
+        }
 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //fix cascade
+            modelBuilder.Entity<SubscriptionPaymentRecord>()
+                .HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserSubscription>()
+        .Property(x => x.Price)
+        .HasPrecision(18, 2);
+        }
         //Auth
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<UserLoginHistory> UserLoginHistory { get; set; } = null!;
-        public DbSet<RefreshToken>RefreshTokens { get; set; } = null!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
         public DbSet<SecurityLoginAttempt> SecurityLoginAttempts { get; set; } = null!;
 
         //Payments
         public DbSet<UserSubscription> UserSubscriptions { get; set; } = null!;
         public DbSet<SubscriptionPaymentRecord> SubscriptionPaymentRecords { get; set; } = null!;
 
-        
+
 
     }
 }
