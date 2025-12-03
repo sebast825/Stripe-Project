@@ -9,7 +9,7 @@ namespace Core.Interfaces.Repositories
 {
     public interface IUserSubscriptionRepository : IRepository<UserSubscription>
     {
-        Task<UserSubscription?> GetByUserId(int userId);
+        Task<UserSubscription?> GetActiveSubscriptionByUserId(int userId);
         Task<UserSubscription?> GetByStripeCustomerIdAsync(string customerId);
 
     }

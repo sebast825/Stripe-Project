@@ -24,7 +24,7 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (res) => res,
   async (error) => {
-    handleOriginalRequest(error);
+    return handleOriginalRequest(error);
   }
 );
 function shouldRefreshToken(error: any, request: any): boolean {
@@ -88,7 +88,7 @@ function createFormattedError(error: any) {
     //error from server
     formattedError = {
       status: error.response?.status,
-      message: error.response?.data?.message || "Error inesperado",
+      message: error.response?.data?.Message || "Error inesperado",
       data: error.response?.data,
     };
   }

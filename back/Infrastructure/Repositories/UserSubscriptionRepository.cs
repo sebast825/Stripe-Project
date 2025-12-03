@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Enums;
 using Core.Interfaces.Repositories;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -27,11 +28,10 @@ namespace Infrastructure.Repositories
              .FirstOrDefaultAsync();
         }
 
-        public async Task<UserSubscription?> GetByUserId(int userId)
+        public async Task<UserSubscription?> GetActiveSubscriptionByUserId(int userId)
         {
             return await _dataContext.Set<UserSubscription>()
-                .OrderByDescending(x => x.Id)
-                .Where(u => u.UserId == userId)
+                .Where(u => u.UserId == userId && u.Status == SubscriptionStatus.Active)
                 .FirstOrDefaultAsync();
 
         }

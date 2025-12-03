@@ -42,7 +42,7 @@ namespace Aplication.Services
 
         public async Task<UserSubscriptionResponseDto> GetByUserId(int userId)
         {
-            UserSubscription? subscription = await _userSubscriptionRepository.GetByUserId(userId);
+            UserSubscription? subscription = await _userSubscriptionRepository.GetActiveSubscriptionByUserId(userId);
             if (subscription == null)
             {
                 throw new KeyNotFoundException();

@@ -14,6 +14,8 @@ namespace Core.Constants
         public const string InvalidCredentials = "Las credenciales son invalidas";
         public const string InvalidToken = "El token es invalido";
         public const string MaxLoginAttemptsExceeded = "Demasiados intentos fallidos. Espere 5 minutos antes de intentar nuevamente";
+        public const string UserAlreadyHasActiveSubscription = "Ya tienes una subscripcion activa";
+
         public static string EntityNotFound(string entity,int id) => $"{entity} con ID {id} no encontrado";
         public static string EntityNotFound(string entity, string name) => $"{entity} con {name} no encontrado";
 
