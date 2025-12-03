@@ -10,6 +10,7 @@ namespace Core.Dto.UserSubscription
     public class UserSubscriptionUpdateDto
     {
         public string StripeSubscriptionId { get; set; }
+        public string PriceId { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? CurrentPeriodEnd { get; set; }
         public string Status { get; set; }

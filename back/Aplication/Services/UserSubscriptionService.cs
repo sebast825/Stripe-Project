@@ -9,6 +9,7 @@ using Core.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,13 +28,13 @@ namespace Aplication.Services
 
         public async Task<UserSubscriptionResponseDto> AddAsync(StripeSubscriptionCreatedDto userSubscriptionDto)
         {
-     
+
             int? userId = await _userRepository.GetIdByStripeCustomerId(userSubscriptionDto.CustomerId);
-            if (userId == null) 
+            if (userId == null)
                 throw new InvalidOperationException(ErrorMessages.EntityNotFound("User", userSubscriptionDto.CustomerId));
 
-           
-            SubscriptionPlan plan =   DemoPlans.GetByStripeId(userSubscriptionDto.PlanId);
+
+            SubscriptionPlan plan = DemoPlans.GetByStripePriceId(userSubscriptionDto.PlanId);
             UserSubscription userSubscription = UserSubscriptionMapper.ToEntity(userId.Value, plan.PlanType, userSubscriptionDto);
             UserSubscription subscription = await _userSubscriptionRepository.AddAsync(userSubscription);
 
@@ -49,18 +50,22 @@ namespace Aplication.Services
 
             }
             return UserSubscriptionMapper.ToResponse(subscription);
-       
+
         }
 
         public async Task<UserSubscriptionResponseDto> UpdateAsync(UserSubscriptionUpdateDto updateDto, string customerId)
         {
             UserSubscription? subscription = await _userSubscriptionRepository.GetByStripeCustomerIdAsync(customerId);
-            if(subscription == null)
+            if (subscription == null)
             {
-                throw new KeyNotFoundException(ErrorMessages.EntityNotFound("UserSubscription",$"customerId {customerId}"));
+                throw new KeyNotFoundException(ErrorMessages.EntityNotFound("UserSubscription", $"customerId {customerId}"));
+            }           
+            if (subscription.StripeSubscriptionId != updateDto.StripeSubscriptionId)
+            {
+                throw new InvalidOperationException($"Entity StripeSubscriptionId {subscription.StripeSubscriptionId} doesn't match with dto id {updateDto.StripeSubscriptionId}");
             }
-            SubscriptionPlanType plan = DemoPlans.GetByStripeId(updateDto.StripeSubscriptionId).PlanType;
-            UserSubscriptionMapper.ApplySubscriptionUpdate(subscription, updateDto,plan);
+            SubscriptionPlanType plan = DemoPlans.GetByStripePriceId(updateDto.PriceId).PlanType;
+            UserSubscriptionMapper.ApplySubscriptionUpdate(subscription, updateDto, plan);
 
             await _userSubscriptionRepository.UpdateAsync(subscription);
             return UserSubscriptionMapper.ToResponse(subscription);

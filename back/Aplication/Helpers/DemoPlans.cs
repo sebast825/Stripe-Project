@@ -85,10 +85,10 @@ namespace Aplication.Helpers
             return GetPlans().FirstOrDefault(p => p.Id == id)
                 ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound(nameof(SubscriptionPlan), id));
         }
-        public static SubscriptionPlan GetByStripeId(string stripeId)
+        public static SubscriptionPlan GetByStripePriceId(string priceId)
         {
-            return GetPlans().FirstOrDefault(p => p.StripePriceId.Equals(stripeId))
-                ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound(nameof(SubscriptionPlan), stripeId));
+            return GetPlans().FirstOrDefault(p => p.StripePriceId.Equals(priceId))
+                ?? throw new InvalidOperationException(ErrorMessages.EntityNotFound(nameof(SubscriptionPlan), priceId));
         }
     }
 

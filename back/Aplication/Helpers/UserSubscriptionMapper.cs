@@ -74,12 +74,12 @@ namespace Aplication.Helpers
             entity.CancelAtPeriodEnd = dto.CancelAtPeriodEnd;
             entity.CanceledAt = dto.CanceledAt;
             entity.Price = dto.Price;
-            entity.StripeSubscriptionId = dto.StripeSubscriptionId;
             entity.Plan = planType;
 
         }
         public static UserSubscriptionUpdateDto ToUpdateDto(Subscription subscription)
         {
+            Console.WriteLine(subscription);
             if (subscription == null)
                 throw new ArgumentNullException(nameof(subscription));
 
@@ -89,13 +89,14 @@ namespace Aplication.Helpers
 
             return new UserSubscriptionUpdateDto
             {
-                StripeSubscriptionId = item.Plan.Id,
+                StripeSubscriptionId = subscription.Id,
                 Status = subscription.Status,
                 StartDate = item.CurrentPeriodStart,
                 CurrentPeriodEnd = item.CurrentPeriodEnd,
                 CancelAtPeriodEnd = subscription.CancelAtPeriodEnd,
                 CanceledAt = subscription.CanceledAt ?? null,
-                Price = GetUsdFromDecimal(item.Price.UnitAmountDecimal)
+                Price = GetUsdFromDecimal(item.Price.UnitAmountDecimal),
+                PriceId = item.Plan.Id
 
             };
         }
