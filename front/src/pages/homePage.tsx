@@ -44,7 +44,7 @@ export const HomePage = () => {
               Una Plataforma de <span className="text-primary">Arte Digital</span>
             </h2>
 
-            <p className="lead text-muted mb-4">
+            <p className="lead">
               Para esta demo, simulamos una plataforma donde los artistas pueden
               acceder a recursos creativos exclusivos mediante planes de suscripción.
             </p>
