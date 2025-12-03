@@ -33,7 +33,7 @@ namespace Aplication.Helpers
                 Status = parsed,
                 StartDate = item.CurrentPeriodStart,
                 CurrentPeriodEnd = item.CurrentPeriodEnd,
-                PlanId = item.Plan.Id,
+                PriceId = item.Plan.Id,
                 Price = GetUsdFromDecimal(item.Price.UnitAmountDecimal)
 
             };

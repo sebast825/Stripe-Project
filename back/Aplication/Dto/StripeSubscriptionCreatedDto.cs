@@ -15,7 +15,7 @@ namespace Aplication.Dto
         public DateTime? CurrentPeriodEnd { get; set; }
 
         public SubscriptionStatus Status { get; set; }
-        public string PlanId { get; set; }
+        public string PriceId { get; set; }
         public decimal Price { get; set; }
 
     }

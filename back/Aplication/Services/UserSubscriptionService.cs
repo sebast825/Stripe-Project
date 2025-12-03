@@ -34,7 +34,7 @@ namespace Aplication.Services
                 throw new InvalidOperationException(ErrorMessages.EntityNotFound("User", userSubscriptionDto.CustomerId));
 
 
-            SubscriptionPlan plan = DemoPlans.GetByStripePriceId(userSubscriptionDto.PlanId);
+            SubscriptionPlan plan = DemoPlans.GetByStripePriceId(userSubscriptionDto.PriceId);
             UserSubscription userSubscription = UserSubscriptionMapper.ToEntity(userId.Value, plan.PlanType, userSubscriptionDto);
             UserSubscription subscription = await _userSubscriptionRepository.AddAsync(userSubscription);
 
