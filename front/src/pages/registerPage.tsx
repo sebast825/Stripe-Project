@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import { useRegister } from "../hooks/auth/useRegister";
+import { useRedirect } from "../hooks/useRedirect";
 
 function RegisterPage() {
-  const { mutateAsync : register, isPending } = useRegister();
-  const navigate = useNavigate();
-
+  const { mutateAsync: register, isPending } = useRegister();
+  const {goToLogin} = useRedirect();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
@@ -16,7 +15,7 @@ function RegisterPage() {
     e.preventDefault();
     if (!validateUser()) return;
 
-    await register({email, password, fullName : userName});
+    await register({ email, password, fullName: userName });
   }
 
   function validateUser(): boolean {
@@ -113,7 +112,7 @@ function RegisterPage() {
           </Form>
           <div className="mt-2 d-flex flex-column border-top pt-3">
             <Button
-              onClick={() => navigate("/")}
+              onClick={() => goToLogin()}
               variant="secondary"
               type="submit"
             >
