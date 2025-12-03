@@ -4,10 +4,10 @@ import { FeatureCard } from "../components/cards/featureCard";
 import { TechHighlightCard } from "../components/cards/techHighlightCard";
 export const HomePage = () => {
   return (
-    <Container fluid className="p-0 margin-top">
+    <Container fluid className="p-3 p-md-0 margin-top">
       {/* Hero Section */}
       
-      <div className="text-white text-center py-1 py-md-5 m-3 m-md-5 bg-primary border rounded-3 ">
+      <div className="text-white text-center py-1 py-md-5 m-md-5 bg-primary border rounded-3 ">
         <Container className="py-5 ">
           <Badge bg="light" text="dark" className="mb-3 fs-6 p-2 fw-semibold ">
             🎨 DEMO TÉCNICO – Stripe + Arte Digital
@@ -78,7 +78,7 @@ export const HomePage = () => {
       </Container>
       {/* Features Section */}
       <Container className="">
-        <Row className="g-4">
+        <Row className="g-4 ">
           <FeatureCard
             title="Checkout Integrado"
             text="Flujo completo de pagos únicos con Stripe Checkout. Incluye 3D Secure, manejo de errores y confirmación automática."
