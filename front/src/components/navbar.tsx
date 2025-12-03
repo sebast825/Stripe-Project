@@ -7,14 +7,14 @@ import { useRedirect } from "../hooks/useRedirect";
 export const NavBar = () => {
   const { mutateAsync: logout } = useLogout();
   const location = useLocation();
-  const { goToLogin } = useRedirect();
+  const { goToLogin,goToHome } = useRedirect();
   var refreshToken = useAuthStore((state) => state.refreshToken);
 
-  const showBtn =
-    location.pathname != "/login" && location.pathname != "/register";
+  const isLoginOrRegister =
+    location.pathname == "/login" || location.pathname == "/register";
 
   const isHome = location.pathname == "/";
-  
+
   async function handleLogout() {
     await logout({ refreshToken: refreshToken! });
   }
@@ -35,9 +35,14 @@ export const NavBar = () => {
 
         <Nav className="ms-auto">
           {isHome && <Button onClick={() => goToLogin()}> Login</Button>}
-          {showBtn && !isHome && (
+          {!isLoginOrRegister && !isHome && (
             <Button className="" onClick={() => handleLogout()}>
               Salir
+            </Button>
+          )}
+          {isLoginOrRegister && (
+            <Button className="" onClick={() => goToHome()}>
+              Home
             </Button>
           )}
         </Nav>
