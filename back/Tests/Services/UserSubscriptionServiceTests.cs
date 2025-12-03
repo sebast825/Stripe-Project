@@ -1,6 +1,7 @@
 ﻿using Aplication.Helpers;
 using Aplication.Interfaces.Services;
 using Aplication.Services;
+using Aplication.UseCases.Auth;
 using Core.Dto.UserSubscription;
 using Core.Entities;
 using Core.Enums;
@@ -10,6 +11,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -70,5 +72,34 @@ namespace Tests.Services
             _userSubscriptionRepository.Verify(s => s.UpdateAsync(It.IsAny<UserSubscription>()), Times.Once);
             Assert.AreEqual(rsta.Plan.ToString(),newPlan.Name);
         }
+
+        [TestMethod]
+        public async Task UpdateAsync_UserSubscritionNotFound_Throw()
+        {
+            User user = new User
+            {
+                Email = "test@gmail.com",
+                Password = "test",
+                StripeCustomerId = "cus_123"
+            };
+
+            SubscriptionPlan newPlan = DemoPlans.GetById(2);
+   
+            UserSubscriptionUpdateDto newSubscritionDto = new UserSubscriptionUpdateDto
+            {
+                StripeSubscriptionId = "sub_!23",
+                PriceId = newPlan.StripePriceId,
+                Status = "active",
+            };
+
+            _userSubscriptionRepository.Setup(r => r.GetByStripeCustomerIdAsync(user.StripeCustomerId))
+                    .ReturnsAsync((UserSubscription)null);
+
+            await Assert.ThrowsExceptionAsync<KeyNotFoundException>(() => _userSubscriptionService.UpdateAsync(newSubscritionDto, user.StripeCustomerId));
+
+            _userSubscriptionRepository.Verify(s => s.GetByStripeCustomerIdAsync(It.IsAny<string>()), Times.Once);
+     
+        }
+        
     }
 }
