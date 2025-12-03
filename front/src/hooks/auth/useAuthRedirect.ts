@@ -10,7 +10,7 @@ export function useAuthRedirect() {
    const {goToLogin} = useRedirect();
    const {pathname} = useLocation();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const homePath = "/home"
+  const homePath = "/"
   useEffect(() => {
     if (!isAuthenticated && pathname != homePath) {
       goToLogin();

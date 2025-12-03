@@ -2,16 +2,21 @@ import { Nav, Navbar, Button } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { useAuthStore } from "../states/auth/auth.store";
 import { useLogout } from "../hooks/auth/useLogout";
+import { useRedirect } from "../hooks/useRedirect";
 
 export const NavBar = () => {
   const { mutateAsync: logout } = useLogout();
   const location = useLocation();
+  const { goToLogin } = useRedirect();
   var refreshToken = useAuthStore((state) => state.refreshToken);
 
-  const showBtn = location.pathname != "/" && location.pathname != "/register";
+  const showBtn =
+    location.pathname != "/login" && location.pathname != "/register";
+
+  const isHome = location.pathname == "/";
+  
   async function handleLogout() {
     await logout({ refreshToken: refreshToken! });
-
   }
   return (
     <>
@@ -29,7 +34,8 @@ export const NavBar = () => {
         </Navbar.Brand>
 
         <Nav className="ms-auto">
-          {showBtn && (
+          {isHome && <Button onClick={() => goToLogin()}> Login</Button>}
+          {showBtn && !isHome && (
             <Button className="" onClick={() => handleLogout()}>
               Salir
             </Button>

@@ -11,9 +11,10 @@ export const useRedirect = () => {
       navigate("/dashboard");
     }
   };
-  const goToLogin = () => navigate("/");
+  const goToLogin = () => navigate("/login");
   const goToRegister = () => navigate("/register");
   const goToPreviousPage = () => navigate(-1);
+  const goToHome = () => navigate("/");
 
-  return { goToPlans, goToDashboard, goToLogin, goToRegister,goToPreviousPage };
+  return { goToPlans, goToDashboard, goToLogin, goToRegister,goToPreviousPage,goToHome };
 };

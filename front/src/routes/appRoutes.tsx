@@ -9,13 +9,12 @@ import { HomePage } from "../pages/homePage";
 
 export const AppRoutes = () => (
   <Routes>
-    <Route path="/" element={<Login />} />
+    <Route path="/login" element={<Login />} />
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/plans" element={<PlansPage />} />
     <Route path="/register" element={<RegisterPage />} />
-        <Route path="/admin/dashboard" element={<DashboardAdminPage />} />
-        <Route path="/users/:id" element={<UserDetailPage />} />
-        <Route path="/home" element={<HomePage />} />
-
+    <Route path="/admin/dashboard" element={<DashboardAdminPage />} />
+    <Route path="/users/:id" element={<UserDetailPage />} />
+    <Route path="/" element={<HomePage />} />
   </Routes>
 );
