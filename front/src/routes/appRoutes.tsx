@@ -5,6 +5,7 @@ import { PlansPage } from "../pages/plansPage";
 import RegisterPage from "../pages/registerPage";
 import DashboardAdminPage from "../pages/admin/DashboardAdminPage";
 import { UserDetailPage } from "../pages/admin/userDetailPage";
+import { HomePage } from "../pages/homePage";
 
 export const AppRoutes = () => (
   <Routes>
@@ -14,6 +15,7 @@ export const AppRoutes = () => (
     <Route path="/register" element={<RegisterPage />} />
         <Route path="/admin/dashboard" element={<DashboardAdminPage />} />
         <Route path="/users/:id" element={<UserDetailPage />} />
+        <Route path="/home" element={<HomePage />} />
 
   </Routes>
 );
