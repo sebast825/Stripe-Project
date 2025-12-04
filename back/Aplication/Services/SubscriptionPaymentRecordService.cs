@@ -54,7 +54,7 @@ namespace Aplication.Services
         }
         private async Task<int> GetUserIdByCustomerIdAsync(string customerId)
         {
-            int? userId = await _userRepository.GetIdByStripeCustomerId(customerId);
+            int? userId = await _userRepository.GetIdByStripeCustomerIdAsync(customerId);
             if (userId == null)
             {
                 throw new ArgumentNullException(ErrorMessages.EntityNotFound(typeof(User).Name, customerId));

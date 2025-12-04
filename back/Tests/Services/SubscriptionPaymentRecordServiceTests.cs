@@ -69,7 +69,7 @@ namespace Tests.Services
             };
             SubscriptionPaymentRecord subscriptionPaymentRecord = new SubscriptionPaymentRecord { };
 
-            _userRepository.Setup(x =>x.GetIdByStripeCustomerId(invoice.CustomerId)).ReturnsAsync(userId);
+            _userRepository.Setup(x =>x.GetIdByStripeCustomerIdAsync(invoice.CustomerId)).ReturnsAsync(userId);
             _userSubscriptionRepository.Setup(x => x.GetByStripeCustomerIdAsync(invoice.CustomerId)).ReturnsAsync(userSubscription);
             _subscriptionPaymentRecordRepository.Setup(x => x.GetByInvoiceId(invoice.Id)).ReturnsAsync((SubscriptionPaymentRecord)null);
             //act
@@ -91,7 +91,7 @@ namespace Tests.Services
             };
             SubscriptionPaymentRecord subscriptionPaymentRecord = new SubscriptionPaymentRecord { };
 
-            _userRepository.Setup(x => x.GetIdByStripeCustomerId(invoice.CustomerId)).ReturnsAsync(userId);
+            _userRepository.Setup(x => x.GetIdByStripeCustomerIdAsync(invoice.CustomerId)).ReturnsAsync(userId);
             _userSubscriptionRepository.Setup(x => x.GetByStripeCustomerIdAsync(invoice.CustomerId)).ReturnsAsync(userSubscription);
             _subscriptionPaymentRecordRepository.Setup(x => x.GetByInvoiceId(invoice.Id)).ReturnsAsync(subscriptionPaymentRecord);
             //act

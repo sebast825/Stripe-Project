@@ -13,7 +13,7 @@ namespace Core.Interfaces.Repositories
     {
         Task<User?> GetByEmailAsync(string email);
 
-        Task<int?> GetIdByStripeCustomerId(string stipeId);
+        Task<int?> GetIdByStripeCustomerIdAsync(string stipeId);
         Task<PagedResult<UserWithSubscriptionResponseDto>> GetPagedAsync(int page, int pageSize, string? searchTerm);
 }
 }

@@ -35,7 +35,7 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<int?> GetIdByStripeCustomerId(string stipeId)
+        public async Task<int?> GetIdByStripeCustomerIdAsync(string stipeId)
         {
             return await _dataContext.Set<User>()
                 .AsNoTracking()

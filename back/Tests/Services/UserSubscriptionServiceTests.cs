@@ -1,4 +1,5 @@
-﻿using Aplication.Helpers;
+﻿using Aplication.Dto;
+using Aplication.Helpers;
 using Aplication.Interfaces.Services;
 using Aplication.Services;
 using Aplication.UseCases.Auth;
@@ -8,6 +9,8 @@ using Core.Enums;
 using Core.Interfaces.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Stripe;
+using Stripe.V2.Billing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +40,7 @@ namespace Tests.Services
 
         [TestMethod]
         public async Task UpdateAsync_ValidInput_UpdatesSuccessfully()
-        {           
+        {
             //arrange 
 
             User user = new User
@@ -137,6 +140,46 @@ namespace Tests.Services
             await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => _userSubscriptionService.UpdateAsync(newSubscritionDto, user.StripeCustomerId));
 
             _userSubscriptionRepository.Verify(s => s.GetByStripeCustomerIdAsync(It.IsAny<string>()), Times.Once);
+
+        }
+        [TestMethod]
+        public async Task AddAsync_WhenValidInput_ShouldAddAsync()
+        {
+            SubscriptionPlan currentPlan = DemoPlans.GetById(1);
+
+            //arrange 
+
+            StripeSubscriptionCreatedDto createDto = new StripeSubscriptionCreatedDto
+            {
+                SubscriptionId = "sub_123",
+                CustomerId = "cus_123",
+                PriceId = currentPlan.StripePriceId
+            };
+
+            User user = new User
+            {
+                Email = "test@gmail.com",
+                Password = "test",
+                StripeCustomerId = "cus_123",
+                Id = 1
+            };
+            UserSubscription newSub = new UserSubscription
+            {
+                StripeSubscriptionId = "sub_!23",
+                Plan = currentPlan.PlanType,
+                Status = SubscriptionStatus.Active,
+                StripeCustomerId = user.StripeCustomerId,
+
+            };
+            _userRepository.Setup(r => r.GetIdByStripeCustomerIdAsync(user.StripeCustomerId))
+                   .ReturnsAsync(user.Id);
+            _userSubscriptionRepository.Setup(r => r.AddAsync(It.IsAny<UserSubscription>()))
+                  .ReturnsAsync(newSub);
+            //act
+            var rsta = await _userSubscriptionService.AddAsync(createDto);
+
+            //assert
+            _userSubscriptionRepository.Verify(s => s.AddAsync(It.IsAny<UserSubscription>()), Times.Once);
 
         }
     }

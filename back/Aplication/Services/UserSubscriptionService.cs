@@ -29,7 +29,7 @@ namespace Aplication.Services
         public async Task<UserSubscriptionResponseDto> AddAsync(StripeSubscriptionCreatedDto userSubscriptionDto)
         {
 
-            int? userId = await _userRepository.GetIdByStripeCustomerId(userSubscriptionDto.CustomerId);
+            int? userId = await _userRepository.GetIdByStripeCustomerIdAsync(userSubscriptionDto.CustomerId);
             if (userId == null)
                 throw new InvalidOperationException(ErrorMessages.EntityNotFound("User", userSubscriptionDto.CustomerId));
 
