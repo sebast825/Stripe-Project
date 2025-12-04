@@ -11,7 +11,12 @@ interface UserSubscriptionCard {
 export function UserSubscriptionCard({ plan }: UserSubscriptionCard) {
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
-  const { data:billingPortalUrl, isFetching, error ,refetch } = useGetBillingPortalUrl();
+  const {
+    data: billingPortalUrl,
+    isFetching,
+    error,
+    refetch,
+  } = useGetBillingPortalUrl();
   useEffect(() => {
     const currentEndDate = plan.currentPeriodEnd
       ? new Date(plan.currentPeriodEnd).toISOString().split("T")[0]
@@ -22,11 +27,12 @@ export function UserSubscriptionCard({ plan }: UserSubscriptionCard) {
     setStartDate(currentStartDate);
     setEndDate(currentEndDate);
   }, []);
+  useEffect(() => {
+    //aoid opening emty pages
+    if (!billingPortalUrl) return;
+    window.open(billingPortalUrl, "_blank");
+  }, [billingPortalUrl]);
 
-  async function showBillingPortal() {
-      await refetch ();
-    await window.open(billingPortalUrl, "_blank");
-  }
   {
     !error && (
       <CardMessage
@@ -60,12 +66,10 @@ export function UserSubscriptionCard({ plan }: UserSubscriptionCard) {
           <Button
             variant="primary"
             className="mt-auto w-100"
-            onClick={() => {
-              showBillingPortal();
-            }}
+            onClick={() => refetch()}
             disabled={isFetching}
           >
-            Gestionar plan
+            Ir al portal de facturación
           </Button>
         </Card.Body>
       </Card>
