@@ -15,9 +15,12 @@ namespace Infrastructure.Stripe.Payments
 {
     public class StripePaymentService : IStripePaymentService
     {
+        private readonly string _frontEndUrl;
         public StripePaymentService(IConfiguration configuration)
         {
             StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
+            _frontEndUrl = configuration["FrontendUrl"];
+
         }
         public Task CancelSubscriptionAsync(string stripeSubscriptionId)
         {
@@ -41,8 +44,8 @@ namespace Infrastructure.Stripe.Payments
                     Quantity = 1
                 }
             },
-                SuccessUrl = "http://localhost:5173/success",
-                CancelUrl = "http://localhost:5173/cancel"
+                SuccessUrl = _frontEndUrl+"/success",
+                CancelUrl = _frontEndUrl + "/cancel"
 
             };
 
