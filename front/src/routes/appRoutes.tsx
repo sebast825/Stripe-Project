@@ -7,6 +7,7 @@ import DashboardAdminPage from "../pages/admin/DashboardAdminPage";
 import { UserDetailPage } from "../pages/admin/userDetailPage";
 import { HomePage } from "../pages/homePage";
 import SuccessActionPage from "../pages/actions/successPage";
+import ErrorActionPage from "../pages/actions/errorPage";
 
 export const AppRoutes = () => (
   <Routes>
@@ -18,5 +19,7 @@ export const AppRoutes = () => (
     <Route path="/users/:id" element={<UserDetailPage />} />
     <Route path="/" element={<HomePage />} />
     <Route path="/success" element={<SuccessActionPage />} />
+        <Route path="/error" element={<ErrorActionPage />} />
+
   </Routes>
 );

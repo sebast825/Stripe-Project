@@ -12,7 +12,7 @@ export const NavBar = () => {
 
   const isLoginOrRegister =
     location.pathname == "/login" || location.pathname == "/register";
-  const isActionPage =  location.pathname == "/success" 
+  const isActionPage =  location.pathname == "/success" ||  location.pathname == "/error";
   const isHome = location.pathname == "/";
 
   async function handleLogout() {

@@ -11,7 +11,7 @@ export function useAuthRedirect() {
    const {pathname} = useLocation();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
  
-    const publicRoutes = ["/", "/login", "/register", "/success"];
+    const publicRoutes = ["/", "/login", "/register", "/success","/error"];
 
   useEffect(() => {
     if (!isAuthenticated && !publicRoutes.includes(pathname)) {
