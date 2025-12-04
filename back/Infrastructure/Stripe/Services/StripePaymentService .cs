@@ -41,8 +41,8 @@ namespace Infrastructure.Stripe.Payments
                     Quantity = 1
                 }
             },
-                SuccessUrl = "https://localhost:5001/success",
-                CancelUrl = "https://localhost:5001/cancel"
+                SuccessUrl = "http://localhost:5173/success",
+                CancelUrl = "http://localhost:5173/cancel"
 
             };
 

@@ -12,7 +12,7 @@ export const NavBar = () => {
 
   const isLoginOrRegister =
     location.pathname == "/login" || location.pathname == "/register";
-
+  const isActionPage =  location.pathname == "/success" 
   const isHome = location.pathname == "/";
 
   async function handleLogout() {
@@ -35,7 +35,7 @@ export const NavBar = () => {
 
         <Nav className="ms-auto">
           {isHome && <Button onClick={() => goToLogin()}> Login</Button>}
-          {!isLoginOrRegister && !isHome && (
+          {!isLoginOrRegister && !isHome && !isActionPage && (
             <Button className="" onClick={() => handleLogout()}>
               Salir
             </Button>

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 type AuthState = {
   accessToken: string | null;
@@ -9,9 +10,12 @@ type AuthState = {
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
-    accessToken:  null,
+  
+  accessToken: null,
   refreshToken: null,
   isAuthenticated: false,
-  setTokens: (access, refresh) => set({ accessToken:access,refreshToken:refresh,isAuthenticated :true }),
-  logout: () => set({ accessToken: null ,refreshToken: null ,isAuthenticated: false }),
+  setTokens: (access, refresh) =>
+    set({ accessToken: access, refreshToken: refresh, isAuthenticated: true }),
+  logout: () =>
+    set({ accessToken: null, refreshToken: null, isAuthenticated: false }),
 }));
