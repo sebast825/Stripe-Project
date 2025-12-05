@@ -13,7 +13,7 @@ namespace Aplication.Services
 {
     public class StripeWebhookService : IStripeWebhookService
     {
- 
+
         private readonly ILogger<StripeWebhookService> _logger;
         private readonly IStripeWebhookFactory _webhookHandlerFactory;
 
@@ -35,17 +35,9 @@ namespace Aplication.Services
                     await handler.HandleAsync(stripeEvent);
                 }
             }
-            catch (KeyNotFoundException ex)
-            {
-                LogError(ex, stripeEvent);
-                return;
-            }
-            catch (InvalidOperationException ex)
-            {
-                LogError(ex, stripeEvent);
-                return;
-            }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (ex is KeyNotFoundException or
+                                        InvalidOperationException or
+                                        ArgumentException)
             {
                 LogError(ex, stripeEvent);
                 return;
