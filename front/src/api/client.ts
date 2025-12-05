@@ -1,5 +1,7 @@
-// src/api/client.ts
-import axios from "axios";
+import axios, {
+  type AxiosResponse,
+  type InternalAxiosRequestConfig,
+} from "axios";
 import { useAuthStore } from "../states/auth/auth.store";
 const apiClient = axios.create({
   baseURL: "https://bhx92f9r-7098.brs.devtunnels.ms/api",
@@ -8,8 +10,9 @@ const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-    timeout: 10000, 
+  timeout: 10000,
 });
+
 
 apiClient.interceptors.request.use((config) => {
   const accessToken = useAuthStore.getState().accessToken;
@@ -22,57 +25,90 @@ apiClient.interceptors.request.use((config) => {
 });
 
 apiClient.interceptors.response.use(
-  (res) => res,
+  (response) => {
+    return response;
+  },
   async (error) => {
-    return handleOriginalRequest(error);
+    return handleInterceptorError(error);
   }
 );
-function shouldRefreshToken(error: any, request: any): boolean {
-  return (
-    error.response?.status === 401 &&
-    !request._retry &&
-    !request.url?.includes("/login")
-  );
-}
-async function tryRefreshToken(error: any) {
-  const original = error.config;
 
-  original._retry = true;
+type QueuedRequest = {
+  resolve: (value: AxiosResponse) => void;
+  reject: (error: any) => void;
+  config: InternalAxiosRequestConfig;
+};
 
-  try {
-    const refreshToken = useAuthStore.getState().refreshToken;
+let isRefreshing = false;
+let failedQueue: QueuedRequest[] = [];
+const REFRESH_ENDPOINT = "/auth/refresh";
 
-    const { data } = await apiClient.post(
-      "/auth/refresh",
-      JSON.stringify(refreshToken)
-    );
-    useAuthStore.getState().setTokens(data, refreshToken!);
-        console.log("prueba")
 
-    return apiClient(original);
-  } catch (err) {
-    //logout if refresh token also fails
-    //in app is a hook that will redirect to login
-    useAuthStore.getState().logout();
-    console.log("entra aca")
-    return Promise.reject(err);
-  }
-}
-
-async function handleOriginalRequest(error: any) {
+async function handleInterceptorError(error: any) {
   const originalRequest = error.config;
 
-  if (shouldRefreshToken(error, originalRequest)) {
-    await tryRefreshToken(error);
+  // if que  no sea 404 y que no sea retry
+  if (error.response?.status === 401 && !originalRequest._retry) {
+    if (isRefreshing) {
+      return addtoFailedQueue(originalRequest);
+    }
+    originalRequest._retry = true;
+    isRefreshing = true;
+    try {
+      await getRefreshToken();
+      const response = await apiClient(originalRequest);
+      await executeAndClearFiledQueue();
+      return response;
+    } catch (error: any) {
+      //in case response throw exception will not logout
+      if (error.status === 401) {      
+        useAuthStore.getState().logout();
+        rejectAndClearExecutedQueue(error);
+      } else {
+        //in case response throw error, need to run queries here
+        await executeAndClearFiledQueue();
+      }
+      throw createFormattedError(error);
+    } finally {
+      isRefreshing = false;
+    }
+  } else {
+    return Promise.reject(error);
   }
-
-  var formattedError = createFormattedError(error);
-  console.log("API Error:", formattedError);
-
-  return Promise.reject(formattedError);
 }
 
+async function getRefreshToken() {
+  const refreshToken = useAuthStore.getState().refreshToken;
+  const { data } = await apiClient.post(
+    REFRESH_ENDPOINT,
+    JSON.stringify(refreshToken)
+  );
+  useAuthStore.getState().setTokens(data, refreshToken!);
+  //this fix the next queries in queue
+  apiClient.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${data.accessToken}`;
+}
+function addtoFailedQueue(originalRequest: any) {
+  return new Promise((resolve, reject) => {
+    failedQueue.push({ resolve, reject, config: originalRequest });
+  });
+}
 
+async function executeAndClearFiledQueue() {
+  const promises = failedQueue.map((item) =>
+    apiClient(item.config)
+      .then((response) => item.resolve(response))
+      .catch((error) => item.reject(error))
+  );
+  await Promise.all(promises);
+  failedQueue = [];
+}
+
+function rejectAndClearExecutedQueue(error: Error) {
+  failedQueue.forEach((item) => item.reject(error));
+  failedQueue = [];
+}
 
 function createFormattedError(error: any) {
   // Normalize error format
