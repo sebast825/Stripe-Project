@@ -84,6 +84,7 @@ namespace Tests.Services
         {
             //arrange
             Invoice invoice = LoadInvoiceFromFile("succeeded");
+            invoice.Created = DateTime.UtcNow.AddHours(2);
             int userId = 1;
             UserSubscription userSubscription = new UserSubscription
             {
@@ -99,6 +100,29 @@ namespace Tests.Services
             //assert
             _subscriptionPaymentRecordRepository.Verify(x => x.AddAsync(It.IsAny<SubscriptionPaymentRecord>()), Times.Exactly(0));
             _subscriptionPaymentRecordRepository.Verify(x => x.UpdateAsync(It.IsAny<SubscriptionPaymentRecord>()), Times.Exactly(1));
+
+        }
+        [TestMethod]
+        public async Task AddAsync__WhenInvoiceOutdated_ShouldThrow()
+        {
+            //arrange
+            Invoice invoice = LoadInvoiceFromFile("succeeded");
+            invoice.Created = DateTime.UtcNow.AddHours(-2);
+            int userId = 1;
+            UserSubscription userSubscription = new UserSubscription
+            {
+                Id = userId
+            };
+            SubscriptionPaymentRecord subscriptionPaymentRecord = new SubscriptionPaymentRecord { };
+
+            _userRepository.Setup(x => x.GetIdByStripeCustomerIdAsync(invoice.CustomerId)).ReturnsAsync(userId);
+            _userSubscriptionRepository.Setup(x => x.GetByStripeCustomerIdAsync(invoice.CustomerId)).ReturnsAsync(userSubscription);
+            _subscriptionPaymentRecordRepository.Setup(x => x.GetByInvoiceId(invoice.Id)).ReturnsAsync(subscriptionPaymentRecord);
+            //act
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => _userSubscriptionService.AddAsync(invoice));
+            //assert
+            _subscriptionPaymentRecordRepository.Verify(x => x.AddAsync(It.IsAny<SubscriptionPaymentRecord>()), Times.Exactly(0));
+            _subscriptionPaymentRecordRepository.Verify(x => x.UpdateAsync(It.IsAny<SubscriptionPaymentRecord>()), Times.Exactly(0));
 
         }
         public Invoice LoadInvoiceFromFile(string scenario)
