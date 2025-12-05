@@ -50,7 +50,7 @@ namespace Aplication.Helpers
                 CurrentPeriodEnd = subscriptionDto.CurrentPeriodEnd,
                 Plan = plan,
                 Status = subscriptionDto.Status,
-                Price = subscriptionDto.Price 
+                Price = subscriptionDto.Price
             }
             ;
         }
@@ -77,9 +77,11 @@ namespace Aplication.Helpers
             entity.Plan = planType;
 
         }
-        public static UserSubscriptionUpdateDto ToUpdateDto(Subscription subscription)
+        public static UserSubscriptionUpdateDto ToUpdateDto(Event stripeEvent)
         {
-            Console.WriteLine(subscription);
+
+            var subscription = stripeEvent.Data.Object as Subscription;
+
             if (subscription == null)
                 throw new ArgumentNullException(nameof(subscription));
 
@@ -96,8 +98,9 @@ namespace Aplication.Helpers
                 CancelAtPeriodEnd = subscription.CancelAtPeriodEnd,
                 CanceledAt = subscription.CanceledAt ?? null,
                 Price = GetUsdFromDecimal(item.Price.UnitAmountDecimal),
-                PriceId = item.Plan.Id
-
+                PriceId = item.Plan.Id,
+                CreatedAt = stripeEvent.Created,
+                StripeCustomerId = subscription.CustomerId
             };
         }
 

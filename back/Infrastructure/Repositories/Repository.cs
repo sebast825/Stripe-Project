@@ -31,7 +31,7 @@ namespace Infrastructure.Repositories
             return entity;
         }
 
-        public async Task UpdateAsync(T entity)
+        public virtual async Task UpdateAsync(T entity)
         {
             __dataContext.Set<T>().Update(entity);
             await __dataContext.SaveChangesAsync();

@@ -60,21 +60,67 @@ namespace Tests.Services
                 Plan = currentPlan.PlanType,
                 Status = SubscriptionStatus.Active,
                 StripeCustomerId = user.StripeCustomerId,
+                UpdatedAt = DateTime.Now.AddHours(-1)
             };
             UserSubscriptionUpdateDto newSubscritionDto = new UserSubscriptionUpdateDto
             {
                 StripeSubscriptionId = "sub_!23",
                 PriceId = newPlan.StripePriceId,
                 Status = "active",
+                CreatedAt = DateTime.Now,
+                StripeCustomerId = user.StripeCustomerId
+
             };
 
             _userSubscriptionRepository.Setup(r => r.GetByStripeCustomerIdAsync(user.StripeCustomerId))
                     .Returns(Task.FromResult(existingSubscription));
             //act 
-            UserSubscriptionResponseDto rsta = await _userSubscriptionService.UpdateAsync(newSubscritionDto, user.StripeCustomerId);
+            UserSubscriptionResponseDto rsta = await _userSubscriptionService.UpdateAsync(newSubscritionDto);
             //assert
             _userSubscriptionRepository.Verify(s => s.UpdateAsync(It.IsAny<UserSubscription>()), Times.Once);
             Assert.AreEqual(rsta.Plan.ToString(), newPlan.Name);
+        }
+        [TestMethod]
+        public async Task UpdateAsync_WhenWebhookOutDated_ShouldThrow()
+        {
+            //arrange 
+
+            User user = new User
+            {
+                Email = "test@gmail.com",
+                Password = "test",
+                StripeCustomerId = "cus_123"
+            };
+
+            SubscriptionPlan currentPlan = DemoPlans.GetById(1);
+            SubscriptionPlan newPlan = DemoPlans.GetById(2);
+
+
+            UserSubscription existingSubscription = new UserSubscription
+            {
+                StripeSubscriptionId = "sub_!23",
+                Plan = currentPlan.PlanType,
+                Status = SubscriptionStatus.Active,
+                StripeCustomerId = user.StripeCustomerId,
+                UpdatedAt = DateTime.Now
+            };
+            UserSubscriptionUpdateDto newSubscritionDto = new UserSubscriptionUpdateDto
+            {
+                StripeSubscriptionId = "sub_!23",
+                PriceId = newPlan.StripePriceId,
+                Status = "active",
+                CreatedAt = DateTime.Now.AddHours(-1),
+                StripeCustomerId =user.StripeCustomerId,
+
+            };
+
+            _userSubscriptionRepository.Setup(r => r.GetByStripeCustomerIdAsync(user.StripeCustomerId))
+                    .Returns(Task.FromResult(existingSubscription));
+            //act 
+            //assert
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => _userSubscriptionService.UpdateAsync(newSubscritionDto));
+
+            _userSubscriptionRepository.Verify(s => s.UpdateAsync(It.IsAny<UserSubscription>()), Times.Never);
         }
 
         [TestMethod]
@@ -95,12 +141,13 @@ namespace Tests.Services
                 StripeSubscriptionId = "sub_!23",
                 PriceId = newPlan.StripePriceId,
                 Status = "active",
+
             };
 
             _userSubscriptionRepository.Setup(r => r.GetByStripeCustomerIdAsync(user.StripeCustomerId))
                     .ReturnsAsync((UserSubscription)null);
             //act //assert
-            await Assert.ThrowsExceptionAsync<KeyNotFoundException>(() => _userSubscriptionService.UpdateAsync(newSubscritionDto, user.StripeCustomerId));
+            await Assert.ThrowsExceptionAsync<KeyNotFoundException>(() => _userSubscriptionService.UpdateAsync(newSubscritionDto));
 
             _userSubscriptionRepository.Verify(s => s.GetByStripeCustomerIdAsync(It.IsAny<string>()), Times.Once);
 
@@ -124,6 +171,8 @@ namespace Tests.Services
                 StripeSubscriptionId = "sub_322",
                 PriceId = newPlan.StripePriceId,
                 Status = "active",
+                StripeCustomerId = user.StripeCustomerId
+
             };
             UserSubscription existingSubscription = new UserSubscription
             {
@@ -131,13 +180,14 @@ namespace Tests.Services
                 Plan = currentPlan.PlanType,
                 Status = SubscriptionStatus.Active,
                 StripeCustomerId = user.StripeCustomerId,
+                
 
             };
 
             _userSubscriptionRepository.Setup(r => r.GetByStripeCustomerIdAsync(user.StripeCustomerId))
-                   .Returns(Task.FromResult(existingSubscription));
+                   .ReturnsAsync(existingSubscription);
             //act   //assert
-            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => _userSubscriptionService.UpdateAsync(newSubscritionDto, user.StripeCustomerId));
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => _userSubscriptionService.UpdateAsync(newSubscritionDto));
 
             _userSubscriptionRepository.Verify(s => s.GetByStripeCustomerIdAsync(It.IsAny<string>()), Times.Once);
 

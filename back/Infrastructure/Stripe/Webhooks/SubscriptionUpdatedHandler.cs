@@ -23,12 +23,10 @@ namespace Infrastructure.Stripe.Webhooks
             _userSubscriptionService = userSubscriptionService;
         }
         public async Task HandleAsync(Event stripeEvent)
-        {
-            var subscription = stripeEvent.Data.Object as Subscription;
-            UserSubscriptionUpdateDto userSubscriptionDto = UserSubscriptionMapper.ToUpdateDto(subscription);
+        {        
+            UserSubscriptionUpdateDto userSubscriptionDto = UserSubscriptionMapper.ToUpdateDto(stripeEvent);
 
-            var rsta = await _userSubscriptionService.UpdateAsync(userSubscriptionDto, subscription.CustomerId);
-
+            var rsta = await _userSubscriptionService.UpdateAsync(userSubscriptionDto);
         }
     }
 }

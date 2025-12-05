@@ -17,7 +17,10 @@ namespace Core.Dto.UserSubscription
         public bool CancelAtPeriodEnd { get; set; }
         public DateTime? CanceledAt { get; set; }
         public decimal Price { get; set; }
-
         
+        public DateTime CreatedAt { get; set; }
+        public string StripeCustomerId { get; set; }
+
+
     }
 }

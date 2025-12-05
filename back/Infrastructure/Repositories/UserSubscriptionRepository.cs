@@ -3,6 +3,7 @@ using Core.Enums;
 using Core.Interfaces.Repositories;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class UserSubscriptionRepository : Repository<UserSubscription> ,IUserSubscriptionRepository 
+    public class UserSubscriptionRepository : Repository<UserSubscription>, IUserSubscriptionRepository
     {
         private readonly DataContext _dataContext;
-        public UserSubscriptionRepository(DataContext dataContext): base(dataContext)
+        public UserSubscriptionRepository(DataContext dataContext) : base(dataContext)
         {
             _dataContext = dataContext;
         }
@@ -34,6 +35,13 @@ namespace Infrastructure.Repositories
                 .Where(u => u.UserId == userId && u.Status == SubscriptionStatus.Active)
                 .FirstOrDefaultAsync();
 
+        }
+        public override async Task<UserSubscription> UpdateAsync(UserSubscription entity)
+        {
+            entity.UpdatedAt = DateTime.UtcNow;
+            _dataContext.UserSubscriptions.Update(entity);
+            await _dataContext.SaveChangesAsync();
+            return entity;
         }
     }
 }

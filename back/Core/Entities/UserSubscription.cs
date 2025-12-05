@@ -24,6 +24,7 @@ namespace Core.Entities
         public bool CancelAtPeriodEnd { get; set; } = false;
         public DateTime? CanceledAt { get; set; }
         public decimal Price { get; set; }
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     }
 }

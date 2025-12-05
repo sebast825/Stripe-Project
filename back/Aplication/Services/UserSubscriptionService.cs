@@ -53,16 +53,20 @@ namespace Aplication.Services
 
         }
 
-        public async Task<UserSubscriptionResponseDto> UpdateAsync(UserSubscriptionUpdateDto updateDto, string customerId)
+        public async Task<UserSubscriptionResponseDto> UpdateAsync(UserSubscriptionUpdateDto updateDto)
         {
-            UserSubscription? subscription = await _userSubscriptionRepository.GetByStripeCustomerIdAsync(customerId);
+            UserSubscription? subscription = await _userSubscriptionRepository.GetByStripeCustomerIdAsync(updateDto.StripeCustomerId);
             if (subscription == null)
             {
-                throw new KeyNotFoundException(ErrorMessages.EntityNotFound("UserSubscription", $"customerId {customerId}"));
-            }           
+                throw new KeyNotFoundException(ErrorMessages.EntityNotFound("UserSubscription", $"customerId {updateDto.StripeCustomerId}"));
+            }
             if (subscription.StripeSubscriptionId != updateDto.StripeSubscriptionId)
             {
                 throw new InvalidOperationException($"Entity StripeSubscriptionId {subscription.StripeSubscriptionId} doesn't match with dto id {updateDto.StripeSubscriptionId}");
+            }
+            if (subscription.UpdatedAt > updateDto.CreatedAt)
+            {
+                throw new InvalidOperationException("Webhook outdated: subscription has more recent update.");
             }
             SubscriptionPlanType plan = DemoPlans.GetByStripePriceId(updateDto.PriceId).PlanType;
             UserSubscriptionMapper.ApplySubscriptionUpdate(subscription, updateDto, plan);
