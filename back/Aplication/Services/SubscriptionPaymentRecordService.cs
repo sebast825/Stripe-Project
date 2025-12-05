@@ -46,7 +46,7 @@ namespace Aplication.Services
             {
                 if(invoice.Created < existingRecord.UpdatedAt)
                 {
-                    throw new InvalidOperationException("Webhook outdated: subscription has more recent update.");
+                    throw new InvalidOperationException("Webhook outdated: Invoice has more recent update.");
                 }
                 SubscriptionPaymentRecordMapper.ApplyUpdates(existingRecord, entity);
                 await _subscriptionPaymentRecordRepository.UpdateAsync(existingRecord);
