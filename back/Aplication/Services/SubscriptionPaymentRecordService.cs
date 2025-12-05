@@ -37,14 +37,17 @@ namespace Aplication.Services
             string subscriptionId = invoice.Lines.Data.First().Parent.SubscriptionItemDetails.Subscription;
 
             int userId = await GetUserIdByCustomerIdAsync(invoice.CustomerId);
-            int userSubscriptionId = await GetUserSubscriptionIdByCustomerIdAsync(invoice.CustomerId);
-
-            SubscriptionPaymentRecord entity = SubscriptionPaymentRecordMapper.ToEntity(invoice, userId, userSubscriptionId);
+            int? userSubscriptionId = await GetUserSubscriptionIdByCustomerIdAsync(invoice.CustomerId);
+            if (userSubscriptionId == null)
+            {
+                throw new InvalidOperationException("Subscription not yet created. Payment will be processed when subscription is available.");
+            }
+            SubscriptionPaymentRecord entity = SubscriptionPaymentRecordMapper.ToEntity(invoice, userId, userSubscriptionId.Value);
             SubscriptionPaymentRecord? existingRecord = await _subscriptionPaymentRecordRepository.GetByInvoiceId(invoice.Id);
 
             if (existingRecord != null)
             {
-                if(invoice.Created < existingRecord.UpdatedAt)
+                if (invoice.Created < existingRecord.UpdatedAt)
                 {
                     throw new InvalidOperationException("Webhook outdated: Invoice has more recent update.");
                 }
@@ -80,7 +83,7 @@ namespace Aplication.Services
         {
             PagedResult<SubscriptionPaymentRecord?> rsta = await _subscriptionPaymentRecordRepository.GetPagedByUserIdAsync(userId, page, pageSize);
             List<SubscriptionPaymentRecordResponseDto> dataMapped = rsta.Data.Select(x => SubscriptionPaymentRecordMapper.ToResponse(x)).ToList();
-            return PagedMapper.ToResponse(page, pageSize, rsta.TotalItems, dataMapped);                
+            return PagedMapper.ToResponse(page, pageSize, rsta.TotalItems, dataMapped);
         }
     }
 }
