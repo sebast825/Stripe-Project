@@ -7,7 +7,7 @@ export const useCreateSubscriptionCheckout = () => {
   return useMutation({
     mutationFn: async (planId: number) => {
       console.log(planId);
-      const res = await apiClient.post("/subscription/checkout", planId);
+      const res = await apiClient.post("/subscriptions/checkout", planId);
       return res.data;
     },
     onError: (err: any) => {

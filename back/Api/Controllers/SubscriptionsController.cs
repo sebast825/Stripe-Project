@@ -20,14 +20,14 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SubscriptionController : Controller
+    public class SubscriptionsController : Controller
     {
         private readonly SubscribeUserUseCase _subscribeUserUseCase;
         private readonly IUserSubscriptionService _userSubscriptionService;
         private readonly GetCustomerBillingPortalUrlUseCase _getCustomerBillingPortalUrlUseCase;
         private readonly ISubscriptionPaymentRecordService _subscriptionPaymentRecordService;
 
-        public SubscriptionController(SubscribeUserUseCase subscribeUserUseCase, IUserSubscriptionService userSubscriptionService, GetCustomerBillingPortalUrlUseCase getCustomerBillingPortalUrlUseCase, ISubscriptionPaymentRecordService subscriptionPaymentRecordService)
+        public SubscriptionsController(SubscribeUserUseCase subscribeUserUseCase, IUserSubscriptionService userSubscriptionService, GetCustomerBillingPortalUrlUseCase getCustomerBillingPortalUrlUseCase, ISubscriptionPaymentRecordService subscriptionPaymentRecordService)
         {
             _subscribeUserUseCase = subscribeUserUseCase;
             _userSubscriptionService = userSubscriptionService;

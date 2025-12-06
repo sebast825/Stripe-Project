@@ -5,7 +5,7 @@ export const useGetCurrentSubscription =()=>{
    return useQuery({
     queryKey: ["userPlan"],
     queryFn: async () => {
-      const res = await apiClient.get("/subscription/current");
+      const res = await apiClient.get("/subscriptions/current");
       return res.data;
     }
   });

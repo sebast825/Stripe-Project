@@ -6,7 +6,7 @@ export const useGetBillingPortalUrl =()=> {
      return useQuery({
        queryKey: ["billing-portal-url"],
        queryFn: async () => {
-         const res = await apiClient.get("/subscription/billing-portal");
+         const res = await apiClient.get("/subscriptions/billing-portal");
          return res.data;
        },
        enabled: false
