@@ -1,10 +1,11 @@
-import { Row } from "react-bootstrap";
+import { Row,  } from "react-bootstrap";
 import { useGetAdminStats } from "../hooks/useGetAdminStats";
 import { StatsCard } from "./cards/statsCard";
 import PlanDistributionGraphic from "./planDistributionGraphic";
+import LoadingSpinner from "./loadingSpinner";
 
 const AdminStats = () => {
-  const { data } = useGetAdminStats();
+  const { data ,isLoading} = useGetAdminStats();
   const stats = {
     totalUsers: data?.totalUsers,
     totalRevenue: data?.totalRevenue.toLocaleString(),
@@ -14,6 +15,7 @@ const AdminStats = () => {
     canceledSubscriptions: data?.canceledSubscriptions,
     planDistribution: data?.planDistribution || [],
   };
+  if(isLoading)return <LoadingSpinner/>
 
   return (
     <div

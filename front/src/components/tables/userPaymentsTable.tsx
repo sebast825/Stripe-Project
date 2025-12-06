@@ -4,11 +4,14 @@ import { usePagination } from "../../hooks/usePagination";
 import type { SubscriptionPaymentDto } from "../../types/SubscriptionPaymentDto.types";
 import PaginationBtns from "../paginationBtns";
 import { CardMessage } from "../cardMessage";
+import LoadingSpinner from "../loadingSpinner";
 
 export function UserPaymentsTable({ id }: { id: number }) {
   const { page, pageSize, goToPage } = usePagination();
 
-  const { data: payments } = useGetSubscriptionPayments(id, page, pageSize);
+  const { data: payments,isLoading } = useGetSubscriptionPayments(id, page, pageSize);
+    if(isLoading)return <LoadingSpinner/>
+  
   return (
     <>
       <div className="w-100 ">
