@@ -73,7 +73,7 @@ namespace Api.Controllers
          [Authorize(Roles =nameof(UserRole.Admin))]
 
         [HttpGet("/api/admin/users/{userId:int}/subscriptions-payments")]
-        public async Task<IActionResult> GetSubscriptionPaymentRecordByUser(int userId, [FromQuery] int page = 0, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetSubscriptionPaymentRecordByUser([FromRoute] int userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             PagedResponseDto<SubscriptionPaymentRecordResponseDto> rsta = await _subscriptionPaymentRecordService.GetPaymentsByUserIdAsync(userId,page,pageSize);
             return Ok(rsta);
