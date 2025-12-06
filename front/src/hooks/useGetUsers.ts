@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "../api/client";
-import type { UserWithSubscription } from "../types/UserWithSubscription.type";
 import type { PagedResponseDto } from "../types/PagedResponse.types";
+import type { UserWithSubscription } from "../types/userWithSubscription.type";
 
 export const useGetUsers =  (page:number,pageSize:number,searchTerm?:string) => {
 return  useQuery({
