@@ -4,15 +4,14 @@ import axios, {
 } from "axios";
 import { useAuthStore } from "../states/auth/auth.store";
 const apiClient = axios.create({
-  baseURL: "https://bhx92f9r-7098.brs.devtunnels.ms/api",
-  // baseURL: "https://localhost:7098/api",
+  //baseURL: "https://bhx92f9r-7098.brs.devtunnels.ms/api",
+  baseURL: "https://localhost:7098/api",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
   timeout: 10000,
 });
-
 
 apiClient.interceptors.request.use((config) => {
   const accessToken = useAuthStore.getState().accessToken;
@@ -43,7 +42,6 @@ let isRefreshing = false;
 let failedQueue: QueuedRequest[] = [];
 const REFRESH_ENDPOINT = "/auth/refresh";
 
-
 async function handleInterceptorError(error: any) {
   const originalRequest = error.config;
 
@@ -61,7 +59,7 @@ async function handleInterceptorError(error: any) {
       return response;
     } catch (error: any) {
       //in case response throw exception will not logout
-      if (error.status === 401) {      
+      if (error.status === 401) {
         useAuthStore.getState().logout();
         rejectAndClearExecutedQueue(error);
       } else {
@@ -73,7 +71,7 @@ async function handleInterceptorError(error: any) {
       isRefreshing = false;
     }
   } else {
-    return Promise.reject(error);
+    throw createFormattedError(error);
   }
 }
 
