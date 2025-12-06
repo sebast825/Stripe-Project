@@ -85,7 +85,7 @@ export const HomePage = () => {
           <FeatureCard
             title="Checkout Integrado"
             text="Flujo completo de pagos únicos con Stripe Checkout. Incluye 3D Secure, manejo de errores y confirmación automática."
-            tag="POST /api/checkout"
+            tag="POST /api/subscriptions/checkout"
           ></FeatureCard>
           <FeatureCard
             title="Suscripciones"
@@ -98,7 +98,7 @@ export const HomePage = () => {
             title="Webhooks"
             text="Endpoint seguro para eventos Stripe. Sincronización en tiempo real con verificación de firma y manejo de eventos."
             bgColor="danger"
-            tag="   POST /api/webhooks"
+            tag="   POST /api/webhooks/stripe"
           ></FeatureCard>
         </Row>
       </Container>
