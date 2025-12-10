@@ -44,7 +44,10 @@ const REFRESH_ENDPOINT = "/auth/refresh";
 
 async function handleInterceptorError(error: any) {
   const originalRequest = error.config;
-
+  
+  if (originalRequest.url?.includes('/login')) {
+    throw createFormattedError(error);
+  }
   // if que  no sea 404 y que no sea retry
   if (error.response?.status === 401 && !originalRequest._retry) {
     if (isRefreshing) {
@@ -109,19 +112,20 @@ function rejectAndClearExecutedQueue(error: Error) {
 }
 
 function createFormattedError(error: any) {
+  console.log(error)
   // Normalize error format
   var formattedError;
   //si if there is no conexion
   if (!error.response) {
     formattedError = {
-      status: error.code || "NETWORK_ERROR",
+      status: error.code || error.status,
       message: "No se pudo establecer conexión con el servidor",
       data: error.response?.data,
     };
   } else {
     //error from server
     formattedError = {
-      status: error.response?.status,
+      status: error.response?.status || error.status,
       message: error.response?.data?.Message || "Error inesperado",
       data: error.response?.data,
     };
