@@ -89,7 +89,42 @@ This prevents outdated webhooks from overwriting correct data.
 - `customer.subscription.deleted`  
 
 ---
+#  Design Decisions
 
+## Frontend Interceptor / Middleware
+
+### Handling multiple requests with expired tokens
+When several concurrent requests receive a 401 due to an expired token, the interceptor prevents multiple simultaneous refresh attempts by using a request queue:
+
+1. The first 401 triggers the refresh token flow.
+2. Subsequent 401 requests are queued.
+3. On successful refresh, the original request and all queued requests are retried.
+4. On refresh failure, the user is logged out and all queued requests are rejected.
+
+**Trade-off:** The app does not handle high concurrency, but the pattern demonstrates how to scale token refresh logic safely.
+
+
+## Webhooks
+
+### Handling race conditions in initial payments
+To avoid missing the first payment when `invoice.payment_succeeded` arrives before `customer.subscription.created`, the system:
+
+- Processes the initial payment inside the `customer.subscription.created` handler.
+- Uses `subscription.LatestInvoiceId` to fetch the invoice/payment data.
+- Keeps recurring payment handling within `invoice.payment_succeeded`.
+
+**Trade-off:** The creation handler takes on payment logic that ideally belongs elsewhere, but it prevents inconsistent state due to Stripe’s event ordering.
+
+---
+#  Next improvements
+
+- Introduce a processing queue to enforce webhook ordering and keep handlers decoupled.
+- Persist unprocessed requests/events for controlled retries.
+- Real-time updates: Implement WebSockets/SignalR for instant subscription status updates.
+- Add an infrastructure-level retry mechanism for failed webhook deliveries.
+
+
+ 
 # Authentication
 
 This project reuses an existing authentication layer (**JWT**, **Refresh Tokens**, **Rate Limiting**).  
