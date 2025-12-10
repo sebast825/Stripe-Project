@@ -3,12 +3,12 @@
 This service provides a complete Stripe integration for subscription management. It creates Checkout Sessions, processes Stripe webhooks with idempotent and timestamp-safe logic, and updates the internal subscription state in the database. The application uses an existing authentication module to identify the user initiating the payment flow, but all payment confirmation and status updates rely exclusively on Stripe’s webhook events.
 
 # Requirements
-### 1 Requirements
+### 1. Requirements
 - **SQL Server** (local or remote instance)  
 - **.NET 8 SDK**  
 - **Node.js + npm**  
 
-### 2 Create Products and Prices in Stripe
+### 2. Create Products and Prices in Stripe
 
 Go to your Stripe Dashboard → **Products**  
 Create the subscription products and their corresponding **Price IDs** (e.g., *Galería*, *Lienzo*, *Boceto*).
@@ -22,9 +22,50 @@ Copy the generated **Price IDs**, as the backend requires valid Stripe prices to
 
 If you create more than three plans (or fewer), make sure the number of demo plan files matches the number of products you want to support.
 
-## 3. Configure `appsettings.json`
+### 3. Configure Webhooks in Stripe
+The backend relies entirely on Stripe webhook events to confirm payments and update subscription status.
+
+To configure:
+
+1. Go to Stripe Dashboard → Developers → Webhooks.
+2. Create a new webhook endpoint.
+3. Set the callback URL to:
+```bash
+https://localhost:<port>/api/webhooks/stripe
+```
+> Copy the Webhook Signing Secret and add it to Stripe:WebhookSecret in your appsettings.json.
+
+4. Enable the following events:
+- `customer.subscription.created`
+- `customer.subscription.updated`
+- `customer.subscription.deleted`
+- `invoice.payment_succeeded`
+- `invoice.payment_failed`
+
+### 4. Configure `appsettings.json`
 
 Use the `appsettings.example.json` file as a template to create your own `appsettings.json`.
+
+
+### 5. Database Initialization
+The backend uses `EnsureCreated()` to generate the database schema at startup.
+No Entity Framework migrations are used in this project.
+
+When the application runs for the first time, the database is created automatically if it does not already exist.  
+Ensure the connection string in `appsettings.json` points to a SQL Server instance with permissions to create databases.
+
+Run the following script in SQL Server to create the initial admin user: 
+```sql
+INSERT INTO Users (Email, Password, Role,CreatedAt)
+VALUES (
+	'admin@example.com',    
+    '$2a$11$W6.vy/wr3Fn.OUDxkelfMuHj0ddGs7zOMcKDFF5eoRBnjtpPXdhx2',                             
+    0,                     
+    GETDATE()                     
+);
+-- Default password: adminadmin
+```
+
 
 # Run
 ```bash
@@ -89,7 +130,42 @@ This prevents outdated webhooks from overwriting correct data.
 - `customer.subscription.deleted`  
 
 ---
+#  Design Decisions
 
+## Frontend Interceptor / Middleware
+
+### Handling multiple requests with expired tokens
+When several concurrent requests receive a 401 due to an expired token, the interceptor prevents multiple simultaneous refresh attempts by using a request queue:
+
+1. The first 401 triggers the refresh token flow.
+2. Subsequent 401 requests are queued.
+3. On successful refresh, the original request and all queued requests are retried.
+4. On refresh failure, the user is logged out and all queued requests are rejected.
+
+**Trade-off:** The app does not handle high concurrency, but the pattern demonstrates how to scale token refresh logic safely.
+
+
+## Webhooks
+
+### Handling race conditions in initial payments
+To avoid missing the first payment when `invoice.payment_succeeded` arrives before `customer.subscription.created`, the system:
+
+- Processes the initial payment inside the `customer.subscription.created` handler.
+- Uses `subscription.LatestInvoiceId` to fetch the invoice/payment data.
+- Keeps recurring payment handling within `invoice.payment_succeeded`.
+
+**Trade-off:** The creation handler takes on payment logic that ideally belongs elsewhere, but it prevents inconsistent state due to Stripe’s event ordering.
+
+---
+#  Next Improvements
+
+- Introduce a processing queue to enforce webhook ordering and keep handlers decoupled.
+- Persist unprocessed requests/events for controlled retries.
+- Real-time updates: Implement WebSockets/SignalR for instant subscription status updates.
+- Add an infrastructure-level retry mechanism for failed webhook deliveries.
+
+
+ ---
 # Authentication
 
 This project reuses an existing authentication layer (**JWT**, **Refresh Tokens**, **Rate Limiting**).  
