@@ -3,12 +3,12 @@
 This service provides a complete Stripe integration for subscription management. It creates Checkout Sessions, processes Stripe webhooks with idempotent and timestamp-safe logic, and updates the internal subscription state in the database. The application uses an existing authentication module to identify the user initiating the payment flow, but all payment confirmation and status updates rely exclusively on Stripe’s webhook events.
 
 # Requirements
-### 1 Requirements
+### 1. Requirements
 - **SQL Server** (local or remote instance)  
 - **.NET 8 SDK**  
 - **Node.js + npm**  
 
-### 2 Create Products and Prices in Stripe
+### 2. Create Products and Prices in Stripe
 
 Go to your Stripe Dashboard → **Products**  
 Create the subscription products and their corresponding **Price IDs** (e.g., *Galería*, *Lienzo*, *Boceto*).
@@ -22,7 +22,26 @@ Copy the generated **Price IDs**, as the backend requires valid Stripe prices to
 
 If you create more than three plans (or fewer), make sure the number of demo plan files matches the number of products you want to support.
 
-## 3. Configure `appsettings.json`
+### 3. Configure Webhooks in Stripe
+The backend relies entirely on Stripe webhook events to confirm payments and update subscription status.
+
+To configure:
+
+1. Go to Stripe Dashboard → Developers → Webhooks.
+2. Create a new webhook endpoint.
+3. Set the callback URL to:
+```bash
+https://your-domain.com/api/webhooks/stripe
+```
+
+### 4. Enable the following events:
+- `customer.subscription.created`
+- `customer.subscription.updated`
+- `customer.subscription.deleted`
+- `invoice.payment_succeeded`
+- `invoice.payment_failed`
+
+### 5. Configure `appsettings.json`
 
 Use the `appsettings.example.json` file as a template to create your own `appsettings.json`.
 
