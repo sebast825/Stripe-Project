@@ -31,17 +31,18 @@ To configure:
 2. Create a new webhook endpoint.
 3. Set the callback URL to:
 ```bash
-https://your-domain.com/api/webhooks/stripe
+https://localhost:<port>/api/webhooks/stripe
 ```
+> Copy the Webhook Signing Secret and add it to Stripe:WebhookSecret in your appsettings.json.
 
-### 4. Enable the following events:
+4. Enable the following events:
 - `customer.subscription.created`
 - `customer.subscription.updated`
 - `customer.subscription.deleted`
 - `invoice.payment_succeeded`
 - `invoice.payment_failed`
 
-### 5. Configure `appsettings.json`
+### 4. Configure `appsettings.json`
 
 Use the `appsettings.example.json` file as a template to create your own `appsettings.json`.
 
@@ -135,7 +136,7 @@ To avoid missing the first payment when `invoice.payment_succeeded` arrives befo
 **Trade-off:** The creation handler takes on payment logic that ideally belongs elsewhere, but it prevents inconsistent state due to Stripe’s event ordering.
 
 ---
-#  Next improvements
+#  Next Improvements
 
 - Introduce a processing queue to enforce webhook ordering and keep handlers decoupled.
 - Persist unprocessed requests/events for controlled retries.
@@ -143,7 +144,7 @@ To avoid missing the first payment when `invoice.payment_succeeded` arrives befo
 - Add an infrastructure-level retry mechanism for failed webhook deliveries.
 
 
- 
+ ---
 # Authentication
 
 This project reuses an existing authentication layer (**JWT**, **Refresh Tokens**, **Rate Limiting**).  
