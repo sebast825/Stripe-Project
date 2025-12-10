@@ -46,6 +46,27 @@ https://localhost:<port>/api/webhooks/stripe
 
 Use the `appsettings.example.json` file as a template to create your own `appsettings.json`.
 
+
+### 5. Database Initialization
+The backend uses `EnsureCreated()` to generate the database schema at startup.
+No Entity Framework migrations are used in this project.
+
+When the application runs for the first time, the database is created automatically if it does not already exist.  
+Ensure the connection string in `appsettings.json` points to a SQL Server instance with permissions to create databases.
+
+Run the following script in SQL Server to create the initial admin user: 
+```sql
+INSERT INTO Users (Email, Password, Role,CreatedAt)
+VALUES (
+	'admin@example.com',    
+    '$2a$11$W6.vy/wr3Fn.OUDxkelfMuHj0ddGs7zOMcKDFF5eoRBnjtpPXdhx2',                             
+    0,                     
+    GETDATE()                     
+);
+-- Default password: adminadmin
+```
+
+
 # Run
 ```bash
 
